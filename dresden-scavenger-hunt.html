@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dresden Old Town Scavenger Hunt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c8973a;
+    --gold-light: #e8b84b;
+    --dark: #1a1209;
+    --cream: #faf3e0;
+    --sand: #ede0c2;
+    --rust: #8b3a1a;
+    --ink: #2c1f0e;
+    --muted: #7a6a52;
+    --green: #2d4a2a;
+    --green-light: #e8f2e8;
+    --red: #8b1a1a;
+    --red-light: #fdf0f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: var(--dark); padding: 48px 24px 36px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,151,58,0.04) 40px, rgba(200,151,58,0.04) 80px); }
+  .header-badge { display: inline-block; border: 1px solid var(--gold); color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 3px; padding: 5px 16px; margin-bottom: 20px; text-transform: uppercase; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 8vw, 72px); color: var(--cream); line-height: 1; margin-bottom: 8px; }
+  .header h1 span { color: var(--gold); font-style: italic; }
+  .header-sub { color: var(--muted); font-size: 14px; letter-spacing: 1px; margin-top: 16px; }
+  .header-meta { display: flex; justify-content: center; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
+  .header-meta span { color: var(--sand); font-size: 13px; }
+
+  /* INTRO */
+  .intro { max-width: 720px; margin: 0 auto; padding: 40px 24px 16px; text-align: center; }
+  .intro p { color: var(--muted); line-height: 1.7; font-size: 15px; }
+  .intro strong { color: var(--ink); }
+
+  /* SCORING BAR */
+  .scoring-bar { background: var(--dark); margin: 24px auto; border-radius: 4px; padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; max-width: 900px; }
+  .score-label { font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+  .score-display { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--cream); }
+  .score-display span { color: var(--gold); }
+  .progress-wrap { flex: 1; min-width: 200px; }
+  .progress-track { background: rgba(255,255,255,0.1); height: 6px; border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 99px; transition: width 0.5s ease; width: 0%; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  /* STOPS */
+  .stops-container { max-width: 900px; margin: 0 auto; padding: 16px 20px 60px; }
+  .stop-card { background: white; border: 1px solid rgba(0,0,0,0.08); margin-bottom: 20px; border-radius: 4px; overflow: hidden; transition: box-shadow 0.2s; }
+  .stop-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+  .stop-card.completed { border-left: 4px solid var(--gold); }
+  .stop-header { display: flex; align-items: stretch; cursor: pointer; user-select: none; }
+  .stop-number { background: var(--dark); color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 22px; padding: 20px 22px; display: flex; align-items: center; justify-content: center; min-width: 64px; }
+  .stop-card.completed .stop-number { background: var(--gold); color: var(--dark); }
+  .stop-title-wrap { flex: 1; padding: 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+  .stop-location { font-size: 10px; font-family: 'Oswald', sans-serif; letter-spacing: 2.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+  .stop-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); line-height: 1.2; }
+  .stop-points { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stop-toggle { padding: 20px; display: flex; align-items: center; color: var(--muted); font-size: 20px; transition: transform 0.3s; }
+  .stop-card.open .stop-toggle { transform: rotate(180deg); }
+  .stop-body { display: none; border-top: 1px solid rgba(0,0,0,0.07); }
+  .stop-card.open .stop-body { display: block; }
+
+  .stop-content { padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 600px) { .stop-content { grid-template-columns: 1fr; } }
+
+  .clue-box { background: var(--sand); border-left: 3px solid var(--gold); padding: 18px 20px; border-radius: 0 4px 4px 0; }
+  .fact-box { background: #f0f4f0; border-left: 3px solid var(--green); padding: 18px 20px; border-radius: 0 4px 4px 0; }
+  .box-label { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--rust); text-transform: uppercase; margin-bottom: 8px; }
+  .clue-box p, .fact-box p { font-size: 14px; line-height: 1.65; color: var(--ink); }
+
+  /* CHALLENGES */
+  .challenge-section { padding: 0 28px 28px; }
+  .section-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.1); }
+  .challenges-list { display: flex; flex-direction: column; gap: 12px; }
+
+  /* MC CARD */
+  .challenge-card { background: var(--cream); border: 1.5px solid transparent; border-radius: 6px; overflow: hidden; transition: border-color 0.2s, background 0.2s; }
+  .challenge-card.correct { border-color: var(--green); background: var(--green-light); }
+  .challenge-card.incorrect { border-color: var(--red); background: var(--red-light); }
+
+  /* Photo/action card */
+  .challenge-card.photo-type { cursor: pointer; }
+  .challenge-card.photo-type:hover { background: var(--sand); }
+  .challenge-card.photo-type.done { border-color: var(--gold); background: rgba(200,151,58,0.06); }
+
+  .challenge-top { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; }
+  .challenge-check { width: 22px; height: 22px; border: 2px solid var(--gold); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: transparent; transition: all 0.15s; margin-top: 2px; }
+  .challenge-card.photo-type.done .challenge-check { background: var(--gold); color: var(--dark); }
+  .challenge-body { flex: 1; }
+  .challenge-text { font-size: 13px; line-height: 1.5; color: var(--ink); font-weight: 500; }
+  .challenge-pts { font-weight: 600; color: var(--rust); font-size: 12px; white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
+
+  .challenge-type-tag { display: inline-block; font-size: 10px; font-family: 'Oswald', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; margin-top: 5px; }
+  .tag-mc     { background: rgba(26,18,9,0.08);  color: var(--ink); }
+  .tag-photo  { background: rgba(139,58,26,0.1); color: var(--rust); }
+  .tag-action { background: rgba(200,151,58,0.15); color: #7a5a10; }
+
+  /* MULTIPLE CHOICE OPTIONS */
+  .mc-options { padding: 0 16px 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .mc-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: white; border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 4px; padding: 10px 14px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--ink);
+    text-align: left; transition: all 0.15s; line-height: 1.45;
+  }
+  .mc-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--sand); }
+  .mc-btn:disabled { cursor: default; }
+  .mc-btn .opt-letter { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--muted); flex-shrink: 0; min-width: 18px; }
+  .mc-btn.chosen-correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .mc-btn.chosen-correct .opt-letter { color: var(--green); }
+  .mc-btn.chosen-wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .mc-btn.chosen-wrong .opt-letter { color: var(--red); }
+  .mc-btn.reveal-correct { border-color: var(--green); background: var(--green-light); color: var(--green); opacity: 0.75; }
+
+  .mc-feedback { font-size: 12px; margin: 4px 16px 12px; padding: 8px 12px; border-radius: 4px; line-height: 1.5; display: none; }
+  .mc-feedback.show { display: block; }
+  .mc-feedback.fb-correct { background: var(--green-light); color: var(--green); border-left: 3px solid var(--green); }
+  .mc-feedback.fb-wrong { background: var(--red-light); color: var(--red); border-left: 3px solid var(--red); }
+
+  /* CONNECTOR */
+  .connector { width: 2px; height: 24px; background: linear-gradient(to bottom, var(--gold), transparent); margin: 0 auto 0 31px; opacity: 0.4; }
+
+  /* FINALE */
+  .finale-card { background: var(--dark); color: var(--cream); max-width: 900px; margin: 0 auto 60px; padding: 40px; text-align: center; border-radius: 4px; border: 1px solid rgba(200,151,58,0.3); display: none; }
+  .finale-card.show { display: block; }
+  .finale-card h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); margin-bottom: 8px; }
+  .finale-score { font-family: 'Playfair Display', serif; font-size: 64px; color: var(--gold-light); margin: 20px 0; }
+  .tier-badge { display: inline-block; background: var(--gold); color: var(--dark); font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 8px 24px; text-transform: uppercase; }
+  .finale-msg { color: var(--muted); line-height: 1.7; max-width: 560px; margin: 16px auto 0; font-size: 14px; }
+  .finale-reward { margin: 28px auto 0; max-width: 560px; background: rgba(200,151,58,0.12); border: 1px solid rgba(200,151,58,0.35); border-radius: 6px; padding: 20px 24px; text-align: left; }
+  .finale-reward .reward-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .finale-reward p { color: var(--sand); font-size: 14px; line-height: 1.7; }
+  .finale-reward strong { color: var(--gold-light); }
+
+  @media print { .stop-body { display: block !important; } .stop-toggle, .scoring-bar, .finale-card { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Family Scavenger Hunt</div>
+  <h1>Dresden<br><span>Old Town</span></h1>
+  <div class="header-sub">An adventure through 700 years of Saxon history</div>
+  <div class="header-meta">
+    <span>🗺 11 stops · ~1.8 km</span>
+    <span>⏱ 3–4 hours</span>
+    <span>⭐ Up to 445 points</span>
+  </div>
+</div>
+
+<div class="intro">
+  <p><strong>How to play:</strong> Work through the stops in order. At each location, read the clue, then complete the challenges. <strong>Multiple choice questions</strong> — pick the right answer to earn points. <strong>Photo &amp; action challenges</strong> can be tapped to mark them done. The family with the sharpest eyes and quickest wits wins — and earns a delicious reward at the finish!</p>
+</div>
+
+<div class="scoring-bar">
+  <div>
+    <div class="score-label">Your Score</div>
+    <div class="score-display"><span id="scoreDisplay">0</span> pts</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 of 445 points · 0 challenges done</div>
+  </div>
+  <div>
+    <div class="score-label">Rank</div>
+    <div class="score-display"><span id="rankDisplay">—</span></div>
+  </div>
+</div>
+
+<div class="stops-container">
+
+<!-- ══════════════ STOP 1 ══════════════ -->
+<div class="stop-card" id="stop-1">
+  <div class="stop-header" onclick="toggleStop(1)">
+    <div class="stop-number">1</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Theaterplatz</div>
+      <div class="stop-title">The King on Horseback</div>
+      <div class="stop-points">Up to 35 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>You're standing in Theaterplatz — the grand square where Dresden's most famous landmarks cluster together. Find the equestrian statue in the middle of the square. This is King John, a mid-19th-century ruler who recognized and preserved Saxon culture and paid for the opera house behind the statue. Now face the Semperoper and look at the two figures flanking its entrance — these are the two greatest figures in German literary culture, welcoming all who enter. To your far left is a smaller Neoclassical building called the <strong>Schinkelwache</strong>. It was designed in a Prussian Classicist style by the architect Karl Friedrich Schinkel — which is why it looks out of place among the Baroque buildings around it. Today it serves as a popular café and the opera's box office.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>Three opera houses have stood on this exact spot. The first was destroyed by fire in 1869. The second was destroyed by firebombs in 1945. The rebuilt Semperoper — named after its architect <strong>Gottfried Semper</strong> — continues to be a world-class venue. Tickets for performances go on sale a full year in advance and are very hard to come by. Look closely at the stonework on the buildings around you — it appears very sooty and dark. This is not from pollution or firebombing, as many visitors assume. It is caused by <strong>natural oxidation</strong>: the local sandstone simply turns black in about 50 years.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Look at the two figures flanking the entrance to the Semperoper. Who are they?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Augustus the Strong and King John</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> Goethe and Schiller</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> Wagner and Beethoven</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Martin Luther and Karl Friedrich Schinkel</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Goethe and Schiller — the two greatest figures in German literary culture — flank the entry to welcome all who enter to German high culture.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. Look at the name plates on the pedestals — they are Goethe and Schiller, the two greatest figures in German literary culture.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The small building to the far left (the Schinkelwache) looks different from the rest. Why?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> It is much older than the other buildings and hasn't been renovated</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> It was damaged in 1945 and only partially rebuilt</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> It was designed in a Prussian Classicist style by Karl Friedrich Schinkel, not in the Baroque style of the surrounding buildings</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> It was imported stone by stone from Berlin as a gift</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Karl Friedrich Schinkel designed it in a Prussian Classicist style — the same architect behind some of Berlin's most impressive Neoclassical buildings. Today it's a café and the opera's box office.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Schinkelwache looks out of place because it was designed by Karl Friedrich Schinkel in a Prussian Classicist style, unlike the Baroque buildings around it.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Get a family shot with King John's equestrian statue behind you</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="5" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The stone on these buildings looks very dark and sooty. According to what you've read, what causes it?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Soot and pollution from 19th-century industry</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Smoke staining from the 1945 firebombing</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Natural oxidation — the local sandstone turns black in about 50 years</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A dark paint applied to preserve the stone</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! It's simply natural oxidation. The local sandstone turns black in about 50 years — nothing to do with pollution or the 1945 firebombs.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. Many visitors assume the same thing! But the Did You Know section explains it's actually natural oxidation — the local sandstone simply turns black in about 50 years.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 2 ══════════════ -->
+<div class="stop-card" id="stop-2">
+  <div class="stop-header" onclick="toggleStop(2)">
+    <div class="stop-number">2</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Between the Semperoper &amp; Zwinger</div>
+      <div class="stop-title">The Composer Who Bookended History</div>
+      <div class="stop-points">Up to 35 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Head to the gap between the Semperoper and the Zwinger. Standing in front of the Alte Meister Café you'll find a bronze statue of a composer named <strong>Carl Maria von Weber</strong>. His opera <em>Der Freischütz</em> holds a remarkable distinction: it was the very last opera performed in the Semperoper before the building was destroyed in 1945 — and the very first opera performed when the rebuilt Semperoper reopened in 1985. From here, go up the stairs and turn left up the ramp. As you climb what was once a <strong>rampart</strong>, notice the faint echo of the <strong>moat</strong> to your right. The opera house is named the Semperoper after its architect <strong>Gottfried Semper</strong> — the same man who later added one of the wings of the Zwinger you're about to enter.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>At the top of the ramp, past the adorable fountain, you'll reach a balcony with a breathtaking view of the Zwinger courtyard below. If you visit the Old Masters Gallery inside the Zwinger, you can find Bernardo "Canaletto" Bellotto's 1752 painting <em>Zwinger Courtyard in Dresden</em> — which shows this exact balcony view as it looked over 270 years ago. The ramp you're walking up was once part of the city's defensive fortifications.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Weber's opera <em>Der Freischütz</em> has a unique connection to the Semperoper. What is it?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> It was written specifically to celebrate the opening of the Semperoper in 1841</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> It was the last opera performed before the Semperoper was destroyed in 1945, and the first performed when it reopened in 1985</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> It is performed every year on the anniversary of the building's destruction</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Weber composed it while living in the Taschenberg Palace next door</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! <em>Der Freischütz</em> bookended the building's destruction and rebirth — last performed in 1945, first performed again in 1985.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. <em>Der Freischütz</em> was the last opera performed before the Semperoper was destroyed in 1945 — and the very first performed when it reopened in 1985.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Recreate Weber's pose — lean against something nearby with a faraway, artistic expression</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">As you climb the ramp toward the balcony, what was this ramp once part of?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> A royal garden terrace built for Augustus the Strong</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> The city's defensive fortifications — a rampart, with a moat still faintly visible to the right</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> A loading ramp for deliveries to the original opera house</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A viewing platform built for the Zwinger's grand opening celebrations</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The ramp was once a city rampart — part of the defensive fortifications. You can still notice the faint echo of the moat to the right as you climb.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says it was once a rampart — part of the city's defensive fortifications — and you can notice the faint echo of the moat to your right.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="5" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Bonus: The Semperoper is named after its architect. That same architect later added a wing to the Zwinger. Which wing?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The Crown Gate (Kronentor)</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The Glockenspiel Pavilion</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The Semper Gallery — added about 100 years after the rest</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Rampart Pavilion (Wallpavillon)</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Gottfried Semper added the Semper Gallery — the stern wing that now houses the Old Masters Gallery — about 100 years after the Zwinger's original construction.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. Gottfried Semper added the Semper Gallery to the Zwinger — the wing that houses the Old Masters Gallery — about 100 years after the rest was built.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 3 ══════════════ -->
+<div class="stop-card" id="stop-3">
+  <div class="stop-header" onclick="toggleStop(3)">
+    <div class="stop-number">3</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 The Zwinger</div>
+      <div class="stop-title">The Party Palace &amp; Its Museums</div>
+      <div class="stop-points">Up to 60 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>From the balcony, descend the small stairs to the <strong>Nymphs' Bath</strong> — a fountain grotto where 18th-century aristocrats relaxed among cascading waterfalls. Cross through the orangery into the middle of the courtyard. You can see all four wings: To your right, the <strong>Rampart Pavilion</strong> (Wallpavillon), topped by a figure of Hercules hoisting the earth — with the features of Augustus the Strong himself, making him the ultimate symbol of royal strength. To its left, the <strong>Crown Gate</strong> (Kronentor), topped by four golden eagles supporting a crown — symbolizing Polish royalty, since Augustus was also King of Poland. Next, the <strong>Glockenspiel Pavilion</strong>, with 40 bells made of Meissen porcelain near the top (they chime every 15 minutes and play a 3-minute melody at 10:15, 14:15, and 18:15). And finally, the stern <strong>Semper Gallery</strong> — added 100 years after the rest by Gottfried Semper.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>The Zwinger houses three museums: the <strong>Old Masters Gallery</strong> in the Semper Gallery wing, the <strong>Porcelain Collection</strong> in the Glockenspiel Pavilion wing, and the <strong>Mathematics-Physics Salon</strong> in the Rampart Pavilion wing. The word "Zwinger" refers to the no-man's-land between the outer and inner city walls — and although it looks like a palace, no one ever lived here. It was built solely for royal celebrations. Anticipating WWII bombs, Dresdeners hid the art treasures in underground mines and cellars in the countryside. This saved them from Allied bombs — but not from the Soviet army, who took the art to Moscow. It was returned after Stalin's death in 1953.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges — Courtyard</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The four golden eagles on the Crown Gate symbolize what?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The four seasons of the Saxon calendar</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The four districts of the city of Dresden</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Polish royalty — because Augustus was also King of Poland</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The four Wettin princes who built the Zwinger</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The golden eagles represent Polish royalty — Augustus the Strong was not just Prince-Elector of Saxony, but also King of Poland.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text explains that the eagles symbolize Polish royalty — because Augustus the Strong was also King of Poland.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The Hercules figure on top of the Rampart Pavilion has whose face?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The sculptor's own self-portrait</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> Augustus the Strong — making him the ultimate symbol of royal strength</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> King John, who paid for the Semperoper</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Gottfried Semper, the Zwinger's architect</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Hercules bears the features of Augustus the Strong — the mythical strongman is a fitting symbol for a ruler nicknamed "the Strong."</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. According to the mission text, Hercules bears the features of Augustus the Strong — making him the ultimate symbol of royal strength.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The Glockenspiel Pavilion's 40 bells are made of what unusual material?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Silver, mined from the Erzgebirge mountains</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Crystal glass from the Bohemian glassworks</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Meissen porcelain</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Gilded bronze cast in Dresden's royal foundry</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The 40 bells are made of Meissen porcelain — far sweeter sounding than typical metal bells. They play a 3-minute melody at 10:15, 14:15, and 18:15.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says the bells are made of Meissen porcelain — an unusual material that makes them sound far sweeter than regular metal bells.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="5" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Strike your best "18th-century royal at a party" pose in the Zwinger courtyard</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="section-label" style="margin-top:20px">Challenges — The Museums</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Which museum is housed in the Glockenspiel Pavilion wing?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The Old Masters Gallery</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The Mathematics-Physics Salon</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The Porcelain Collection</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Royal Armory</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The Porcelain Collection is in the Glockenspiel Pavilion wing. The Old Masters Gallery is in the Semper Gallery, and the Mathematics-Physics Salon is in the Rampart Pavilion.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section lists all three: Old Masters Gallery (Semper Gallery wing), Porcelain Collection (Glockenspiel Pavilion wing), Mathematics-Physics Salon (Rampart Pavilion wing).</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The Zwinger's art treasures were hidden in underground mines before the 1945 bombing. What happened to them after the war?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> They were discovered by American soldiers and taken to Washington D.C. for safekeeping</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> The Soviet army took them to Moscow; they were returned after Stalin's death in 1953</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> They remained hidden in the mines until 1990, when they were discovered by chance</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> They were destroyed along with the mines when the Soviets advanced</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The Soviet army found and took the art to Moscow. It was returned after Stalin's death in 1953 — a political gesture to win over their East German subjects.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. According to the Did You Know section, the Soviet army took the art to Moscow. It wasn't returned until after Stalin's death in 1953.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="5" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The word "Zwinger" refers to what?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> A German word meaning "royal banqueting hall"</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The name of the architect who designed it</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The no-man's-land between the outer and inner city walls</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A type of Baroque garden pavilion common in Saxony</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! "Zwinger" means the no-man's-land between two city walls. And despite looking like a palace, no one ever lived here — it was built purely for royal celebrations.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section explains that "Zwinger" refers to the no-man's-land between the outer and inner city walls.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 4 ══════════════ -->
+<div class="stop-card" id="stop-4">
+  <div class="stop-header" onclick="toggleStop(4)">
+    <div class="stop-number">4</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Taschenberg &amp; Sky Bridge</div>
+      <div class="stop-title">The Mistress's Mansion</div>
+      <div class="stop-points">Up to 30 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Exit the Zwinger through the Glockenspiel Pavilion. Cross the street and the tram tracks, turn left, then curve right onto the street called <strong>Taschenberg</strong>. The bright yellow building on your right is the <strong>Taschenberg Palace</strong> — built for Augustus the Strong's mistress, and later home to the crown prince. It was ruined until 1990, when it was restored and became a five-star hotel. Look ahead for a yellow-windowed <strong>sky bridge</strong> — it connects the Taschenberg to the Royal Palace, so royalty could walk between them without having to deal with the public below. Walk under it. Ahead and to the right is a blocky modern building with a large exterior mural — the <strong>Palace of Culture</strong> (Kulturpalast), built by the communist government in 1969.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>The Palace of Culture mural depicts communist themes — workers, strong women, well-cared-for elders, teachers and students, the red star, and the seal of the former East Germany. Little of this propagandist art survives in post-communist Germany; what does remain, like this mural, is protected. The refurbished concert hall inside the Palace of Culture is today home to the <strong>Dresden Philharmonic</strong>.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The Taschenberg Palace was originally built for whom?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> King John, who wanted a residence next to his opera house</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Gottfried Semper, as payment for designing the opera house</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Augustus the Strong's mistress</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Saxon court musicians, as rehearsal and living quarters</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The Taschenberg Palace was built for Augustus the Strong's mistress. It later housed the crown prince, was ruined after WWII, and is now a five-star hotel.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says the Taschenberg Palace was built for Augustus the Strong's mistress.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The Palace of Culture mural was created in 1969. Which of these is NOT depicted on it, according to the Did You Know section?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Workers and strong women</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The red star and the seal of the former East Germany</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> A portrait of Karl Marx and Friedrich Engels</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Teachers and students</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Marx and Engels are not mentioned. The Did You Know section lists: workers, strong women, well-cared-for elders, teachers and students, the red star, and the seal of the former East Germany.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. Re-read the Did You Know section. Marx and Engels are not listed — the mural depicts workers, strong women, elders, teachers and students, the red star, and the East German seal.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Strike a royal pose under the sky bridge — you're walking between palaces without having to deal with the public below</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 5 ══════════════ -->
+<div class="stop-card" id="stop-5">
+  <div class="stop-header" onclick="toggleStop(5)">
+    <div class="stop-number">5</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Royal Palace (Residenzschloss)</div>
+      <div class="stop-title">The Green Vault Treasuries</div>
+      <div class="stop-points">Up to 40 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Walk along Schlossstrasse with the Royal Palace on your left. The gate on your left is one of the palace entrances, with the <strong>Watchman's Tower</strong> above it. Inside you'll find the <strong>Green Vault</strong> (Grünes Gewölbe) treasuries — Augustus the Strong's legendary collection. The palace also has a <strong>clock tower</strong>. Pause here and appreciate something: the car-free city center and the tram system mean you can walk and look around without dodging traffic.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>The <strong>Wettin dynasty</strong> ruled Saxony for more than 800 years, right up until the end of World War I — just like the Romanovs in Russia and the Habsburgs in Austria. The prince-elector of Saxony was one of Germany's most powerful people — one of a small group of nobles who elected the Holy Roman Emperor. Augustus the Strong was both prince-elector of Saxony and king of Poland. He was unlucky at war but a clever diplomat and a lover of the arts — and it is thanks to him and the Wettin rulers that Dresden has its extraordinary architectural and artistic heritage.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">How long did the Wettin dynasty rule Saxony?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> About 300 years, from 1500 until 1800</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> About 500 years, from the Middle Ages to Napoleon</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> More than 800 years, right up until the end of World War I</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Exactly 200 years, from 1700 to 1900</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Over 800 years — right up to the end of WWI, just like the Romanovs in Russia and the Habsburgs in Austria.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section says the Wettins ruled for more than 800 years, right up until the end of World War I.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The prince-elector of Saxony held an important political power. What was it?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The right to collect taxes across the entire Holy Roman Empire</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The power to veto any law passed by the German princes</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> He was one of a handful of nobles who elected the Holy Roman Emperor</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> He commanded the entire Saxon and Polish armies combined</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The prince-elector was one of a small, powerful group of nobles who had the right to elect the Holy Roman Emperor — making Saxony enormously influential.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section explains that the prince-elector of Saxony was one of a small group of nobles who elected the Holy Roman Emperor.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">If you visit the Green Vault: Which best describes what you saw inside?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> A collection of paintings by German Romantic artists</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Rooms dedicated to Saxon military history and weapons</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Augustus the Strong's legendary treasury — gold, ivory, jewels, and extraordinary objects</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A museum of Saxon folk costumes and traditional crafts</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The Green Vault is Augustus the Strong's extraordinary treasure collection — one of Europe's greatest, crammed with gold, ivory, jewels, and objects of staggering craftsmanship.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Green Vault is Augustus the Strong's legendary treasure collection — gold, ivory, jewels, and extraordinary decorative objects.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Strike your best "Prince-Elector of Saxony" pose at the palace entrance gate</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 6 ══════════════ -->
+<div class="stop-card" id="stop-6">
+  <div class="stop-header" onclick="toggleStop(6)">
+    <div class="stop-number">6</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Katholische Hofkirche</div>
+      <div class="stop-title">The Catholic Cathedral in a Protestant City</div>
+      <div class="stop-points">Up to 30 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Continue to Palace Square. To your left is the <strong>Katholische Hofkirche</strong> with its distinctive <strong>green-copper, onion-domed steeple</strong>. Look for the elevated passage connecting the Hofkirche directly to the Royal Palace — designed so royalty could attend church without the hassle of dealing with the public. Augustus the Strong pragmatically converted from Saxon Protestantism to Catholicism in order to become King of Poland. The result: a Catholic church, built for a converted Protestant ruler, in a predominantly Protestant city. You'll notice the city center features both the Protestant <strong>Frauenkirche</strong> (ahead) and this large Catholic <strong>Hofkirche</strong> — because Augustus was "finessing it both ways," keeping both his Saxon Protestant subjects and his Polish Catholic subjects content.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>Augustus the Strong was unlucky at war but a clever diplomat. He pragmatically converted from his Saxon Protestantism to a more Polish-friendly Catholicism to secure the Polish crown — becoming King Augustus II of Poland. His conversion meant he needed to maintain both a grand Protestant church (the Frauenkirche) for his Saxon subjects, and a grand Catholic church (the Hofkirche) for his Polish identity. The elevated walkway between the church and palace let him attend Mass privately, above the heads of the ordinary people below.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Why did Augustus the Strong convert from Protestantism to Catholicism?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> He had a genuine religious awakening after a near-death experience in battle</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> He was excommunicated from the Protestant church and had no choice</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> To secure the Polish crown — converting made him acceptable to his Polish Catholic subjects</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> His wife was Catholic and demanded the conversion as a condition of their marriage</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! It was purely pragmatic — a political move to become King of Poland. He then had to "finesse it both ways," maintaining both the Protestant Frauenkirche and the Catholic Hofkirche.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission and Did You Know both explain it was a pragmatic political decision — converting to Catholicism made him acceptable to his Polish subjects and secured the Polish crown.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">What was the purpose of the elevated walkway connecting the Hofkirche to the Royal Palace?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> To transport religious offerings and donations directly to the palace treasury</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> So royalty could attend Mass privately without having to mix with ordinary people on the street</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> To allow priests to hold private services for the royal family in the palace itself</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> As a covered corridor to protect the royal procession from the weather</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The elevated walkway let Augustus attend Mass privately — above the heads of ordinary people — without the hassle of dealing with the public on the street.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. Both the mission and Did You Know explain the walkway allowed royalty to attend church without having to deal with the public below.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Look up at the Hofkirche steeple. How does the mission text describe it?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> A tall red-brick spire with a golden cross at the top</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> A white stone tower with a flat platform and flagpole</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> A green-copper, onion-domed steeple</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A black wrought-iron spire in the Gothic style</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The mission text describes it as a "green-copper, onion-domed steeple" — look up and confirm it matches that description!</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text describes the Hofkirche's steeple as "green-copper, onion-domed." Look up and find it!</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 7 ══════════════ -->
+<div class="stop-card" id="stop-7">
+  <div class="stop-header" onclick="toggleStop(7)">
+    <div class="stop-number">7</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Augustusstraße</div>
+      <div class="stop-title">The World's Longest Porcelain Mural</div>
+      <div class="stop-points">Up to 50 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Turn around to face the palace gate you came through and look left. You'll see the long mural called the <strong>Parade of Princes</strong> (Fürstenzug) — painted on 24,000 tiles of Meissen porcelain and longer than a football field. Walk from the end nearest the Hofkirche. The very last figure in the procession (the first you'll see from this direction) is the artist himself, <strong>Wilhelm Walther</strong>. In front of him come commoners — miners, farmers, carpenters, teachers, students, artists — and then the royals. Find <strong>Augustus the Strong</strong> (look for the year 1694 marked above him): his horse stomps on a rose, the symbol of Martin Luther and the Protestant movement — representing the faith he gave up to gain the Polish crown. At the very front of the parade: an announcer, a band, and 12th-century cheerleaders, heralding the arrival of the wondrous procession.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>The porcelain tiles are originals from 1907. They were fired three times at <strong>2,400 degrees Fahrenheit</strong> when created — and then fired again during the 1945 firestorm, which only reached <strong>1,800 degrees</strong>. Because they had already withstood a higher temperature, the tiles survived. The mural was created to commemorate Saxon history after Saxony became part of Germany in 1871. The artist carefully studied armor and clothing through the ages, accurately tracing seven centuries of fashion and weaponry. These tiles are among the very few original artworks in Dresden's Old Town that did not need to be rebuilt after the war.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find Augustus the Strong (marked 1694). His horse stomps on a rose. What does this represent?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> His victory over the King of France in the War of the Spanish Succession</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> His love of Saxon gardens and the beauty of Saxony's landscape</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The Protestant faith he gave up — the rose is the symbol of Martin Luther and the Lutheran church</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> His conquest of the Polish territories, symbolized by the Polish national flower</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The rose symbolizes Martin Luther and the Protestant movement — the faith Augustus abandoned when he converted to Catholicism to gain the Polish crown.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text explains: the rose is the symbol of Martin Luther and the Protestant movement — representing the faith Augustus gave up to gain the Polish crown.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Walk to the very front of the procession. Who is there and what are they doing?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">A</span> An announcer, a band, and 12th-century cheerleaders heralding the procession's arrival</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The artist Wilhelm Walther, holding a painter's palette</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> A row of mounted soldiers in full battle armor</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Konrad the Great, the first Wettin ruler, riding alone</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! An announcer, a band, and 12th-century cheerleaders — excitedly heralding the arrival of this wondrous procession.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says the very front of the parade features an announcer, a band, and 12th-century cheerleaders heralding the arrival of the procession.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Starting from the artist's end, in what order do people appear in the mural?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Royals first, then commoners, then the artist at the very end</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Soldiers first, then clergy, then royals, then commoners</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The artist first, then commoners (miners, farmers, teachers, etc.), then the royals</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Commoners first, then the artist, then the royals at the end</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! From this end: the artist Wilhelm Walther, then the commoners (miners, farmers, carpenters, teachers, students, artists), then the long procession of royals.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text describes the order from this end as: the artist (Wilhelm Walther), then commoners, then the royals.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: Line the whole family up in a row and march in front of the mural — you're in the procession!</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Why did the porcelain tiles survive the 1945 firestorm that destroyed most of Dresden?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> They were covered with protective metal shields before the bombing began</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The mural faces north and was protected from the firestorm by the palace building</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> They had been fired at 2,400°F when made — higher than the 1,800°F of the 1945 firestorm</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> They were removed and stored underground before the bombing, then reinstalled afterwards</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The tiles were fired three times at 2,400°F when created in 1907 — so the 1945 firestorm, which only reached 1,800°F, couldn't damage them. They were effectively fireproofed by their own making.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section explains that the tiles were fired at 2,400°F when made — higher than the 1,800°F reached in the 1945 firestorm. They had already survived worse.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 8 ══════════════ -->
+<div class="stop-card" id="stop-8">
+  <div class="stop-header" onclick="toggleStop(8)">
+    <div class="stop-number">8</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 The Tournament Yard &amp; Neumarkt</div>
+      <div class="stop-title">Where Knights Jousted &amp; a Reformer Stands</div>
+      <div class="stop-points">Up to 25 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Just past the mural, take a detour sharply right into a long, narrow courtyard. Many of those featured in the mural may have put on their ceremonial armor and jousted right here. Look at the long white colonnade — imagine wooden stands filling it, packed with cheering spectators. Look left for the pool where the horses cooled down before being stabled. Continue through into the big square where a statue of <strong>Martin Luther</strong> stands. He is holding the Bible in German — which he personally translated from Hebrew and ancient Greek so that regular people could wrestle with the Word of God directly. When translating, Luther used colloquial, everyday German, forming the basis for what is now considered "High German." So besides being the Great Reformer, Luther is considered the father of the modern German language. The statue was toppled in 1945 but has been cleaned up and is back on his feet again.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>The square beyond the tournament yard is <strong>Neumarkt</strong> — once a central square ringed by the homes of rich merchants, now alive again with people and cafés. The towering church behind Luther's statue is the Frauenkirche — your next stop. Luther came from this part of Germany and spent most of his life in nearby Erfurt and Wittenberg. His decision to translate the Bible into the language ordinary Germans actually spoke — rather than Latin — was the spark that ignited the Protestant Reformation and changed European history.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Photo: One family member pretends to joust in the tournament yard — any improvised lance welcomed!</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Martin Luther's statue shows him holding the Bible in German. Why was translating it into German — rather than keeping it in Latin — so important?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Latin was considered a pagan language after the fall of the Roman Empire</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> He didn't speak Latin well enough to read the original</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> It meant regular people could read and wrestle with the Word of God directly, without relying on the clergy</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Catholic Church had banned Latin Bibles throughout Germany</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! By translating the Bible into everyday German, Luther allowed ordinary people to read scripture directly — they no longer had to rely on the clergy's interpretation. This was central to the Reformation.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text explains it allowed regular people to wrestle with the Word of God directly — without having to rely on the clergy as intermediaries.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="5" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Luther is called "the father of the modern German language." Why?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> He invented the German alphabet and standardized its spelling rules</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> His Bible translation used colloquial, everyday German — forming the basis for what is now "High German"</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> He wrote the first German grammar textbook, used in schools across Saxony</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> He decreed that all legal documents in Saxony must be written in German rather than Latin</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Luther translated the Bible using colloquial, everyday German — and in doing so, he established the foundation for what became standardized "High German."</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says Luther used colloquial, everyday German when translating — and this formed the basis for what is now considered "High German."</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 9 ══════════════ -->
+<div class="stop-card" id="stop-9">
+  <div class="stop-header" onclick="toggleStop(9)">
+    <div class="stop-number">9</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Neumarkt &amp; Frauenkirche</div>
+      <div class="stop-title">The Church That Rose from the Rubble</div>
+      <div class="stop-points">Up to 50 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>The <strong>Frauenkirche</strong> is the symbol and soul of Dresden. When completed in 1743, it was Germany's tallest Protestant church at 310 feet. Its unique central-stone-cupola design gave it the nickname <strong>"the stone bell."</strong> On the night of February 13, 1945, firebombs fell. The church smoldered for two days before finally collapsing. It was left as a rubble pile and turned into a deliberate <strong>peace monument</strong> — a reminder of the destruction of war — for decades. Only after German reunification was the decision made to rebuild it completely, and it <strong>reopened in 2005</strong>. Circle around to the river side of the church (near door E) to find a preserved piece of the original bombed rubble, mounted with a small metal relief showing exactly where that piece came from. Look closely at the church exterior — you can spot the <strong>darker, fire-scorched original stones</strong> among the paler new sandstone. Builders matched them back to their original positions using old photographs.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>Nearby, look for the dome nicknamed <strong>"the lemon juicer"</strong> — it caps the exhibition hall of the <strong>Academy of Fine Arts</strong>. The grand Neo-Renaissance building to the right of the square is the <strong>Albertinum</strong>, originally the Saxon armory, rebuilt in the 1880s, and today an art gallery with the city's best collection of 19th- and 20th-century art. After the walk, climb the steps at the end of the square to the ramparts — now a park — for a view toward the Elbe River.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find the original bombed rubble chunk near door E on the river side of the church — touch it. You're touching a piece of 1945. ✋ Tap to confirm</div>
+              <span class="challenge-type-tag tag-action">👆 Action</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">What nickname did the Frauenkirche earn from its unique design — and why does it fit?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> "The Saxon Crown" — because its dome resembles the royal crown of Saxony</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> "The Firebird" — because it rose from the flames of 1945</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> "The stone bell" — because its unique central-stone-cupola design resembles a large bell made of stone</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> "The Lantern" — because its dome lets in light from all directions</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! "The stone bell" — the mission text explains the unique central-stone-cupola design gives the dome the shape and profile of a large bell made of stone.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says the unique central-stone-cupola design gave it the nickname "the stone bell."</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">In what three years were these key milestones: the Frauenkirche was completed, it collapsed, and it reopened?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> 1700 / 1945 / 1990</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> 1743 / 1945 / 1989</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> 1743 / 1945 / 2005</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> 1800 / 1945 / 2000</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Completed 1743, destroyed (after smoldering for two days) in 1945, and reopened after rebuilding in 2005.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text gives all three dates: completed 1743, collapsed 1945 (after smoldering for two days), reopened 2005.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Look at the church exterior. How did builders know where to place the original fire-scorched stones when they rebuilt the Frauenkirche?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Each stone was numbered before the building collapsed</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> They used ground-penetrating radar to identify each stone's original location</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> They matched original stones back to their positions using old photographs</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Computer modelling recreated the exact original layout from architectural drawings</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Builders matched the fire-scorched original stones back to their exact positions using old photographs — which is why you can still spot the darker stones among the paler new sandstone today.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says builders matched original stones back to their original positions using old photographs.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">The nearby dome is nicknamed "the lemon juicer." What building does it belong to?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The Albertinum art gallery</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The Residenzschloss (Royal Palace)</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The Academy of Fine Arts exhibition hall</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Coselpalais café</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The "lemon juicer" dome caps the exhibition hall of the Academy of Fine Arts — look for it near the Frauenkirche.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. According to the Did You Know section, the "lemon juicer" dome caps the exhibition hall of the Academy of Fine Arts.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 10 ══════════════ -->
+<div class="stop-card" id="stop-10">
+  <div class="stop-header" onclick="toggleStop(10)">
+    <div class="stop-number">10</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Brühlsche Terrasse</div>
+      <div class="stop-title">The Balcony of Europe</div>
+      <div class="stop-points">Up to 35 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>Walk back toward the Hofkirche and Royal Palace to reach the <strong>Brühlsche Terrasse</strong> — a promenade that was once a defensive rampart. Look along the side of the terrace facing the Elbe River to see the openings where cannons once pointed. It was given as a reward to a Saxon minister named <strong>Brühl</strong>, who distinguished himself as a <strong>tax collector</strong> for Frederick Augustus II. In the early 1800s it became a public park with a leafy canopy of <strong>linden trees</strong>, earning the nickname <strong>"The Balcony of Europe."</strong> Look out at the Elbe. To the left in the distance, the hills are home to vineyards producing some of Germany's northernmost wine — mostly white, consumed almost entirely by locals because only a small amount of land is suitable for growing.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>Dresden claims to have the world's <strong>largest and oldest fleet of historic paddleboat steamers</strong> — nine riverboats from the 19th century, still sailing today. Look out at the Elbe to spot them. During massive floods in August 2002, the water reached nearly to the top of the bridge arches below. At the far end of the terrasse, stop at the grove of linden trees with a fountain at the center — from here you'll look out toward the Augustus Bridge and the New Town beyond.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find the cannon openings on the Elbe-facing side of the terrace wall. ✋ Tap to confirm you found them</div>
+              <span class="challenge-type-tag tag-action">👆 Action</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">This terrasse was given as a reward to a man named Brühl. What had he done to earn it?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> He led Saxon forces to a crucial victory in a regional war</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> He designed the terrace and donated it to the city</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> He distinguished himself as a tax collector, raising revenue for Frederick Augustus II's state treasury</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> He negotiated a trade agreement that made Saxony wealthy</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Brühl was rewarded with this terrace for his skill as a tax collector — he had raised revenue for Frederick Augustus II's treasury. Quite a perk for tax collecting!</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says Brühl distinguished himself as a tax collector for Frederick Augustus II — and the terrasse was his reward.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">What is remarkable about the paddleboat steamers you can see on the Elbe?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> They were all built in Dresden and have never left the Elbe River</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> They are solar-powered replicas of 19th-century steamers built in 2005</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Dresden claims to have the world's largest and oldest fleet of historic paddleboat steamers — nine riverboats from the 19th century, still sailing today</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> They are the last remaining paddlesteamers in continental Europe</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Dresden claims the world's largest and oldest fleet of historic paddleboat steamers — nine 19th-century riverboats that are still sailing today.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section says Dresden claims to have the world's largest and oldest fleet of historic paddleboat steamers — nine riverboats from the 19th century, still in use today.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="5" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Why does almost none of the wine from the distant hills ever leave Saxony?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">5 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Saxon law forbids the export of regional wines outside state borders</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The wine is so poor in quality that no one outside Saxony wants to buy it</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Only a small amount of land is suitable for grape growing, so production is small and locals drink it all</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The wine doesn't travel well and spoils before it can be shipped far</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Only a small amount of land is suitable for grape growing — so the area produces a respected but scarce wine that is consumed almost entirely by locals.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text explains that only a small amount of land is suitable for grape growing, so the limited, respected wine is consumed almost entirely by locals.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="connector"></div>
+
+<!-- ══════════════ STOP 11 ══════════════ -->
+<div class="stop-card" id="stop-11">
+  <div class="stop-header" onclick="toggleStop(11)">
+    <div class="stop-number">11</div>
+    <div class="stop-title-wrap">
+      <div class="stop-location">📍 Augustusbrücke &amp; The Golden Rider</div>
+      <div class="stop-title">The Grand Finale</div>
+      <div class="stop-points">Up to 30 points</div>
+    </div>
+    <div class="stop-toggle">▼</div>
+  </div>
+  <div class="stop-body">
+    <div class="stop-content">
+      <div class="clue-box">
+        <div class="box-label">🔍 Your Mission</div>
+        <p>At the far end of the Brühlsche Terrasse, stop at the grove of linden trees with a fountain at the center and look out at the <strong>Augustus Bridge</strong> (Augustusbrücke). It has connected Dresden's old and new towns since <strong>1319</strong>, when it was the first stone bridge over the Elbe here. Walk across it. At the far end you'll find a gleaming golden equestrian statue — a symbol of the entire city. This is <strong>Augustus the Strong</strong>, nicknamed the <strong>"Golden Rider"</strong> (Goldene Reiter). Beyond him rises the spire of the Three Kings Church. Turn around and look back at the Old Town skyline — you've now visited the history behind everything you can see.</p>
+      </div>
+      <div class="fact-box">
+        <div class="box-label">💡 Did You Know?</div>
+        <p>During massive floods in August 2002, the water on the Elbe reached nearly to the top of the bridge's arches. The Augustus Bridge has stood in some form on this spot since 1319 — when it was the very first stone bridge over the Elbe at this location. The New Town on this side of the river is a great area for evening exploring or dining after your walk.</p>
+      </div>
+    </div>
+    <div class="challenge-section">
+      <div class="section-label">Final Challenges</div>
+      <div class="challenges-list">
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find the Golden Rider. What is his German nickname, as given in the mission text?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Der Goldene König (The Golden King)</span></button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">B</span> Goldene Reiter (The Golden Rider)</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">C</span> Der Starke Reiter (The Strong Rider)</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Goldener Kurfürst (The Golden Elector)</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! The mission text gives his nickname as "Goldene Reiter" — the Golden Rider — a gleaming symbol of the entire city of Dresden.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says Augustus the Strong is nicknamed the "Golden Rider" — Goldene Reiter in German.</div>
+        </div>
+
+        <div class="challenge-card" data-pts="10" data-answered="false">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Since what year has a bridge stood at this crossing — and what record did the original hold?</div>
+              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> Since 1450 — the longest wooden bridge in Saxony</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Since 1200 — the oldest bridge in the Holy Roman Empire</button>
+            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Since 1319 — the first stone bridge over the Elbe at this location</button>
+            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> Since 1600 — the widest bridge in Germany at the time of its construction</button>
+          </div>
+          <div class="mc-feedback fb-correct">✓ Correct! Since 1319 — and when it was built, it was the first stone bridge over the Elbe here. Both the mission text and Did You Know section confirm this.</div>
+          <div class="mc-feedback fb-wrong">✗ Not quite. The mission text and Did You Know section both state the bridge has stood since 1319, when it was the first stone bridge over the Elbe at this location.</div>
+        </div>
+
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">📸 Artistic Photo: Turn and face the Old Town skyline from the bridge. You're looking at the Frauenkirche dome, the Hofkirche steeple, the Royal Palace tower — everything you explored today. Take the most beautiful photo you can. Try a reflection in the river, silhouettes against the sky, or frame a dome between the bridge railings. Make it a keeper.</div>
+              <span class="challenge-type-tag tag-photo">📷 Photo</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end stops-container -->
+
+<!-- ══════════════ FINALE ══════════════ -->
+<div class="finale-card" id="finaleCard">
+  <h2>🏆 Hunt Complete!</h2>
+  <div class="finale-score" id="finalScore">0</div>
+  <div class="tier-badge" id="tierBadge">Explorer</div>
+  <p class="finale-msg" id="finaleMessage">Well done, adventurers!</p>
+  <div class="finale-reward">
+    <div class="reward-label">🍰 Your Official Reward</div>
+    <p>Besides bragging rights, completing this hunt earns you <strong>dessert at Grand Café Coselpalais</strong> — a Dresden institution just steps from the Frauenkirche, across from its G entry. It is a longtime favorite for anyone who appreciates fine cake and beautiful interiors. Step inside and take in the <strong>frilly Rococo interior</strong>, then find the three large <strong>Canaletto paintings</strong> — copies of paintings by Bernardo "Canaletto" Bellotto showing Dresden as it looked in <strong>1750</strong>. Compare what you see in those paintings to everything you've explored today. Then order the classic Dresden cheesecake: the <strong>Eierschecke</strong>. You have absolutely earned it.</p>
+  </div>
+</div>
+
+<script>
+  let totalScore = 0;
+  const MAX_SCORE = 445;
+  let completedChallenges = 0;
+
+  function toggleStop(n) {
+    document.getElementById('stop-' + n).classList.toggle('open');
+  }
+
+  // Photo/action tap-to-complete
+  function togglePhoto(card) {
+    if (card.classList.contains('done')) return; // once marked, stays marked
+    card.classList.add('done');
+    const pts = parseInt(card.dataset.pts);
+    totalScore += pts;
+    completedChallenges++;
+    updateUI();
+  }
+
+  // Multiple choice answer handler
+  function answer(btn, isCorrect) {
+    const card = btn.closest('.challenge-card');
+    if (card.dataset.answered === 'true') return; // already answered
+    card.dataset.answered = 'true';
+
+    const pts = parseInt(card.dataset.pts);
+    const allBtns = card.querySelectorAll('.mc-btn');
+    const correctFb = card.querySelector('.mc-feedback.fb-correct');
+    const wrongFb = card.querySelector('.mc-feedback.fb-wrong');
+
+    // Disable all buttons and strip onclick so they can't be clicked again
+    allBtns.forEach(b => { b.disabled = true; });
+
+    if (isCorrect) {
+      btn.classList.add('chosen-correct');
+      card.classList.add('correct');
+      correctFb.classList.add('show');
+      totalScore += pts;
+      completedChallenges++;
+    } else {
+      btn.classList.add('chosen-wrong');
+      card.classList.add('incorrect');
+      wrongFb.classList.add('show');
+      completedChallenges++;
+      // Highlight the correct button so players can see the right answer
+      allBtns.forEach(b => {
+        if (b !== btn && b.textContent.trim() !== btn.textContent.trim()) {
+          // Parse the onclick attribute to find the correct one
+          const onclickAttr = b.getAttribute('onclick') || '';
+          if (onclickAttr.includes('true')) {
+            b.classList.add('reveal-correct');
+          }
+        }
+      });
+    }
+
+    updateUI();
+  }
+
+  function updateUI() {
+    document.getElementById('scoreDisplay').textContent = totalScore;
+    const pct = Math.min((totalScore / MAX_SCORE) * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent =
+      totalScore + ' of ' + MAX_SCORE + ' points · ' + completedChallenges + ' challenges done';
+
+    let rank = '—';
+    if      (totalScore >= 380) rank = '👑 Saxon King';
+    else if (totalScore >= 280) rank = '🏆 Court Noble';
+    else if (totalScore >= 180) rank = '⚔️ Knight';
+    else if (totalScore >= 80)  rank = '🗺️ Explorer';
+    else if (totalScore > 0)    rank = '🚶 Wanderer';
+    document.getElementById('rankDisplay').textContent = rank;
+
+    const finale = document.getElementById('finaleCard');
+    if (totalScore >= 100) {
+      finale.classList.add('show');
+      document.getElementById('finalScore').textContent = totalScore + ' pts';
+      let tier, msg;
+      if (totalScore >= 380) {
+        tier = '👑 Saxon Royalty';
+        msg = 'Extraordinary! Augustus the Strong himself would be jealous. You\'ve walked every stop, nailed every question, and earned the right to add your name to the Parade of Princes.';
+      } else if (totalScore >= 280) {
+        tier = '🏆 Court Noble';
+        msg = 'Impressive! You know more about Dresden\'s history than most visitors who spend days here. The Wettins would have kept you at court.';
+      } else if (totalScore >= 180) {
+        tier = '⚔️ Saxon Knight';
+        msg = 'Solid work! You jousted in the tournament yard, found the king\'s mural, stood on the Balcony of Europe, and touched a piece of 1945. Not bad for one afternoon through 700 years of history.';
+      } else {
+        tier = '🗺️ Bold Explorer';
+        msg = 'You made it through! Dresden has begun to reveal its secrets. And no matter your score, the reward is the same.';
+      }
+      document.getElementById('tierBadge').textContent = tier;
+      document.getElementById('finaleMessage').textContent = msg;
+    }
+  }
+
+  toggleStop(1);
+</script>
+</body>
+</html>
