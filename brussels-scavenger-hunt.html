@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Force a fresh load on first visit by redirecting to a cache-busted URL.
+  // Subsequent reloads keep the same ?v= so the back button etc. behave normally.
+  if (!new URLSearchParams(location.search).has('v')) {
+    location.replace(location.pathname + '?v=' + Date.now() + location.hash);
+  }
+</script>
 <title>Brussels Quest: Family Adventure</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
