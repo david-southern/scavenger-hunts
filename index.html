@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Force a fresh load on first visit by redirecting to a cache-busted URL.
+  // Subsequent reloads keep the same ?v= so the back button etc. behave normally.
+  if (!new URLSearchParams(location.search).has('v')) {
+    location.replace(location.pathname + '?v=' + Date.now() + location.hash);
+  }
+</script>
 <title>Scavenger Hunts</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
@@ -147,5 +154,16 @@
   </main>
 
   <footer>Have fun out there.</footer>
+
+  <script>
+    // Append a cache-buster to the hunt links so clicking through always
+    // fetches a fresh copy, even if the browser cached the hunt HTML.
+    const v = Date.now();
+    for (const a of document.querySelectorAll('a.card')) {
+      const u = new URL(a.href);
+      u.searchParams.set('v', v);
+      a.href = u.toString();
+    }
+  </script>
 </body>
 </html>
