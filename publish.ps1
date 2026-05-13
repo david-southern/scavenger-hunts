@@ -17,6 +17,7 @@ try
     Write-Host "Press Y to publish these changes"
     
     $response = [Console]::ReadKey()
+    Write-Host " "
 
     if($response.Key -eq 'Y') {
         git commit -m "Push website"
