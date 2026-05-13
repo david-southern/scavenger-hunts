@@ -17,14 +17,14 @@ Mel is a webpage designer (not a programmer) and is not familiar with Git. She d
 - Each city page gets its own distinct visual theme — do not reuse the look of another city. If Mel hasn't described a vibe for the new city, ask before designing.
 
 ## Publishing
-When Mel says "publish the website" (or anything understood as that), push the site to GitHub:
+When Mel says "publish the website" (or anything understood as that), run the publish script from the repo root:
 
 ```powershell
 cd C:\src\scavenger-hunts
-git add -A
-git commit -m "Push website"
-git push
+pwsh -File ai-publish.ps1
 ```
+
+If working in a git worktree, copy any changed files to `C:\src\scavenger-hunts` first, then run the script from there.
 
 Mel is already authenticated. The commit message "Push website" matches the established convention in the git log. After pushing, let her know the site may take up to 60 seconds to be visible online.
 
