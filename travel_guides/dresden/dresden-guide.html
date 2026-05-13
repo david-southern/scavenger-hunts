@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dresden — Family Adventure Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --saxon:     #111108;
+  --saxon-mid: #2a2206;
+  --crimson:   #9c1c20;
+  --crimson-m: #b52828;
+  --crimson-l: #fef5f5;
+  --gold:      #b8820a;
+  --gold-mid:  #d09c1a;
+  --gold-light:#f0c84a;
+  --gold-pale: #fdf5d4;
+  --cream:     #faf6ec;
+  --white:     #ffffff;
+  --text:      #1a1208;
+  --muted:     #5a4630;
+  --border:    #ddd0a0;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;font-size:18px}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:linear-gradient(145deg,#1e0d04 0%,#321508 30%,#160d04 60%,#0e0703 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:60px 60px}
+.hero-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-deco svg{position:absolute;opacity:0.09;animation:floatDeco 20s ease-in-out infinite}
+.hero-deco svg:nth-child(1){top:6%;left:3%;width:160px;animation-delay:0s}
+.hero-deco svg:nth-child(2){top:8%;right:4%;width:140px;animation-delay:5s}
+.hero-deco svg:nth-child(3){bottom:12%;left:6%;width:180px;animation-delay:10s}
+.hero-deco svg:nth-child(4){bottom:10%;right:4%;width:200px;animation-delay:15s}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+.hero-icon{width:72px;height:84px;margin-bottom:1.8rem;animation:goldGlow 4s ease-in-out infinite alternate}
+@keyframes goldGlow{from{filter:drop-shadow(0 0 8px rgba(240,200,74,0.5))}to{filter:drop-shadow(0 0 28px rgba(240,200,74,1))}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,9vw,7.5rem);font-weight:900;color:#ffffff;line-height:1;letter-spacing:-0.02em;text-shadow:0 2px 24px rgba(0,0,0,0.5)}
+.hero h1 em{font-style:italic;color:#ffd96a;text-shadow:0 0 32px rgba(255,210,80,0.6)}
+.hero-tagline{margin-top:1.2rem;font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,255,255,0.92);font-weight:600;max-width:540px;line-height:1.78;text-shadow:0 1px 8px rgba(0,0,0,0.4)}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-top:2rem}
+.chip{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);color:#ffffff;padding:0.38rem 1rem;border-radius:50px;font-size:0.82rem;font-weight:700;letter-spacing:0.04em;text-shadow:0 1px 4px rgba(0,0,0,0.3)}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;animation:fadeIn 2s 1.5s both}
+.hero-scroll-arrow{width:15px;height:15px;border-right:2px solid rgba(255,255,255,0.55);border-bottom:2px solid rgba(255,255,255,0.55);transform:rotate(45deg);animation:arrowBounce 1.4s infinite}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:var(--saxon);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 3px 22px rgba(0,0,0,0.5);border-bottom:2px solid var(--gold-mid)}
+nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:1rem 1.3rem;color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.77rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s}
+nav a:hover{color:#fff;border-bottom-color:var(--gold-light)}
+
+/* ── LAYOUT ── */
+.section-wrap{max-width:1100px;margin:0 auto;padding:5rem 1.5rem}
+.eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--crimson-m);margin-bottom:0.5rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--saxon);line-height:1.15;margin-bottom:1.2rem}
+.section-intro{font-size:1.02rem;color:var(--muted);max-width:680px;line-height:1.85;margin-bottom:3rem}
+
+/* ── FACT CAROUSEL ── */
+.fact-carousel{background:var(--saxon-mid);position:relative;overflow:hidden;user-select:none;border-top:3px solid var(--gold-mid);border-bottom:3px solid var(--gold-mid)}
+.fact-track{display:flex;transition:transform 0.45s cubic-bezier(.4,0,.2,1)}
+.fact-item{flex:0 0 100%;padding:2rem 4rem;text-align:center}
+.fact-num{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:var(--gold-light);line-height:1}
+.fact-lbl{font-size:1rem;color:rgba(255,255,255,0.72);margin-top:0.5rem;font-weight:400;line-height:1.55}
+.fact-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:2}
+.fact-btn:hover{background:rgba(255,255,255,0.2)}
+.fact-prev{left:10px}.fact-next{right:10px}
+.fact-dots{display:flex;justify-content:center;gap:6px;padding-bottom:0.8rem;background:var(--saxon-mid)}
+.fact-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.25);border:none;cursor:pointer;padding:0;transition:background 0.2s}
+.fact-dot.active{background:var(--gold-light)}
+
+/* ── SITE CARDS ── */
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.site-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.07);transition:transform 0.28s cubic-bezier(.2,.8,.2,1),box-shadow 0.28s}
+.site-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(30,15,0,0.15)}
+.card-icon-wrap{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#c8b880;cursor:pointer;transition:height 0.45s cubic-bezier(.4,0,.2,1)}
+.card-icon-wrap.expanded{height:340px}
+.card-icon-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.site-card:hover .card-icon-wrap img{transform:scale(1.05)}
+.card-icon-wrap.expanded img{transform:scale(1)!important}
+.card-tag{position:absolute;top:13px;left:13px;font-size:0.64rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.26rem 0.75rem;border-radius:50px;background:rgba(255,255,255,0.92);color:var(--saxon);z-index:2}
+.expand-hint{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.42);color:#fff;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:50px;letter-spacing:0.05em;pointer-events:none;transition:opacity 0.3s}
+.card-icon-wrap.expanded .expand-hint{opacity:0}
+.card-body{padding:1.4rem}
+.card-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:var(--saxon);margin-bottom:0.4rem;line-height:1.2}
+.card-subtitle{font-size:0.9rem;color:var(--gold);font-weight:600;letter-spacing:0.04em;margin-bottom:0.7rem}
+.card-text{font-size:1rem;color:var(--muted);line-height:1.76}
+.teen-tip{margin-top:1rem;background:var(--gold-pale);border-left:3px solid var(--crimson);padding:0.7rem 0.9rem;border-radius:0 8px 8px 0;font-size:0.95rem;color:var(--text);line-height:1.6}
+.teen-tip strong{color:var(--crimson);font-weight:600}
+
+/* ── ACCORDION ── */
+.hmm-boxes{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.hmm-box{background:rgba(26,10,0,0.04);border:1px solid rgba(26,10,0,0.14);border-left:3px solid var(--gold);border-radius:4px;padding:12px 16px;cursor:pointer;transition:background 0.2s}
+.hmm-box:hover{background:rgba(184,130,10,0.08)}
+.hmm-header{display:flex;align-items:center;gap:9px;font-size:0.92rem;font-weight:600;color:var(--saxon);letter-spacing:0.03em;user-select:none}
+.hmm-arrow{margin-left:auto;font-size:0.75rem;transition:transform 0.3s;color:var(--gold);flex-shrink:0}
+.hmm-box.open .hmm-arrow{transform:rotate(180deg)}
+.hmm-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.95rem;line-height:1.76;color:var(--muted)}
+.hmm-box.open .hmm-body{max-height:500px;padding-top:10px}
+
+/* ── DARK (FIREBOMBING) SECTION ── */
+.dark-section{background:var(--saxon)}
+.dark-inner{max-width:1100px;margin:0 auto;padding:5rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+@media(max-width:700px){.dark-inner{grid-template-columns:1fr;gap:2rem}}
+.dark-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.5rem}
+.dark-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem}
+.dark-intro{font-size:1rem;color:rgba(255,255,255,0.62);line-height:1.82;margin-bottom:1.5rem}
+.dark-steps{display:flex;flex-direction:column;gap:1rem}
+.dark-step{display:flex;gap:1rem;align-items:flex-start;background:rgba(255,255,255,0.04);padding:1rem 1.2rem;border-radius:12px;border:1px solid rgba(255,255,255,0.08)}
+.step-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold-light);line-height:1;flex-shrink:0;width:2rem}
+.step-text{font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.65}
+.step-text strong{color:#fff;display:block;margin-bottom:0.2rem;font-size:1rem}
+.dark-stats{display:flex;flex-direction:column;gap:0.8rem}
+.dstat{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.11);border-radius:14px;padding:1.2rem 1.4rem}
+.dstat-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:var(--gold-light);line-height:1}
+.dstat-lbl{font-size:0.9rem;color:rgba(255,255,255,0.58);margin-top:0.3rem;line-height:1.5}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:2.2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold-mid),var(--crimson),var(--gold-light));border-radius:2px}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-left:1.5rem}
+.tl-item::before{content:'';position:absolute;left:-2.55rem;top:6px;width:14px;height:14px;border-radius:50%;background:var(--cream);border:3px solid var(--gold-light)}
+.tl-year{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--crimson);line-height:1}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:600;color:var(--saxon);margin:0.2rem 0 0.5rem}
+.tl-text{font-size:1rem;color:var(--muted);line-height:1.78}
+
+/* ── PEOPLE ── */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem}
+.person-card{background:#fff;border-radius:16px;padding:1.8rem;text-align:center;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s}
+.person-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(30,15,0,0.12)}
+.person-emoji{font-size:3rem;margin-bottom:0.8rem;display:block}
+.person-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--saxon);margin-bottom:0.2rem}
+.person-years{font-size:0.74rem;color:var(--crimson);font-weight:600;letter-spacing:0.08em;margin-bottom:0.8rem}
+.person-text{font-size:0.95rem;color:var(--muted);line-height:1.72}
+
+/* ── FUN FACTS ── */
+.fun-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem}
+.fun-card{border-radius:16px;padding:1.6rem;border:1px solid var(--border);background:#fff;position:relative;overflow:hidden}
+.fun-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--saxon),var(--crimson),var(--gold-light))}
+.fun-emoji{font-size:2rem;margin-bottom:0.8rem;display:block}
+.fun-q{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--saxon);margin-bottom:0.5rem;line-height:1.3}
+.fun-a{font-size:0.95rem;color:var(--muted);line-height:1.72;display:none;margin-top:0.5rem}
+.fun-a.open{display:block}
+.fun-toggle{font-size:0.82rem;font-weight:600;letter-spacing:0.06em;color:var(--crimson-m);cursor:pointer;margin-top:0.6rem;display:inline-block;text-transform:uppercase;background:none;border:none;padding:0;font-family:inherit}
+
+/* ── QUOTE ── */
+.quote-band{background:var(--crimson);padding:3rem 1.5rem;text-align:center}
+.quote-band blockquote{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3vw,1.9rem);font-style:italic;color:#fff;max-width:820px;margin:0 auto;line-height:1.6}
+.quote-band cite{display:block;margin-top:1rem;font-size:0.82rem;color:rgba(255,255,255,0.6);font-style:normal;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+
+/* ── DIVIDER ── */
+.stripe-divider{height:5px;background:linear-gradient(90deg,var(--saxon) 0%,var(--saxon) 33%,var(--crimson) 33%,var(--crimson) 66%,var(--gold-mid) 66%,var(--gold-mid) 100%)}
+
+/* ── FOOTER ── */
+footer{background:var(--saxon);padding:2rem 1.5rem;text-align:center;color:rgba(255,255,255,0.35);font-size:0.78rem;line-height:1.8;border-top:2px solid var(--gold-mid)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(.2,.8,.2,1),transform 0.65s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:700px){
+  .section-wrap{padding:2.5rem 1rem}
+  .dark-inner{padding:2.5rem 1rem}
+  .fact-item{padding:1.4rem 3rem}
+  .sites-grid{grid-template-columns:1fr}
+  .people-grid{grid-template-columns:1fr}
+  .fun-grid{grid-template-columns:1fr}
+  .card-title{font-size:1.35rem}
+  .section-title{font-size:1.75rem}
+  .hero h1{font-size:3rem}
+  .hero-tagline{font-size:1rem}
+  .hmm-header{font-size:0.88rem}
+  .card-text,.teen-tip,.hmm-body{font-size:0.95rem}
+  nav a{padding:0.85rem 1rem;font-size:0.72rem}
+}
+@media(max-width:400px){
+  .fact-item{padding:1.2rem 2.5rem}
+  .hero h1{font-size:2.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-deco">
+    <!-- Frauenkirche dome silhouette -->
+    <svg viewBox="0 0 120 160"><ellipse cx="60" cy="80" rx="52" ry="52" fill="none" stroke="#fff" stroke-width="2"/><ellipse cx="60" cy="80" rx="26" ry="26" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="44" y="130" width="32" height="30" fill="none" stroke="#fff" stroke-width="2"/><line x1="60" y1="28" x2="60" y2="10" stroke="#fff" stroke-width="2.5"/><circle cx="60" cy="8" r="4" fill="#fff" opacity="0.7"/></svg>
+    <!-- Zwinger pavilion silhouette -->
+    <svg viewBox="0 0 140 120"><rect x="10" y="55" width="120" height="65" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="10" y="38" width="120" height="18" fill="#fff" opacity="0.4"/><rect x="20" y="55" width="14" height="65" fill="#fff" opacity="0.4"/><rect x="63" y="55" width="14" height="65" fill="#fff" opacity="0.4"/><rect x="106" y="55" width="14" height="65" fill="#fff" opacity="0.4"/><polygon points="70,5 10,38 130,38" fill="none" stroke="#fff" stroke-width="1.5"/></svg>
+    <!-- Semperoper silhouette -->
+    <svg viewBox="0 0 160 120"><rect x="15" y="60" width="130" height="60" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="5" y="48" width="150" height="14" fill="#fff" opacity="0.35"/><ellipse cx="80" cy="42" rx="55" ry="22" fill="none" stroke="#fff" stroke-width="1.5"/><line x1="40" y1="60" x2="40" y2="120" stroke="#fff" stroke-width="1.2"/><line x1="80" y1="60" x2="80" y2="120" stroke="#fff" stroke-width="1.2"/><line x1="120" y1="60" x2="120" y2="120" stroke="#fff" stroke-width="1.2"/></svg>
+    <!-- Porcelain/crown motif -->
+    <svg viewBox="0 0 100 120"><circle cx="50" cy="55" r="40" fill="none" stroke="#fff" stroke-width="1.5"/><circle cx="50" cy="55" r="20" fill="none" stroke="#fff" stroke-width="1.5"/><polygon points="50,10 30,28 70,28" fill="#fff" opacity="0.5"/><polygon points="50,10 22,20 24,30" fill="#fff" opacity="0.3"/><polygon points="50,10 78,20 76,30" fill="#fff" opacity="0.3"/></svg>
+  </div>
+
+  <!-- Frauenkirche dome icon -->
+  <svg class="hero-icon" viewBox="0 0 80 92" fill="none">
+    <ellipse cx="40" cy="42" rx="32" ry="30" fill="rgba(240,200,74,0.15)" stroke="rgba(240,200,74,0.85)" stroke-width="2"/>
+    <ellipse cx="40" cy="42" rx="16" ry="15" fill="rgba(240,200,74,0.22)" stroke="rgba(240,200,74,0.7)" stroke-width="1.5"/>
+    <rect x="22" y="68" width="36" height="20" rx="1" fill="rgba(240,200,74,0.5)" stroke="rgba(240,200,74,0.9)" stroke-width="1.5"/>
+    <line x1="40" y1="12" x2="40" y2="2" stroke="rgba(240,200,74,0.9)" stroke-width="2.5"/>
+    <circle cx="40" cy="1" r="3" fill="rgba(240,200,74,0.9)"/>
+    <line x1="8" y1="68" x2="72" y2="68" stroke="rgba(240,200,74,0.7)" stroke-width="1.5"/>
+  </svg>
+
+  <h1>Explore<br/><em>Dresden</em></h1>
+  <p class="hero-tagline">A family adventure through seven centuries of Saxon history — from Baroque palaces and royal treasuries to wartime devastation and extraordinary rebirth</p>
+  <div class="hero-chips">
+    <span class="chip">🏰 Baroque Palaces</span>
+    <span class="chip">💎 Royal Treasuries</span>
+    <span class="chip">🎶 Music &amp; Opera</span>
+    <span class="chip">⚔️ Saxon Royalty</span>
+    <span class="chip">🕊️ WWII History</span>
+    <span class="chip">👨‍👩‍👧‍👦 Families &amp; Teens</span>
+  </div>
+  <div class="hero-scroll">Scroll to explore<div class="hero-scroll-arrow"></div></div>
+</header>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#sites">📍 Top Sites</a>
+  <a href="#firebombing">🔥 The Firebombing</a>
+  <a href="#history">📜 History</a>
+  <a href="#people">👑 Key Figures</a>
+  <a href="#facts">💡 Did You Know?</a>
+</nav>
+
+<!-- ── FACT CAROUSEL ── -->
+<div class="fact-carousel">
+  <button class="fact-btn fact-prev" onclick="moveFact(-1)">&#8249;</button>
+  <div class="fact-track" id="factTrack">
+    <div class="fact-item"><div class="fact-num">800+</div><div class="fact-lbl">Years the Wettin dynasty ruled Saxony — right up to the end of World War I, matching the Romanovs and Habsburgs</div></div>
+    <div class="fact-item"><div class="fact-num">24,000</div><div class="fact-lbl">Porcelain tiles in the Parade of Princes mural — longer than a football field, fired at 2,400°F and fireproof</div></div>
+    <div class="fact-item"><div class="fact-num">25,000+</div><div class="fact-lbl">People killed in a single night during the Allied firebombing of Dresden on February 13, 1945</div></div>
+    <div class="fact-item"><div class="fact-num">310 ft</div><div class="fact-lbl">Height of the Frauenkirche — Germany's tallest Protestant church when completed in 1743, nicknamed "the stone bell"</div></div>
+    <div class="fact-item"><div class="fact-num">1839</div><div class="fact-lbl">Year the world's first milk chocolate was created right here in Dresden — not Switzerland — by local firm Jordan &amp; Timaeus</div></div>
+    <div class="fact-item"><div class="fact-num">600</div><div class="fact-lbl">Cavalry soldiers traded by Augustus the Strong to the King of Prussia in exchange for 151 Chinese porcelain vases</div></div>
+    <div class="fact-item"><div class="fact-num">1908</div><div class="fact-lbl">Year Dresden's Melitta Bentz invented the paper coffee filter out of frustration with grounds in her cup</div></div>
+    <div class="fact-item"><div class="fact-num">1319</div><div class="fact-lbl">Year the Augustus Bridge was built — the first stone bridge over the Elbe, and still standing today</div></div>
+    <div class="fact-item"><div class="fact-num">2005</div><div class="fact-lbl">Year the rebuilt Frauenkirche reopened — sixty years after its wartime collapse, stone by stone from old photographs</div></div>
+  </div>
+  <button class="fact-btn fact-next" onclick="moveFact(1)">&#8250;</button>
+</div>
+<div class="fact-dots" id="factDots"></div>
+
+<!-- ── TOP SITES ── -->
+<div id="sites" style="background:#f0e8cc">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Where to go</p>
+    <h2 class="section-title">Top Sites for Families</h2>
+    <p class="section-intro">Dresden's Old Town is one of Europe's most dramatic and beautiful city centres. Called the "Florence on the Elbe" and the "Jewel Box," these are the must-see spots — where royal excess, artistic genius, wartime tragedy, and extraordinary resilience all come together in one remarkable square mile.</p>
+  </div>
+  <div class="sites-grid">
+
+    <!-- SEMPEROPER -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Semperoper.jpg" alt="Semperoper Dresden" loading="lazy"/>
+        <span class="card-tag">Opera House</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Semperoper</h3>
+        <p class="card-subtitle">Theaterplatz · Named after architect Gottfried Semper</p>
+        <p class="card-text">Dresden's world-famous opera house stands in the grand Theaterplatz. Three opera houses have stood on this exact spot: the first burned down in 1869, the second was destroyed by Allied firebombs in 1945. The rebuilt Semperoper is a world-class venue — tickets go on sale a year in advance and are hard to come by. Flanking the entrance are statues of Goethe and Schiller, the two greatest figures in German literary culture, welcoming all who enter. The equestrian statue in the square is King John — an intellectual ruler who recognised and preserved Saxon culture, and paid for the opera house himself.</p>
+        <div class="teen-tip"><strong>👀 Look Up:</strong> As you face the opera house, the big building to your left is the Zwinger complex, and the smaller Neoclassical building further left is the Schinkelwache — a former guardhouse now serving as a café and the opera's box office. Behind you across the square are the Hofkirche and the Royal Palace with its clock tower.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏛️</span> Why does the Schinkelwache look so different from everything around it? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Schinkelwache was designed in a Prussian Classicist style by architect Karl Friedrich Schinkel — who was also responsible for some of Berlin's most impressive Neoclassical buildings. That Prussian style makes it look completely out of place among Dresden's Baroque neighbours. It served as a guardhouse, and today functions as a popular café and the opera's box office.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🗿</span> Why does the stone on all these buildings look so dark and sooty? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Many visitors assume the dark, sooty colour comes from the 1945 firebombing or pollution — but it's simply natural oxidation. The local sandstone turns black in about 50 years. Restored facades are treated with silicon that lets the stone breathe but prevents darkening. The Goethe and Schiller statues at the opera entrance are good examples — they've been treated and appear bright white compared to the darker stone behind them.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZWINGER -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="zwinger.jpg" alt="Zwinger Dresden" loading="lazy"/>
+        <span class="card-tag">Palace Complex</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Zwinger</h3>
+        <p class="card-subtitle">Augustus the Strong's Baroque party palace · Three world-class museums</p>
+        <p class="card-text">Despite looking like a palace, no one ever lived here — the Zwinger was built purely for royal celebrations. "Zwinger" means the no-man's-land between two city walls. Today three world-class museums fill its wings: the <strong>Old Masters Gallery</strong> (Semper Gallery wing), the <strong>Porcelain Collection</strong> (Glockenspiel Pavilion wing), and the <strong>Mathematics-Physics Salon</strong> (Rampart Pavilion wing). Four golden eagles atop the Crown Gate symbolise Polish royalty, since Augustus ruled both Saxony and Poland. Hercules on the Rampart Pavilion bears Augustus the Strong's own face.</p>
+        <div class="teen-tip"><strong>🔔 Time Your Visit:</strong> The Glockenspiel Pavilion has 40 bells made entirely of Meissen porcelain — far sweeter-sounding than metal bells. They play a 3-minute melody at 10:15, 14:15, and 18:15 daily, drawing on tunes by Vivaldi, Mozart, and Weber.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎨</span> What happened to the art during WWII? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Dresdeners hid the Zwinger's art treasures in underground mines and cellars in the countryside before the 1945 bombing — saving them from the firestorm. But the Soviet army found them and took nearly everything to Moscow. The collection wasn't returned until after Stalin's death in 1953, when the communist regime used it as a political gesture to win over their East German subjects.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🖼️</span> What's the most interesting thing in the Old Masters Gallery? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Find Bernardo "Canaletto" Bellotto's 1752 painting <em>Zwinger Courtyard in Dresden</em>. It shows the exact balcony view above the Nymphs' Bath as it looked 270 years ago. Canaletto's paintings of 18th-century Dresden were so precise that architects used them as blueprints when rebuilding the bombed city after WWII.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROYAL PALACE / GREEN VAULT -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="green_vault.webp" alt="Royal Palace Dresden" loading="lazy"/>
+        <span class="card-tag">Palace &amp; Treasury</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Royal Palace &amp; Green Vault</h3>
+        <p class="card-subtitle">Residenzschloss · Home of Europe's greatest treasury</p>
+        <p class="card-text">The Green Vault (Grünes Gewölbe) is Augustus the Strong's legendary treasure collection housed inside the Royal Palace — one of the most extraordinary royal treasuries in Europe. It fills room after ornate room with gold, ivory, jewels, and decorative objects of breathtaking craftsmanship. The Wettin dynasty ruled Saxony for over 800 years from this palace — as long as the Romanovs in Russia and the Habsburgs in Austria. The palace also has a climbable Watchman's Tower with a panoramic view of the city.</p>
+        <div class="teen-tip"><strong>🏰 Look Up:</strong> From the palace entrance on Schlossstrasse you can see both the Watchman's Tower and the clock tower above the gate. The sky bridge overhead connects the palace to the yellow Taschenberg Palace next door — built for Augustus the Strong's mistress and today a five-star hotel.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏺</span> How crazy was Augustus the Strong's collecting habit? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Augustus the Strong traded 600 of his best cavalry soldiers to the King of Prussia in exchange for 151 Chinese porcelain vases — pieces now on display in the Zwinger. At the time, fine porcelain was considered more valuable than gold in Europe.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⚡</span> What unique political power did Saxony's rulers have? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The prince-elector of Saxony was one of only a handful of nobles in Europe with the right to elect the Holy Roman Emperor — making Saxony far more powerful politically than its size suggests. Augustus the Strong leveraged this into becoming King of Poland as well, though he had to convert from Protestantism to Catholicism to do it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARADE OF PRINCES -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="prince_of_parade.webp" alt="Parade of Princes Dresden" loading="lazy"/>
+        <span class="card-tag">Historic Mural</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Parade of Princes</h3>
+        <p class="card-subtitle">Augustusstraße · 24,000 Meissen porcelain tiles · 1907</p>
+        <p class="card-text">Running along the outer wall of the Royal Palace, this mural is longer than a football field and depicts seven centuries of Saxon rulers. Starting from the Hofkirche end, the first figure you see is the artist himself, Wilhelm Walther. In front of him come commoners — miners, farmers, teachers, artists — then the royals. Find Augustus the Strong at 1694: his horse stomps on a rose, the symbol of the Protestant faith he abandoned to become King of Poland. At the very front: an announcer, a band, and 12th-century cheerleaders.</p>
+        <div class="teen-tip"><strong>🔥 Fireproof by Accident:</strong> The tiles were fired three times at 2,400°F when made in 1907. The 1945 firestorm only reached 1,800°F — so the tiles had already survived worse heat during their own creation. They are among the very few original artworks in Dresden that didn't need rebuilding after the war.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌹</span> Why is the horse stomping on a rose? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The rose is the symbol of Martin Luther and the Protestant movement. By showing his horse stomping on it, the mural records Augustus's abandonment of his Protestant faith — a purely political decision to make him acceptable to the Catholic Polish subjects whose king he wanted to become. He then had to maintain both the Protestant Frauenkirche and the Catholic Hofkirche to keep all his subjects happy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAUENKIRCHE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Frauenkirche.jpg" alt="Frauenkirche Dresden" loading="lazy"/>
+        <span class="card-tag">Cathedral</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Frauenkirche</h3>
+        <p class="card-subtitle">Completed 1743 · Collapsed 1945 · Reopened 2005</p>
+        <p class="card-text">The symbol and soul of Dresden. Germany's tallest Protestant church when completed in 1743, at 310 feet — its unique stone dome earned it the nickname "the stone bell." Allied firebombs fell on February 13, 1945. The church smoldered for two days before collapsing. The rubble was left as a deliberate peace monument for nearly 60 years. After German reunification the decision was made to rebuild it stone by stone, reopening in 2005. Walk to the river side (door E) to find and touch a preserved piece of the original 1945 rubble.</p>
+        <div class="teen-tip"><strong>👁️ Spot the Scars:</strong> Look carefully at the exterior — you can spot the darker, fire-scorched original stones among the paler new sandstone. Builders matched them back to their exact positions using old photographs. The building is literally a patchwork of 1743 and 2005.</div>
+        <div class="teen-tip" style="margin-top:0.8rem"><strong>🎬 Watch:</strong> <a href="https://m.youtube.com/watch?v=xhR6J3bcyMs&amp;ra=m" target="_blank" rel="noopener" style="color:var(--crimson);font-weight:600">Video — The Destruction and Rebuilding of the Frauenkirche</a> — a short film tracing the church's 1945 collapse and its remarkable reconstruction.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🕊️</span> Why was the rubble left untouched for 60 years? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The communist East German government left the Frauenkirche's rubble as an anti-war monument and reminder of Allied bombing. It became a gathering point for peaceful protests against the regime in the 1980s. After reunification in 1990, the decision was made to rebuild it entirely. The reconstructed church became a powerful symbol of reconciliation between Germany and the nations that had bombed it.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⛪</span> Why does Dresden have both a huge Catholic cathedral AND a famous Protestant church? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Saxony was a Protestant stronghold — Martin Luther country. But Augustus the Strong converted to Catholicism to become King of Poland, then built the enormous Hofkirche cathedral for his Catholic identity while maintaining the Protestant Frauenkirche for his Saxon subjects. He was "finessing it both ways." As a result, the two great churches stand just minutes apart in the same Old Town.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRÜHLSCHE TERRASSE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Brühlsche_Terrasse.jpg" alt="Brühlsche Terrasse Dresden" loading="lazy"/>
+        <span class="card-tag">Promenade</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Brühlsche Terrasse</h3>
+        <p class="card-subtitle">"The Balcony of Europe" · Elbe River views</p>
+        <p class="card-text">This elevated promenade overlooking the Elbe River was once a defensive cannon rampart — look along the river-facing wall for the old cannon openings. It was given as a personal reward to a Saxon minister named Brühl for his excellence as a tax collector for Frederick Augustus II. In the early 1800s it became a public park with linden trees, earning the nickname "The Balcony of Europe." Dresden claims the world's largest and oldest fleet of historic paddleboat steamers: nine 19th-century riverboats still sailing today.</p>
+        <div class="teen-tip"><strong>📸 Best View:</strong> Walk across the Augustus Bridge (standing since 1319 — the first stone bridge over the Elbe) and turn back to face the Old Town. You get Dresden's famous panoramic skyline — Frauenkirche dome, Hofkirche steeple, Royal Palace tower — all at once. This is one of Germany's great cityscapes.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>💰</span> Someone got a riverside terrace as a reward for collecting taxes? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Exactly! Minister Heinrich von Brühl was so effective at raising revenue for the royal treasury that the king rewarded him with this prime piece of real estate — the former cannon rampart overlooking the Elbe. For centuries it was private estate; it became a public park in the early 1800s. Its nickname "The Balcony of Europe" stuck as it became one of Germany's most beloved riverside promenades.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KUNSTHOFPASSAGE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Kunsthofpassage.jpg" alt="Kunsthofpassage Dresden Courtyard of Elements" loading="lazy"/>
+        <span class="card-tag">New Town · Art District</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Kunsthofpassage</h3>
+        <p class="card-subtitle">New Town · Art District</p>
+        <p class="card-text">The Kunsthofpassage is a series of five fanciful, imaginatively decorated courtyards surrounded by boutiques, eateries, and art galleries — a delightful fantasy world tucked improbably between lively urban streets. The star of the collection is the <strong>Elements Courtyard</strong>: when the rain starts to fall, a colourful drain and gutter system built into the building's facade turns into a charming musical instrument, converting the patter of rainfall into a spectacular orchestral symphony. Created by sculptor Annette Paul and designers Christoph Rossner and André Tempel, it was inspired by a Rube Goldberg Machine.</p>
+        <div class="teen-tip"><strong>🌧️ Hope for Rain:</strong> The Elements Courtyard is one of Dresden's strangest and most enjoyable attractions — but it only performs when it's actually raining. The drainage system is engineered so that water flows through funnels, pipes, and gutters of different lengths and widths, producing different tones as it goes. Even in dry weather, the colourful installation covering the facade is worth seeing.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎨</span> What are the other courtyards in the Kunsthofpassage? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Kunsthofpassage includes five interconnected courtyards, each with its own artistic theme: the <strong>Hof der Elemente</strong> (Courtyard of Elements), <strong>Hof des Lichts</strong> (Courtyard of Light), <strong>Hof der Tiere</strong> (Courtyard of Animals), and <strong>Hof der Metamorphosen</strong> (Courtyard of the Metamorphoses). This is an art experiment by the tenants of the apartment buildings on which the works are installed — the artists live in the buildings they've decorated.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PFUNDS MOLKEREI -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Pfunds.jpg" alt="Pfunds Molkerei Dresden" loading="lazy"/>
+        <span class="card-tag">Quirky Attraction</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Pfunds Molkerei</h3>
+        <p class="card-subtitle">New Town · The World's Most Beautiful Milk Shop · Est. 1880</p>
+        <p class="card-text">Across the river in the New Town, Pfunds Molkerei is officially recognised in the Guinness Book of Records as the world's most beautiful milk shop. Every single surface — walls, ceilings, and counters — is covered in hand-painted Villeroy &amp; Boch tiles depicting intricate floral patterns, cherubs, and fairy-tale scenes. It has been selling milk and cheese since 1880, survived both World Wars and 40 years of communist neglect, and was restored to its full Neo-Renaissance glory.</p>
+        <div class="teen-tip"><strong>📷 Pure Instagram Gold:</strong> The interior looks like someone turned a porcelain museum into a cheese shop. It's genuinely one of the most visually extraordinary small shops in Europe. You can buy cheese, milk products, and souvenirs — the Guinness certificate hangs on the wall.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🐄</span> How did a milk shop survive 40 years of communist neglect? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The hand-painted Villeroy &amp; Boch tiles are so deeply embedded in the walls, ceilings, and counters that they couldn't easily be removed or damaged even during the communist era when the shop fell into disrepair. When Germany reunified in 1990, the stunning tile work was still largely intact beneath the grime, and the shop was lovingly restored to its original splendour.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YENIDZE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Yenidze.jpg" alt="Yenidze tobacco mosque Dresden" loading="lazy"/>
+        <span class="card-tag">Architectural Oddity</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Yenidze — Dresden's "Tobacco Mosque"</h3>
+        <p class="card-subtitle">Friedrichstadt · Built 1909 · Visible from the Old Town</p>
+        <p class="card-text">Just west of the Old Town stands one of Dresden's strangest buildings: a structure that looks exactly like a large mosque — complete with a glass dome and minaret-shaped chimney — but is actually a former cigarette factory. Tobacco tycoon Hugo Zietz built it in 1909 to process tobacco imported from the Ottoman Empire. Because city law banned ugly factory buildings that might spoil Dresden's Baroque skyline, architect Martin Hammitzsch disguised the factory as a mosque. It fooled city authorities — and still fools tourists today.</p>
+        <div class="teen-tip"><strong>😲 The Audacity:</strong> When the factory opened, it displayed a neon sign — reportedly one of Germany's first ever neon signs — reading "Salem Aleikum" (Peace be upon you) in Arabic, visible to passing train passengers. That was also the name of the cigarette brand made inside. Hundreds of tourists still mistake it for a real mosque at first sight.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🕌</span> How did the "Tobacco Mosque" survive the 1945 firebombing? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">While most of the surrounding buildings in Friedrichstadt were obliterated in the February 1945 carpet bombing, the Yenidze escaped nearly intact — losing only some coloured glass in its dome. It then sat in isolation for decades, used as a warehouse during the communist era, before being fully restored in 1996. Today its dome houses a restaurant with a 360-degree view of Dresden.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏗️</span> Was the architect in trouble for designing it? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Yes — the design provoked fierce public debate, and architect Martin Hammitzsch was excluded from the chamber of architects after submitting his plans. The city council threatened to reject the construction permit. But when Zietz threatened to move his factory elsewhere, the authorities backed down. The factory opened in 1909 and was an immediate success — its cigarettes were among the most popular in Germany.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ── QUOTE ── -->
+<div class="quote-band">
+  <blockquote>"Four eras have shaped Dresden: its golden age in the mid-18th century, the city's devastation in World War II, the communist regime (1945–1989), and the current 'reconstruction after reunification' era. Each city sight provides a glimpse into this timeline."</blockquote>
+  <cite>— Rick Steves, Germany Travel Guide</cite>
+</div>
+
+<!-- ── FIREBOMBING ── -->
+<div id="firebombing">
+<div class="dark-section">
+  <div class="dark-inner">
+    <div>
+      <p class="dark-eyebrow">February 13–15, 1945</p>
+      <h2 class="dark-title">The Night Dresden Burned</h2>
+      <p class="dark-intro">On the night of February 13, 1945, during the final months of World War II, American and British bomber crews firebombed Dresden across three waves of attacks. More than 3,500 tons of explosives fell on the city. What followed was one of the most controversial events of the entire war — and left a city that was almost entirely destroyed.</p>
+      <div class="dark-steps">
+        <div class="dark-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>The Bombing</strong>Over three waves, bombs created hurricane-force wind tunnels through the streets. Dresden had few air-raid shelters. Over 25,000 people were killed in a single night, and 75 percent of the historical centre was destroyed — leaving only walls and sometimes just foundations.</div>
+        </div>
+        <div class="dark-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>The Controversy</strong>Why Dresden was targeted is still debated. The city had no obvious strategic military importance. The Allies claimed the bombing disrupted Nazi communication and aided Soviet advance. Others argue it was vengeance, or an attempt to demoralize the German population.</div>
+        </div>
+        <div class="dark-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>The Witness</strong>American Kurt Vonnegut was a prisoner of war in Dresden during the firebombing, surviving in an underground meat locker. He spent decades unable to write about it before publishing <em>Slaughterhouse-Five</em> in 1969 — one of history's most famous anti-war novels.</div>
+        </div>
+        <div class="dark-step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>The Rebirth</strong>Communist-era reconstruction was slow and uninspired. After reunification in 1990, Dresden undertook one of postwar Europe's greatest urban restorations. The Frauenkirche was rebuilt stone by stone. Bombed-out lots became grand cultural buildings. The city's renaissance is considered remarkable.</div>
+        </div>
+      </div>
+    </div>
+    <div class="dark-stats">
+      <div class="dstat"><div class="dstat-num">3,500+</div><div class="dstat-lbl">Tons of explosives dropped across three waves of attacks, February 13–15, 1945</div></div>
+      <div class="dstat"><div class="dstat-num">25,000+</div><div class="dstat-lbl">People killed in a single night — civilians with very few air-raid shelters to protect them</div></div>
+      <div class="dstat"><div class="dstat-num">75%</div><div class="dstat-lbl">Of Dresden's historical centre destroyed — sometimes only foundations remained</div></div>
+      <div class="dstat"><div class="dstat-num">60 yrs</div><div class="dstat-lbl">The Frauenkirche sat as a deliberate rubble pile and peace monument before being rebuilt</div></div>
+      <div class="dstat"><div class="dstat-num">2005</div><div class="dstat-lbl">Year the rebuilt Frauenkirche reopened — using old photographs to match each original stone</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── HISTORY TIMELINE ── -->
+<div id="history">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Through the centuries</p>
+    <h2 class="section-title">Dresden's Story</h2>
+    <p class="section-intro">From a modest Elbe crossing first mentioned in records in 1206 to one of Europe's most dazzling Baroque capitals — and from wartime rubble to stunning resurrection — Dresden's story spans more than 800 remarkable years.</p>
+  </div>
+  <div class="timeline">
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1206</div>
+      <div class="tl-title">First Mention</div>
+      <div class="tl-text">Dresden is first mentioned in historical records. The settlement on the Elbe River will grow over the centuries from a modest crossing point into the capital of one of Europe's most powerful small states.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1319</div>
+      <div class="tl-title">The First Stone Bridge</div>
+      <div class="tl-text">The Augustus Bridge is built — the first stone bridge over the Elbe at this location, connecting what will become the Old Town and New Town. A bridge has stood at this crossing ever since.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1485</div>
+      <div class="tl-title">Dresden Becomes the Capital</div>
+      <div class="tl-text">The Wettin dynasty makes Dresden the capital of Saxony. The family would rule from here for over 400 more years, right up to the end of World War I in 1918 — more than 800 years of Wettin rule in total.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1694</div>
+      <div class="tl-title">Augustus the Strong Takes Power</div>
+      <div class="tl-text">Friedrich Augustus I becomes Prince-Elector of Saxony, converts to Catholicism to become King of Poland, and kicks off Saxony's Golden Age. He builds the Zwinger, amasses extraordinary collections, and transforms Dresden into one of Europe's most spectacular cultural capitals.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1743</div>
+      <div class="tl-title">The Frauenkirche is Completed</div>
+      <div class="tl-text">Germany's tallest Protestant church is completed — a masterpiece nicknamed "the stone bell" for its unique stone cupola. It stands for 202 years before the bombs of 1945 bring it down.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1945</div>
+      <div class="tl-title">The Firebombing</div>
+      <div class="tl-text">February 13–15: Allied bombs destroy 75 percent of Dresden's historical centre in one of WWII's most controversial raids. Over 25,000 people are killed in a single night. The Frauenkirche smolders for two days before collapsing. American POW Kurt Vonnegut survives in an underground meat locker, later immortalising the event in <em>Slaughterhouse-Five</em>.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1953</div>
+      <div class="tl-title">The Art Returns from Moscow</div>
+      <div class="tl-text">After Stalin's death, the Soviet Union returns the art seized from Dresden's museums — including all the Zwinger collections — to East Germany as a political gesture to win over their East German subjects. Eight years after being taken, the treasures come home.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">2005</div>
+      <div class="tl-title">The Frauenkirche Reopens</div>
+      <div class="tl-text">Sixty years after its collapse, the rebuilt Frauenkirche reopens. The fire-scorched original stones are left visible among the paler new sandstone — a deliberate reminder of what was lost and recovered. Dresden's renaissance as a world-class cultural capital is complete.</div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ── KEY FIGURES ── -->
+<div id="people">
+<div class="dark-section">
+<div style="max-width:1100px;margin:0 auto;padding:5rem 1.5rem">
+  <div class="reveal" style="margin-bottom:3rem">
+    <p class="dark-eyebrow">The People Who Shaped Dresden</p>
+    <h2 class="dark-title" style="color:#fff">Key Figures</h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.58);max-width:620px;line-height:1.82">Behind the palaces and porcelain, the music and the ruins, are the individuals whose ambitions, inventions, and artistry shaped this extraordinary city.</p>
+  </div>
+  <div class="people-grid">
+
+    <div class="person-card reveal">
+      <span class="person-emoji">👑</span>
+      <div class="person-name">Augustus the Strong</div>
+      <div class="person-years">1670 – 1733</div>
+      <div class="person-text">Prince-Elector of Saxony and King of Poland, Augustus was the defining force behind Dresden's Baroque golden age. He built the Zwinger, amassed the Green Vault treasures, and transformed a modest capital into one of Europe's most spectacular cities. He reportedly fathered 365 children and could snap a horseshoe in half with his bare hands. His heart rests in the Hofkirche; the rest of him is buried in Kraków, Poland.</div>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">🏛️</span>
+      <div class="person-name">Gottfried Semper</div>
+      <div class="person-years">1803 – 1879</div>
+      <div class="person-text">The architect whose name appears twice in Dresden's Old Town: the Semperoper (opera house) and the Semper Gallery wing of the Zwinger, added 100 years after the rest was built. One of the 19th century's most influential architects, he also designed major works in Vienna and Zurich. His opera house was destroyed in 1869, rebuilt, destroyed again in 1945, and rebuilt again — each time to his original design.</div>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">🎵</span>
+      <div class="person-name">Carl Maria von Weber</div>
+      <div class="person-years">1786 – 1826</div>
+      <div class="person-text">Dresden's Royal Music Director from 1817 to 1826, Weber essentially invented German national opera. His opera <em>Der Freischütz</em> was the last piece performed in the Semperoper before its 1945 destruction — and the first performed when it reopened in 1985. He died at 39 in London. His statue stands in the gap between the Semperoper and the Zwinger.</div>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">☕</span>
+      <div class="person-name">Melitta Bentz</div>
+      <div class="person-years">1873 – 1950</div>
+      <div class="person-text">A Dresden housewife who, in 1908, became so frustrated with coffee grounds in her cup that she tore a piece of paper from her son's notebook and invented the paper coffee filter. She and her husband filed a patent and founded the Melitta company — which still operates today and bears her name. Every paper coffee filter in the world traces back to her Dresden kitchen.</div>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">✍️</span>
+      <div class="person-name">Kurt Vonnegut</div>
+      <div class="person-years">1922 – 2007</div>
+      <div class="person-text">The American novelist was a prisoner of war in Dresden during the February 1945 firebombing, surviving in an underground meat locker — Slaughterhouse Five. He spent 23 years unable to write about what he witnessed before publishing <em>Slaughterhouse-Five</em> in 1969. The book's opening chapter describes his own struggle to write it. It became one of the greatest anti-war novels ever written.</div>
+    </div>
+
+    <div class="person-card reveal" style="background:#ffffff;border:1px solid var(--border)">
+      <span class="person-emoji">🖌️</span>
+      <div class="person-name">Bernardo Bellotto</div>
+      <div class="person-years" style="color:var(--crimson)">"Canaletto" · 1721 – 1780</div>
+      <div class="person-text">The Italian painter who documented Dresden at the height of its Baroque glory with extraordinary precision. His 1752 painting <em>Zwinger Courtyard in Dresden</em> — in the Old Masters Gallery — shows the exact balcony view as it appeared 270 years ago. His paintings were so detailed and accurate that they were used as actual blueprints for rebuilding the city after the 1945 firebombing.</div>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ── DID YOU KNOW ── -->
+<div id="facts">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Surprising stories</p>
+    <h2 class="section-title">Did You Know?</h2>
+    <p class="section-intro">Dresden is full of stories that seem too extraordinary to be true — but every one of these is real. Can you guess the answers before you reveal them?</p>
+  </div>
+  <div class="fun-grid">
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🍫</span>
+      <div class="fun-q">Milk chocolate was invented in Dresden — not Switzerland. What was it made of?</div>
+      <div class="fun-a">In 1839, Dresden firm Jordan &amp; Timaeus placed a newspaper advertisement promoting their new product: chocolate made with donkey milk. These two entrepreneurs were the first to offer cocoa in a solid form other than drinking chocolate. Before the First World War, 28 factories in Dresden were processing 550 tonnes of cocoa per year — a quarter of total cocoa sales in all of Germany, making Dresden the true capital of chocolate. (Source: Dresden Magazin)</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🦷</span>
+      <div class="fun-q">Toothpaste was also invented in Dresden. What was the original name?</div>
+      <div class="fun-a">Dresden pharmacist Ottomar von Mayenburg invented what we now know as toothpaste in 1907, naming it "Clorodont." He developed it in his Dresden pharmacy. So Dresden gave the world milk chocolate (1839), the coffee filter (1908), and toothpaste (1907) — three everyday products whose inventors almost no one can name. (Source: MEININGER Hotels)</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🚗</span>
+      <div class="fun-q">Dresden is home to one of the world's strangest car factories. What makes it unusual?</div>
+      <div class="fun-a">The Volkswagen Transparent Factory (Gläserne Manufaktur) in Dresden is almost entirely made of glass — walls, ceilings, and floors — so visitors can watch every step of the car-making process. It was deliberately designed as a showpiece to demonstrate precision German manufacturing. The factory assembles electric cars and also functions as a visitor experience centre and event venue. (Source: myCityHunt)</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">⏰</span>
+      <div class="fun-q">One of the Zwinger's three museums is dedicated to science and mathematics. What can you find inside?</div>
+      <div class="fun-a">The Mathematics-Physics Salon in the Rampart Pavilion wing of the Zwinger holds a remarkable collection of scientific instruments and timepieces. The museum covers centuries of scientific discovery, from historical measuring instruments to astronomical devices. It sits alongside the Old Masters Gallery and the Porcelain Collection as one of the three world-class museums filling the Zwinger's wings. (Source: Rick Steves Germany)</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🕳️</span>
+      <div class="fun-q">Beneath Dresden's Baroque streets lies a network of historic underground passages. What were they originally built for?</div>
+      <div class="fun-a">The tunnels beneath Dresden's Old Town were originally built as part of the city's defensive fortifications. During World War II they served as air-raid shelters during the devastating February 1945 firebombing. After the war the passages were repurposed, and today some of Dresden's most atmospheric bars and clubs can be found in these underground spaces beneath the city's elegant streets. (Source: myCityHunt)</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="stripe-divider"></div>
+
+<footer>
+  <p>Content based on Rick Steves' <em>Germany</em> travel guide, MEININGER Hotels, myCityHunt Explorer Blog, Dresden Magazin, and Atlas Obscura.</p>
+  <p style="margin-top:0.4rem">Dresden, Saxony, Germany &nbsp;·&nbsp; Familienreise &nbsp;·&nbsp; Family Travel &nbsp;·&nbsp; For Teens &amp; Their Families</p>
+</footer>
+
+<script>
+function togglePhoto(el){el.classList.toggle('expanded')}
+
+(function(){
+  const track=document.getElementById('factTrack');
+  const dotsEl=document.getElementById('factDots');
+  const items=track.querySelectorAll('.fact-item');
+  let current=0,autoTimer;
+  items.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='fact-dot'+(i===0?' active':'');
+    d.onclick=()=>goTo(i);
+    dotsEl.appendChild(d);
+  });
+  function goTo(n){
+    current=(n+items.length)%items.length;
+    track.style.transform=`translateX(-${current*100}%)`;
+    dotsEl.querySelectorAll('.fact-dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+    resetAuto();
+  }
+  function resetAuto(){
+    clearInterval(autoTimer);
+    autoTimer=setInterval(()=>goTo(current+1),4200);
+  }
+  window.moveFact=(dir)=>goTo(current+dir);
+  let startX=0;
+  track.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+  track.addEventListener('touchend',e=>{
+    const diff=startX-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40)goTo(current+(diff>0?1:-1));
+  });
+  resetAuto();
+})();
+
+const revealEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'),i*55);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.08});
+revealEls.forEach(el=>obs.observe(el));
+
+function toggleHmm(el){el.classList.toggle('open')}
+
+function toggleFact(btn){
+  const card=btn.closest('.fun-card');
+  const ans=card.querySelector('.fun-a');
+  const open=ans.classList.toggle('open');
+  btn.textContent=open?'Hide Answer ▴':'Reveal Answer ▾';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rise and Fall of the Nazi Regime — Expanded History</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Merriweather+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --bg:        #ffffff;
+    --surface:   #f4f6f9;
+    --border:    #d0d7e2;
+    --text:      #1a1d23;
+    --muted:     #4a5568;
+    --accent:    #1a3a5c;   /* deep navy */
+    --accent2:   #c0392b;   /* deep red for dates */
+    --highlight: #eaf0f8;   /* very light blue tint */
+    --green-bg:  #edf5ee;
+    --green-bdr: #2e7d32;
+    --link:      #1a5276;
+    --header-bg: #0f2540;   /* dark navy header */
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Base typography ── */
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Merriweather', Georgia, serif;
+    line-height: 1.85;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ══════════════════════════════
+     HEADER
+  ══════════════════════════════ */
+  header {
+    background: var(--header-bg);
+    color: #fff;
+    text-align: center;
+    padding: 56px 20px 48px;
+  }
+
+  .eyebrow {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #90b8d8;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .subtitle {
+    font-family: 'Merriweather', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    color: #aac4dc;
+    margin-bottom: 28px;
+  }
+
+  .source-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #90b8d8;
+  }
+
+  /* ══════════════════════════════
+     NAVIGATION / TOC
+  ══════════════════════════════ */
+  nav.toc {
+    background: var(--accent);
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  nav.toc ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0 12px;
+    gap: 0;
+  }
+
+  nav.toc a {
+    display: block;
+    padding: 14px 14px;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #b8d0e8;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  nav.toc a:hover,
+  nav.toc a:focus {
+    color: #fff;
+    border-bottom-color: #f0a500;
+    outline: none;
+  }
+
+  /* ══════════════════════════════
+     MAIN LAYOUT
+  ══════════════════════════════ */
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+
+  /* ══════════════════════════════
+     SECTION / ERA
+  ══════════════════════════════ */
+  .era {
+    margin-bottom: 72px;
+    scroll-margin-top: 16px;
+  }
+
+  .era-header {
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .era-date {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+
+  .era-title {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.25;
+  }
+
+  h3.subsection {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  /* ══════════════════════════════
+     BODY COPY
+  ══════════════════════════════ */
+  p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: 22px;
+    color: var(--text);
+  }
+
+  blockquote {
+    border-left: 5px solid var(--accent2);
+    margin: 32px 0;
+    padding: 16px 24px;
+    background: var(--highlight);
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.85;
+  }
+
+  /* ══════════════════════════════
+     KEY EVENTS TABLE
+  ══════════════════════════════ */
+  .events {
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .events-title {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--accent);
+    padding: 12px 20px;
+  }
+
+  .event {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .event:last-child { border-bottom: none; }
+
+  .event-date {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent2);
+    background: var(--highlight);
+    padding: 16px 14px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.4;
+  }
+
+  .event-body {
+    font-size: 0.97rem;
+    line-height: 1.7;
+    padding: 16px 18px;
+    color: var(--text);
+  }
+
+  .event-body strong {
+    display: block;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.93rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  /* ══════════════════════════════
+     PERSON CARDS
+  ══════════════════════════════ */
+  .persons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .person-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+  }
+
+  .person-name {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .person-role {
+    font-size: 0.93rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ══════════════════════════════
+     CALLOUT / HIGHLIGHT BOX
+  ══════════════════════════════ */
+  .callout {
+    background: var(--green-bg);
+    border: 1px solid var(--green-bdr);
+    border-left: 5px solid var(--green-bdr);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+
+  .callout-label {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-bdr);
+    margin-bottom: 12px;
+  }
+
+  .callout p {
+    font-size: 0.97rem;
+    margin-bottom: 0;
+    line-height: 1.8;
+    color: #1b3a1c;
+  }
+
+  /* ══════════════════════════════
+     ORNAMENT DIVIDER
+  ══════════════════════════════ */
+  .ornament {
+    text-align: center;
+    color: var(--border);
+    font-size: 1.2rem;
+    letter-spacing: 0.6em;
+    margin: 56px 0;
+    user-select: none;
+  }
+
+  /* ══════════════════════════════
+     FOOTER
+  ══════════════════════════════ */
+  footer {
+    background: var(--header-bg);
+    color: #7a9bb8;
+    text-align: center;
+    padding: 36px 20px;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  footer a {
+    color: #90b8d8;
+    text-decoration: underline;
+  }
+
+  /* ══════════════════════════════
+     MOBILE — full responsive
+  ══════════════════════════════ */
+  @media (max-width: 600px) {
+    html { font-size: 17px; }
+
+    header { padding: 40px 18px 36px; }
+
+    main { padding: 32px 16px 60px; }
+
+    nav.toc ul { flex-wrap: nowrap; justify-content: flex-start; padding: 0 8px; }
+    nav.toc a  { padding: 12px 10px; font-size: 0.72rem; }
+
+    .era-title { font-size: 1.2rem; }
+
+    /* Stack event rows on mobile */
+    .event {
+      grid-template-columns: 1fr;
+    }
+
+    .event-date {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      background: var(--highlight);
+      font-size: 0.8rem;
+    }
+
+    .event-body { padding: 12px 14px; }
+
+    .persons-grid { grid-template-columns: 1fr; }
+
+    blockquote { padding: 12px 16px; }
+
+    .callout { padding: 16px 18px; }
+  }
+
+  /* Tablet tweaks */
+  @media (min-width: 601px) and (max-width: 860px) {
+    main { padding: 40px 28px 72px; }
+    .persons-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Expanded Historical Record</div>
+  <h1>The Rise and Fall<br>of the Nazi Regime</h1>
+  <div class="subtitle">A Concise History with Key Events and Participants, 1914–1946</div>
+  <div class="source-badge">Source: United States Holocaust Memorial Museum Encyclopedia</div>
+</header>
+
+<nav class="toc" aria-label="Page sections">
+  <ul>
+    <li><a href="#origins">Origins</a></li>
+    <li><a href="#weimar">Weimar Crisis</a></li>
+    <li><a href="#seizure">Seizure of Power</a></li>
+    <li><a href="#consolidation">1933–1938</a></li>
+    <li><a href="#expansion">War &amp; Expansion</a></li>
+    <li><a href="#final-solution">Final Solution</a></li>
+    <li><a href="#resistance">Resistance</a></li>
+    <li><a href="#defeat">Defeat</a></li>
+    <li><a href="#aftermath">Aftermath</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- ═══ ORIGINS ═══ -->
+<section class="era" id="origins">
+  <div class="era-header">
+    <div class="era-date">Pre-1919</div>
+    <div class="era-title">Origins: War, Collapse, and the Seeds of Extremism</div>
+  </div>
+
+  <p>The forces that gave rise to Nazism were rooted in the catastrophe of the First World War. The assassination of Archduke Franz Ferdinand in June 1914 triggered the conflict that became the most devastating war Europe had ever seen. By the time the ceasefire took effect on November 11, 1918, empires had collapsed, millions were dead, and the continent was reshaping itself under enormous stress.</p>
+
+  <p>Germany's defeat was a trauma that many could not accept. Field Marshal Paul von Hindenburg — who would later play a crucial role in Hitler's rise — helped spread the myth that Germany's military had been "stabbed in the back" by traitors at home rather than defeated on the battlefield. This lie proved enormously useful to extreme nationalist movements in the years that followed.</p>
+
+  <p>Antisemitism was not invented by the Nazis — it had deep roots in European history. In the Middle Ages, prejudice against Jews was primarily religious. By the 18th and 19th centuries, new forms of economic, nationalist, and racial antisemitism emerged. By the early 20th century, pseudoscientific theories of race and eugenics provided a new and dangerous vocabulary for hatred. Nazi ideology drew upon all of these strands, especially racial antisemitism — the idea that Jews formed a separate and inferior race threatening the German people.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">June 28, 1914</div>
+      <div class="event-body"><strong>Assassination of Archduke Franz Ferdinand</strong>The killing of the Austro-Hungarian heir in Sarajevo triggers the chain of events leading to World War I.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 1, 1916</div>
+      <div class="event-body"><strong>Battle of the Somme</strong>The deadliest single day of World War I, this battle emblematized the industrial carnage of the conflict and the trauma it inflicted on European society.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 3, 1918</div>
+      <div class="event-body"><strong>Mutiny of German Sailors in Kiel</strong>German sailors revolt and protests spread. Kaiser Wilhelm II abdicates days later, ending the German Empire.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 11, 1918</div>
+      <div class="event-body"><strong>Ceasefire Ends World War I</strong>Hostilities end, but the political and economic aftermath will destabilize Germany for over a decade.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 18, 1919</div>
+      <div class="event-body"><strong>Hindenburg Spreads the "Stab-in-the-Back" Myth</strong>German Field Marshal Paul von Hindenburg testifies before the Reichstag, falsely claiming Germany lost the war through internal betrayal. This myth becomes a cornerstone of Nazi propaganda.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ WEIMAR CRISIS ═══ -->
+<section class="era" id="weimar">
+  <div class="era-header">
+    <div class="era-date">1919–1932</div>
+    <div class="era-title">The Weimar Republic and the Rise of the Nazi Party</div>
+  </div>
+
+  <p>In the postwar environment, the Weimar Republic — Germany's new parliamentary democracy — struggled from its birth. It was burdened by war guilt, economic disaster, political extremism from both left and right, and the humiliating terms of the Treaty of Versailles, which forced Germany to accept sole responsibility for starting the war and pay enormous reparations.</p>
+
+  <p>In this atmosphere, Adolf Hitler emerged as the leader of the National Socialist German Workers' Party (NSDAP), known as the Nazi Party. In February 1920, Hitler presented a 25-point party platform. In September 1919, he had already written his first formal statement laying out his views on the so-called "Jewish Question." His ideology combined extreme German nationalism, virulent antisemitism, and hostility to democracy.</p>
+
+  <p>The Nazis and other extreme nationalist groups grew in this chaos as visible threats to Germany's fragile democracy. The instability of the Weimar Republic, fear of communism, and the economic shocks of the Great Depression — which hit Germany with devastating force after the US stock market crashed in October 1929 — made millions of Germans more receptive to Nazi ideas.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">May 7, 1919</div>
+      <div class="event-body"><strong>Treaty of Versailles Presented to Germany</strong>The "War Guilt Clause" forces Germany to accept full responsibility for World War I, triggering lasting national humiliation and resentment.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 16, 1919</div>
+      <div class="event-body"><strong>Hitler's First Written Statement on the "Jewish Question"</strong>Hitler writes a letter outlining his antisemitic ideology, foreshadowing the policies he will later implement.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Feb. 24, 1920</div>
+      <div class="event-body"><strong>Nazi Party Platform</strong>Hitler presents the Nazi Party's 25-point program at a party meeting in Munich, establishing the ideological foundations of the movement.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 8–9, 1923</div>
+      <div class="event-body"><strong>Beer Hall Putsch</strong>Hitler and the Nazi Party attempt to overthrow the Weimar Republic by force in Munich. The coup fails; Hitler is arrested and imprisoned, during which time he writes <em>Mein Kampf</em>.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 12, 1925</div>
+      <div class="event-body"><strong>Hindenburg Becomes President of Germany</strong>German Field Marshal Paul von Hindenburg is inaugurated as the last president of the Weimar Republic, a figure Hitler would later manipulate into appointing him Chancellor.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Feb. 27, 1925</div>
+      <div class="event-body"><strong>Hitler Reestablishes the Nazi Party</strong>After his release from prison, Hitler delivers a speech reestablishing the Nazi Party and reasserting his role as its absolute leader.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 24, 1929</div>
+      <div class="event-body"><strong>US Stock Market Crashes</strong>The Great Depression devastates the German economy, dramatically increasing unemployment and social misery — and making millions of desperate Germans receptive to Nazi promises.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 22, 1932</div>
+      <div class="event-body"><strong>Hitler Campaign Speech</strong>At a campaign rally in Waldenburg, Hitler attacks the Weimar Republic and pledges to dissolve the parliamentary system, drawing massive crowds as Nazi electoral support surges.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ SEIZURE OF POWER ═══ -->
+<section class="era" id="seizure">
+  <div class="era-header">
+    <div class="era-date">1933</div>
+    <div class="era-title">Seizure of Power: Democracy Dismantled</div>
+  </div>
+
+  <p>On January 30, 1933, President Paul von Hindenburg appointed Adolf Hitler as Chancellor of Germany. The Nazi Party assumed control of the German state. This date marks the beginning of the Holocaust era. Within weeks, the Nazis began systematically destroying German democracy and constructing a dictatorship.</p>
+
+  <p>In February 1933, after the Reichstag building burned under suspicious circumstances, President Hindenburg signed the Reichstag Fire Decree, suspending constitutional protections throughout Germany. By August 1934, following Hindenburg's death, Hitler merged the offices of president and chancellor into one, becoming Germany's absolute dictator. A referendum confirmed his new title and powers.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">Jan. 30, 1933</div>
+      <div class="event-body"><strong>Hitler Appointed Chancellor</strong>President von Hindenburg appoints Adolf Hitler Chancellor of Germany. The Holocaust era begins.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Feb. 28, 1933</div>
+      <div class="event-body"><strong>Reichstag Fire Decree</strong>Hindenburg suspends constitutional protections following the Reichstag fire. The Nazis use this emergency to arrest political opponents.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 22, 1933</div>
+      <div class="event-body"><strong>Dachau Camp Established</strong>The SS establishes the Dachau concentration camp near Munich — the first of the Nazi concentration camps. Political prisoners are among the first inmates.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 1, 1933</div>
+      <div class="event-body"><strong>Anti-Jewish Boycott</strong>Members of the Nazi Party organize a nationwide boycott of Jewish-owned businesses in Germany, the first major organized anti-Jewish action of the regime.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 10, 1933</div>
+      <div class="event-body"><strong>Book Burnings</strong>Books deemed "un-German" — including works by Jewish, communist, and other authors — are publicly burned throughout Germany. <strong>Joseph Goebbels</strong>, Hitler's propaganda minister, encourages the burnings.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">June 30, 1934</div>
+      <div class="event-body"><strong>The Röhm Affair ("Night of the Long Knives")</strong>Hitler orders the purge of the top leadership of the SA (Stormtroopers), including its chief Ernst Röhm, consolidating power within the SS and eliminating potential rivals.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 2, 1934</div>
+      <div class="event-body"><strong>Death of President von Hindenburg</strong>Hindenburg dies. Hitler merges the presidency and chancellorship, becoming Germany's absolute dictator.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 19, 1934</div>
+      <div class="event-body"><strong>Referendum Confirms Hitler's Power</strong>A national referendum confirms Hitler's new combined role and absolute authority over Germany.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ CONSOLIDATION ═══ -->
+<section class="era" id="consolidation">
+  <div class="era-header">
+    <div class="era-date">1933–1938</div>
+    <div class="era-title">Consolidation of the Dictatorship and Persecution of Jews</div>
+  </div>
+
+  <p>During the first six years of Nazi rule, the regime implemented sweeping discrimination against Jews, transforming them from citizens into outcasts under the law. Laws excluded Jews from civil service, journalism, and public schools. Jewish passports were stamped with the letter "J." A new law required Jewish men to add "Israel" and women "Sara" to their names, marking them publicly. All Jewish-owned businesses were eventually shut down.</p>
+
+  <p>The Nazis also targeted other groups they deemed enemies of the German state: political opponents were imprisoned in concentration camps; men accused of homosexuality were targeted under a revised Paragraph 175; Jehovah's Witnesses were banned and imprisoned; people with disabilities were forcibly sterilized under the Law for the Prevention of Offspring with Hereditary Diseases; and Roma and Sinti people faced roundup and confinement. In December 1938, Himmler ordered that Nazi policy toward Roma and Sinti be developed according to racial principles.</p>
+
+  <p>Internationally, the regime pursued an aggressive foreign policy. Germany remilitarized, signed the Anglo-German Naval Agreement to expand its navy beyond Versailles limits, and annexed Austria in March 1938 (the <em>Anschluss</em>). Britain and France, following a policy of appeasement championed by Prime Minister Neville Chamberlain, conceded the Sudetenland to Germany at the Munich Conference in September 1938. Winston Churchill, then a member of Parliament, condemned the agreement as a "disaster of the first magnitude."</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">Apr. 7, 1933</div>
+      <div class="event-body"><strong>Law for the Restoration of the Professional Civil Service</strong>Excludes Jews and political opponents from government employment.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 25, 1933</div>
+      <div class="event-body"><strong>Law Limits Jews in Public Schools</strong>Restricts the number of Jewish students in public schools and universities.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 14, 1933</div>
+      <div class="event-body"><strong>Forced Sterilization Law</strong>New German law mandates forced sterilization of people with certain physical or mental disabilities.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 4, 1933</div>
+      <div class="event-body"><strong>Editors Law</strong>Jews are forbidden from working in journalism.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 15, 1935</div>
+      <div class="event-body"><strong>Nuremberg Race Laws</strong>New laws strip German Jews of citizenship and define them legally as a separate race, bringing immediate, concrete segregation and loss of rights.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 1935</div>
+      <div class="event-body"><strong>Lebensborn Program Created</strong>At Heinrich Himmler's direction, a program is created to increase Germany's Aryan birth rate.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">June 1936</div>
+      <div class="event-body"><strong>Center for Research on Racial Hygiene Established</strong>Dr. Robert Ritter becomes head of a new eugenics research center focused on racially classifying Roma and Sinti people.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 16, 1936</div>
+      <div class="event-body"><strong>Marzahn Camp for Roma and Sinti Established</strong>German authorities round up Roma and Sinti people in Berlin and confine them in a new camp in the Marzahn suburb.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 1–11, 1936</div>
+      <div class="event-body"><strong>Berlin Olympic Games</strong>The Nazi dictatorship uses the Summer Olympics to project a false image of a peaceful, modern Germany to the world, temporarily camouflaging its racist and militaristic character. American athlete <strong>Jesse Owens</strong> wins four gold medals, undermining Nazi theories of Aryan racial superiority.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 15, 1937</div>
+      <div class="event-body"><strong>Buchenwald Concentration Camp Opens</strong>The first prisoners arrive at the Buchenwald camp near Weimar, Germany.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 8, 1937</div>
+      <div class="event-body"><strong>Antisemitic Exhibition in Munich</strong><strong>Joseph Goebbels</strong> and <strong>Julius Streicher</strong> open the antisemitic exhibition <em>Der ewige Jude</em> (The Eternal Jew), part of a massive propaganda campaign against Jews.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 11–13, 1938</div>
+      <div class="event-body"><strong>Annexation of Austria (Anschluss)</strong>Nazi Germany annexes neighboring Austria, expanding the territory in which Jews live under Nazi rule. <strong>Winston Churchill</strong> delivers a warning to Parliament about German aggression.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 6, 1938</div>
+      <div class="event-body"><strong>Evian Conference</strong>Delegates from 32 countries meet in Evian, France to discuss the growing Jewish refugee crisis. Most countries decline to increase immigration quotas, leaving Jews with few routes of escape.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 17, 1938</div>
+      <div class="event-body"><strong>Jews Forced to Add "Israel" or "Sara" to Their Names</strong>A German law requires Jews to adopt an additional identifying name, further marking them as separate from German society.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 29, 1938</div>
+      <div class="event-body"><strong>Munich Agreement</strong>Germany, Italy, Great Britain, and France sign the Munich Agreement, allowing Germany to annex Czechoslovakia's Sudetenland. Prime Minister <strong>Neville Chamberlain</strong> returns home proclaiming "peace for our time."</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 5, 1938</div>
+      <div class="event-body"><strong>Jewish Passports Invalidated</strong>The Reich Ministry of the Interior invalidates all German Jewish passports and requires them to be stamped with a "J."</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 9–10, 1938</div>
+      <div class="event-body"><strong>Kristallnacht ("Night of Broken Glass")</strong>In a nationwide anti-Jewish pogrom, Nazis and other Germans burn synagogues, vandalize thousands of Jewish homes and businesses, and assault or kill hundreds of Jews across Germany and Austria. Approximately 30,000 Jewish men are arrested and sent to concentration camps in the immediate aftermath.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 12, 1938</div>
+      <div class="event-body"><strong>Exclusion of Jews from German Economic Life</strong>A new decree closes all Jewish-owned businesses, completing the economic exclusion of German Jews.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 2, 1938</div>
+      <div class="event-body"><strong>First Kindertransport Arrives in Britain</strong>In desperation, Jewish parents begin sending their unaccompanied children abroad. The Kindertransport movement eventually brought approximately 10,000 Jewish children to safety in Britain.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 8, 1938</div>
+      <div class="event-body"><strong>Himmler Decree on Roma and Sinti</strong><strong>Heinrich Himmler</strong> orders that all Nazi policy toward Roma and Sinti be developed according to Nazi racial principles, setting the stage for their genocide.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ EXPANSION AND WAR ═══ -->
+<section class="era" id="expansion">
+  <div class="era-header">
+    <div class="era-date">1939–1941</div>
+    <div class="era-title">World War II and the Escalation of Mass Killing</div>
+  </div>
+
+  <p>On January 30, 1939, Hitler gave a speech to the Reichstag in which he declared that if war broke out, it would mean the destruction of European Jewry. His words were not metaphor. On September 1, 1939, Germany invaded Poland, unleashing World War II in Europe. Britain and France declared war on Germany two days later.</p>
+
+  <p>The war radicalized Nazi policy at every level. Germany rapidly conquered Poland, Denmark, Norway, Belgium, the Netherlands, Luxembourg, France, Yugoslavia, and Greece. Despite fierce air battle during the Battle of Britain — during which Winston Churchill became Prime Minister — Germany failed to defeat Britain. In June 1941, Germany launched Operation Barbarossa, its massive invasion of the Soviet Union, which Hitler described as a racial war of annihilation against what he called "Jewish-Bolshevism."</p>
+
+  <p>The invasion of the Soviet Union triggered immediate mass murder. <em>Einsatzgruppen</em> — special SS task forces — followed the advancing German army, rounding up and shooting Jews en masse. At first they targeted Jewish men of military age; by August 1941 they were massacring entire communities — men, women, and children — in broad daylight. A massacre near Kamenets-Podolsk in August 1941 killed 23,600 Jews. In October 1941, 9,200 residents of the Kovno Ghetto were massacred at Fort IX.</p>
+
+  <p>In occupied Poland, German authorities established ghettos where Jews were confined under miserable, overcrowded conditions. The Warsaw Ghetto — sealed in November 1940 behind a wall topped with barbed wire — imprisoned over 400,000 Jews. Starvation, disease, and arbitrary violence killed hundreds of thousands. Similar ghettos were established in Kraków, Kovno, Łódź, and dozens of other cities.</p>
+
+  <p>Inside Germany and occupied Polish territory, a separate program of murder was underway. The so-called Euthanasia Program — authorized by Hitler in a backdated order to the start of the war — targeted people with disabilities. German physicians and SS staff used specially designed gas chambers to kill institutionalized patients at facilities including Hartheim Castle. This program also served as a testing ground for gassing technology that would later be used in the killing centers.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">Jan. 30, 1939</div>
+      <div class="event-body"><strong>Hitler's Reichstag Speech</strong>Hitler publicly declares that war would mean "the destruction of the Jewish race in Europe."</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 13–June 17, 1939</div>
+      <div class="event-body"><strong>Voyage of the St. Louis</strong>The ocean liner <em>St. Louis</em>, carrying 937 Jewish refugees fleeing Nazi Germany, sails for Cuba. Cuba and the United States refuse to allow the passengers to disembark. The ship is forced to return to Europe; many of its passengers later perish in the Holocaust.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 1, 1939</div>
+      <div class="event-body"><strong>Germany Invades Poland</strong>Nazi Germany unleashes World War II. Within weeks, Germany and the Soviet Union have divided Poland between them.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 3, 1939</div>
+      <div class="event-body"><strong>Britain and France Declare War</strong>Great Britain and France declare war on Germany in response to the invasion of Poland.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 10, 1940</div>
+      <div class="event-body"><strong>Winston Churchill Becomes Prime Minister</strong>Neville Chamberlain resigns. <strong>Winston Churchill</strong> takes office, vowing to fight Germany to the end.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 20, 1940</div>
+      <div class="event-body"><strong>Auschwitz Camp Established</strong>SS authorities establish the Auschwitz concentration camp in occupied Poland. It will grow into the largest and deadliest camp complex of the Nazi regime.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 15, 1940</div>
+      <div class="event-body"><strong>Warsaw Ghetto Sealed</strong>The Warsaw Ghetto is enclosed behind a wall over ten feet high, topped with barbed wire, imprisoning more than 400,000 Jews in horrifying conditions.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 3, 1941</div>
+      <div class="event-body"><strong>Kraków Ghetto Established</strong>Between 15,000 and 20,000 Jews are forced into the Kraków Ghetto.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">June 22, 1941</div>
+      <div class="event-body"><strong>Operation Barbarossa</strong>Germany launches its invasion of the Soviet Union — its largest and most destructive military operation. <em>Einsatzgruppen</em> immediately begin massacring Jewish civilians.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 26–28, 1941</div>
+      <div class="event-body"><strong>Massacre at Kamenets-Podolsk</strong>SS and police units massacre 23,600 Jews near Kamenets-Podolsk, Ukraine — one of the first mass killings on this scale.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 1, 1941</div>
+      <div class="event-body"><strong>Jewish Badge Decreed</strong>All Jews over the age of six in the Reich and several occupied territories are ordered to wear an identifying Star of David badge in public.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 15, 1941</div>
+      <div class="event-body"><strong>Operation Reinhard Initiated; Deportations Begin</strong>Planning begins for what will become Operation Reinhard — the plan to murder Jews in occupied Poland using killing centers. Simultaneously, deportations of German, Austrian, and Czech Jews to eastern ghettos commence.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 29, 1941</div>
+      <div class="event-body"><strong>Massacre at Fort IX, Kovno</strong>9,200 residents of the Kovno Ghetto are massacred at Fort IX on the edge of the city.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 24, 1941</div>
+      <div class="event-body"><strong>Theresienstadt Camp-Ghetto Established</strong>The Theresienstadt camp-ghetto in the Protectorate of Bohemia and Moravia is established. It functioned partly as a deceptive "model" ghetto to mislead the world about the true nature of Nazi persecution.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 7, 1941</div>
+      <div class="event-body"><strong>Japan Attacks Pearl Harbor</strong>Japan's surprise attack brings the United States into World War II, fundamentally altering the strategic balance against the Axis powers.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 8, 1941</div>
+      <div class="event-body"><strong>Killing Operations Begin at Chełmno</strong>Chełmno becomes the first stationary facility where poisonous gas — in the form of mobile gas vans — is used for the mass murder of Jews.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ FINAL SOLUTION ═══ -->
+<section class="era" id="final-solution">
+  <div class="era-header">
+    <div class="era-date">1942–1944</div>
+    <div class="era-title">The "Final Solution": Systematic Genocide</div>
+  </div>
+
+  <p>On January 20, 1942, senior Nazi officials convened at a villa in Wannsee, Berlin. Reinhard Heydrich, chief of the Reich Security Main Office, chaired the meeting and presented plans to coordinate a European-wide "Final Solution of the Jewish Question" — the deliberate and systematic mass murder of all of Europe's Jews. The Wannsee Conference did not initiate the killing, which had already begun, but organized and expanded its bureaucratic machinery across the entire continent.</p>
+
+  <p>To implement the Final Solution in occupied Poland, the SS established five dedicated killing centers: Chełmno, Bełżec, Sobibór, Treblinka, and Auschwitz-Birkenau. Gassing operations began at Treblinka in July 1942. Jews were transported from ghettos and from across occupied Europe to these facilities by rail, told they were being "resettled." The vast majority were gassed almost immediately upon arrival. Auschwitz-Birkenau, the largest killing center, became the site of the murder of over a million Jews alone.</p>
+
+  <p>German authorities, with the help of allies and collaborators, deported Jews from across the continent: from France, the Netherlands (beginning July 1942), Norway (October 1942), Greece, Italy, and many other countries. In May–July 1944, Hungarian gendarmerie officials, under German SS guidance, deported some 440,000 Jews from Hungary to Auschwitz-Birkenau — one of the largest and fastest deportation operations of the entire Holocaust.</p>
+
+  <p>As the killings intensified, prisoners in some camps staged armed revolts. In October 1943, Jewish prisoners at the Sobibór killing center carried out an armed uprising. In October 1944, prisoners assigned to the crematorium at Auschwitz-Birkenau revolted after learning they were to be killed. In November 1944, at Heinrich Himmler's order, the Auschwitz authorities began demolishing the gas chambers and crematoria to hide the evidence of genocide as Soviet forces advanced.</p>
+
+  <p>Elsewhere, small numbers of individual rescuers risked their lives to protect Jews. In September 1943, approximately 7,200 Danish Jews were secretly ferried by boat to neutral Sweden. Swedish diplomat Raoul Wallenberg arrived in Budapest in July 1944 and worked to protect Jews by issuing protective Swedish documents. The Allied nations formally acknowledged the mass murder in a joint declaration in December 1942.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">Jan. 16, 1942</div>
+      <div class="event-body"><strong>Deportations from Łódź to Chełmno</strong>German authorities begin deporting Jews from the Łódź Ghetto to the Chełmno killing center.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Jan. 20, 1942</div>
+      <div class="event-body"><strong>Wannsee Conference</strong><strong>Reinhard Heydrich</strong> convenes the Wannsee Conference to coordinate the European-wide "Final Solution." <strong>Adolf Eichmann</strong> serves as secretary of the meeting.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 1, 1942</div>
+      <div class="event-body"><strong>Auschwitz-Birkenau Established</strong>A second camp at Auschwitz — Auschwitz-Birkenau — opens. It will become the largest killing center of the Holocaust.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 27, 1942</div>
+      <div class="event-body"><strong>Assassination of Reinhard Heydrich</strong>Czech agents fatally wound SS General <strong>Reinhard Heydrich</strong>, chief of the Reich Security Main Office and one of the principal architects of the Final Solution. He dies on June 4. In reprisal, the Germans destroy the Czech village of Lidice.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 15, 1942</div>
+      <div class="event-body"><strong>Deportation of Dutch Jews Begins</strong>German authorities begin deporting Dutch Jews from transit camps in the Netherlands to killing centers in occupied Poland.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 23, 1942</div>
+      <div class="event-body"><strong>Gassing Operations Begin at Treblinka</strong>The Treblinka killing center begins operations. Ultimately, between 700,000 and 900,000 Jews are murdered there.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 26, 1942</div>
+      <div class="event-body"><strong>Roundup of Norwegian Jews</strong>With the assistance of collaborationist Norwegian officials, the Germans begin arresting and deporting Jews from Norway.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 17, 1942</div>
+      <div class="event-body"><strong>Allied Declaration on Mass Murder</strong>The Allied nations publicly declare that the German authorities are engaged in the mass murder of European Jews.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 16, 1942</div>
+      <div class="event-body"><strong>Himmler Orders Deportation of Roma and Sinti to Auschwitz</strong><strong>Heinrich Himmler</strong> orders that Roma and Sinti people be deported to Auschwitz.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Feb. 2, 1943</div>
+      <div class="event-body"><strong>German Defeat at Stalingrad</strong>After catastrophic losses, German forces surrender at Stalingrad — a turning point of World War II, beginning Germany's long retreat in the east.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 13, 1943</div>
+      <div class="event-body"><strong>Liquidation of the Kraków Ghetto</strong>SS and police authorities liquidate the Kraków Ghetto, shooting many residents on the spot and deporting survivors to camps.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Sept. 20, 1943</div>
+      <div class="event-body"><strong>Danish Jews Rescued</strong>From September into October, approximately 7,200 Danish Jews are secretly ferried by boat to neutral Sweden, in one of the largest rescue operations of the Holocaust.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 14, 1943</div>
+      <div class="event-body"><strong>Sobibór Uprising</strong>Jewish prisoners at the Sobibór killing center launch an armed revolt. Several hundred escape; most are later recaptured and killed.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 3, 1943</div>
+      <div class="event-body"><strong>Operation Harvest Festival</strong>SS forces kill the remaining Jews in work camps near Lublin, Poland — approximately 42,000 people in a single day and night — in one of the largest single massacres of the Holocaust.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Jan. 22, 1944</div>
+      <div class="event-body"><strong>War Refugee Board Created</strong>President <strong>Franklin D. Roosevelt</strong> signs an executive order creating the War Refugee Board, the first major US government effort to rescue Jewish victims of Nazi persecution.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Mar. 19, 1944</div>
+      <div class="event-body"><strong>Germany Occupies Hungary</strong>German forces occupy their own ally Hungary, installing a pro-Nazi government. <strong>Adolf Eichmann</strong> personally oversees the subsequent mass deportation of Hungarian Jews.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 15–July 9, 1944</div>
+      <div class="event-body"><strong>Deportation of Hungarian Jews</strong>Hungarian gendarmerie, under SS direction, deport approximately 440,000 Jews to Auschwitz-Birkenau — one of the fastest and largest deportation operations of the entire Holocaust.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 9, 1944</div>
+      <div class="event-body"><strong>Raoul Wallenberg Arrives in Budapest</strong>Swedish diplomat <strong>Raoul Wallenberg</strong> arrives in Budapest and begins issuing Swedish protective documents and establishing safe houses, ultimately saving tens of thousands of Hungarian Jews.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 20, 1944</div>
+      <div class="event-body"><strong>Assassination Attempt on Hitler</strong>German military officers attempt to assassinate Hitler at his East Prussian headquarters. The plot fails; the conspirators are executed.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 2, 1944</div>
+      <div class="event-body"><strong>Roma "Family Camp" Liquidated at Auschwitz</strong>The SS liquidates the Roma and Sinti "family camp" at Auschwitz-Birkenau, murdering approximately 2,900 men, women, and children.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Aug. 9, 1944</div>
+      <div class="event-body"><strong>Łódź Ghetto Liquidated</strong>SS and police units liquidate the Łódź Ghetto — the last major ghetto in occupied Poland — deporting surviving residents to Auschwitz.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 7, 1944</div>
+      <div class="event-body"><strong>Prisoner Revolt at Auschwitz-Birkenau</strong>Jewish prisoners assigned to Crematorium IV launch an armed revolt after learning they are to be killed. They destroy the crematorium before the uprising is suppressed.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Nov. 25, 1944</div>
+      <div class="event-body"><strong>Himmler Orders Destruction of Gas Chambers</strong><strong>Heinrich Himmler</strong> orders the demolition of the gas chambers and crematoria at Auschwitz-Birkenau in an attempt to destroy evidence of genocide.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ RESISTANCE ═══ -->
+<section class="era" id="resistance">
+  <div class="era-header">
+    <div class="era-date">Resistance</div>
+    <div class="era-title">Jewish Resistance and Acts of Rescue</div>
+  </div>
+
+  <p>Jewish individuals and communities resisted Nazi persecution in many ways — both armed and unarmed — despite facing overwhelming force and near-impossible odds. The most famous example of armed resistance is the Warsaw Ghetto Uprising of April–May 1943. When German forces entered the ghetto to deport its remaining residents, vastly outnumbered and outgunned fighters — many affiliated with underground organizations — hid and fought the Germans for almost a month before being crushed.</p>
+
+  <div class="callout">
+    <div class="callout-label">Notable Acts of Resistance and Rescue</div>
+    <p>The <strong>Warsaw Ghetto Uprising (April 19–May 1943)</strong> — led in part by <strong>Mordecai Anielewicz</strong> of the Jewish Fighting Organization — became the most prominent symbol of armed Jewish resistance. The <strong>Sobibór Uprising (October 14, 1943)</strong> saw Jewish prisoners kill several SS guards before escaping. The <strong>Prisoner Revolt at Auschwitz-Birkenau (October 7, 1944)</strong> resulted in the destruction of one of the crematoria. In Denmark, ordinary citizens organized the rescue of approximately 7,200 Jews. Diplomat <strong>Raoul Wallenberg</strong> saved tens of thousands of Hungarian Jews through Swedish protective documents. <strong>Emanuel Ringelblum</strong> organized the Oneg Shabbat archive in the Warsaw Ghetto, secretly documenting life under occupation to preserve a historical record of the atrocities.</p>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ DEFEAT ═══ -->
+<section class="era" id="defeat">
+  <div class="era-header">
+    <div class="era-date">1944–1945</div>
+    <div class="era-title">Military Defeat and the Liberation of the Camps</div>
+  </div>
+
+  <p>Even as the Holocaust reached its most murderous phase in 1944, Germany's military position was collapsing. On June 6, 1944 — D-Day — American, British, and Canadian forces landed on the beaches of Normandy under Operation Overlord, opening the long-awaited second front in Western Europe. Soviet forces simultaneously pressed westward on the Eastern Front, and Allied forces landed in Italy, liberating Rome in June 1944. By the end of 1944, the Allies had liberated the majority of Axis-occupied territories.</p>
+
+  <p>As Soviet forces closed in from the east, the SS began evacuating prisoners from camps in the form of forced marches — so-called "death marches" — in which guards brutally mistreated and killed many of the prisoners. The largest death marches began from Auschwitz in January 1945.</p>
+
+  <p>Soviet forces were first to approach a major Nazi camp, reaching the Majdanek killing center near Lublin in July 1944. They liberated Auschwitz on January 27, 1945, finding approximately 7,000 prisoners — most ill and dying. US forces liberated camps including Ohrdruf (April 4), Buchenwald (April 11), and Dachau (April 29). British forces liberated Bergen-Belsen on April 15, discovering some 55,000 survivors in horrifying conditions. On April 30, 1945, as Soviet forces encircled Berlin, Adolf Hitler died by suicide in his underground bunker. Germany surrendered unconditionally — in the west on May 7, and in the east on May 9, 1945.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">June 6, 1944</div>
+      <div class="event-body"><strong>D-Day (Operation Overlord)</strong>US, British, and Canadian forces land on the beaches of Normandy, France, opening the Western Front and beginning the liberation of Western Europe.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">July 23, 1944</div>
+      <div class="event-body"><strong>Majdanek Liberated</strong>Soviet forces liberate the Lublin-Majdanek killing center — the first major Nazi camp reached by Allied troops.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Jan. 17, 1945</div>
+      <div class="event-body"><strong>Death March from Auschwitz Begins</strong>As Soviet troops approach, SS units evacuate tens of thousands of Auschwitz prisoners on foot in brutal winter conditions. Many die on the march.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Jan. 27, 1945</div>
+      <div class="event-body"><strong>Soviet Forces Liberate Auschwitz</strong>The Soviet army enters Auschwitz, Birkenau, and Monowitz, liberating approximately 7,000 survivors.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 4, 1945</div>
+      <div class="event-body"><strong>Ohrdruf Liberated</strong>Ohrdruf — a subcamp of Buchenwald — becomes the first Nazi camp liberated by US troops. Generals Eisenhower, Patton, and Bradley visit to witness the evidence of atrocities firsthand.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 11, 1945</div>
+      <div class="event-body"><strong>Buchenwald Liberated</strong>US forces enter Buchenwald. Prisoners had taken partial control of the camp in anticipation of liberation.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 15, 1945</div>
+      <div class="event-body"><strong>Bergen-Belsen Liberated</strong>British forces liberate Bergen-Belsen, finding approximately 55,000 prisoners in catastrophic condition. Thousands more die in the days following liberation.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 29, 1945</div>
+      <div class="event-body"><strong>Dachau Liberated</strong>US forces liberate the Dachau concentration camp — the first Nazi camp established in 1933.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Apr. 30, 1945</div>
+      <div class="event-body"><strong>Hitler Dies by Suicide</strong>Adolf Hitler dies in his bunker in Berlin as Soviet forces close in. Ravensbrück is liberated the same day.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 5, 1945</div>
+      <div class="event-body"><strong>Mauthausen Liberated</strong>US forces liberate the Mauthausen concentration camp in Austria.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">May 7–9, 1945</div>
+      <div class="event-body"><strong>Germany Surrenders</strong>German armed forces surrender unconditionally to Allied forces — in the west on May 7, in the east on May 9 — ending World War II in Europe and the Holocaust.</div>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">— ✦ —</div>
+
+<!-- ═══ AFTERMATH ═══ -->
+<section class="era" id="aftermath">
+  <div class="era-header">
+    <div class="era-date">Aftermath</div>
+    <div class="era-title">Justice, Reckoning, and Legacy</div>
+  </div>
+
+  <p>By the end of the Holocaust, the Nazi German regime and its allies and collaborators had murdered six million European Jews — nearly two out of every three European Jews alive in 1933. Millions of others were also murdered, including Soviet prisoners of war, Polish civilians, Roma and Sinti, people with disabilities, and political opponents. Thousands of Jewish communities across Europe were devastated or completely destroyed.</p>
+
+  <p>Many survivors faced continued violence even after liberation. In July 1946, a pogrom in Kielce, Poland, killed dozens of Jewish survivors — demonstrating that antisemitism had not ended with Germany's defeat. Hundreds of thousands of Jewish displaced persons waited in camps, often for years, before immigrating to new homes in what became the State of Israel, the United States (under the Displaced Persons Act of 1948), or elsewhere.</p>
+
+  <p>The effort to hold perpetrators accountable began almost immediately. On November 20, 1945, the International Military Tribunal opened in Nuremberg, Germany, trying 21 major Nazi leaders. American Chief Prosecutor Justice Robert Jackson delivered a landmark opening statement. On October 1, 1946, the tribunal delivered its verdicts: 12 defendants were sentenced to death, including Joachim von Ribbentrop and Hans Frank; others received prison sentences. Hermann Göring — sentenced to death — died by suicide before his execution. Adolf Eichmann evaded capture for years, but was caught, tried in Israel, found guilty of crimes against the Jewish people, and executed in 1962.</p>
+
+  <p>The Holocaust also gave rise to new legal frameworks to prevent future genocides. The scholar Raphael Lemkin — who had coined the word "genocide" — campaigned to have it recognized under international law. The UN Convention on the Prevention and Punishment of Genocide entered into force in January 1951.</p>
+
+  <div class="events">
+    <div class="events-title">Key Events</div>
+    <div class="event">
+      <div class="event-date">July 4, 1946</div>
+      <div class="event-body"><strong>Kielce Pogrom</strong>A massacre of Jewish survivors in the Polish town of Kielce demonstrates that antisemitic violence had not ended with Nazi Germany's defeat.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Oct. 1, 1946</div>
+      <div class="event-body"><strong>Nuremberg Trial Verdicts</strong>The International Military Tribunal delivers verdicts against major Nazi leaders. Twelve defendants are sentenced to death.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">June 25, 1948</div>
+      <div class="event-body"><strong>US Displaced Persons Act</strong>The United States passes the Displaced Persons Act, allowing greater immigration of European refugees, including Holocaust survivors.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Jan. 12, 1951</div>
+      <div class="event-body"><strong>UN Genocide Convention Enters Into Force</strong>The UN Convention on the Prevention and Punishment of Genocide enters international law, shaped in large part by the advocacy of <strong>Raphael Lemkin</strong>.</div>
+    </div>
+    <div class="event">
+      <div class="event-date">Dec. 15, 1961</div>
+      <div class="event-body"><strong>Adolf Eichmann Found Guilty</strong><strong>Adolf Eichmann</strong>, the SS officer who coordinated deportations across Europe, is found guilty of crimes against the Jewish people in an Israeli court and subsequently executed.</div>
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer>
+  All information drawn exclusively from the <a href="https://encyclopedia.ushmm.org/en" target="_blank">United States Holocaust Memorial Museum Encyclopedia</a> (encyclopedia.ushmm.org) — specifically the Introduction to the Holocaust and the full Timeline of Events (Before 1933, 1933–1938, 1939–1941, 1942–1945, and After 1945 sections).
+  <br>No information has been fabricated or supplemented from other sources.
+</footer>
+
+</body>
+</html>

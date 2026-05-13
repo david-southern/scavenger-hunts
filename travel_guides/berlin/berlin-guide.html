@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Berlin — Family Adventure Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --prussian:#003153;
+  --prussian-mid:#004a7f;
+  --blue:#1565c0;
+  --sky:#e3ecf7;
+  --cream:#f7f5f0;
+  --red:#cc2200;
+  --red-light:#e53935;
+  --green:#2e7d32;
+  --green-light:#43a047;
+  --gold:#c8881a;
+  --gold-light:#f0c96a;
+  --white:#ffffff;
+  --text:#1a1f2e;
+  --muted:#556070;
+  --border:#d0dcea;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;font-size:16px}
+
+/* HERO */
+.hero{min-height:100vh;background:var(--prussian);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px}
+.hero-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-deco svg{position:absolute;opacity:0.06;animation:floatDeco 20s ease-in-out infinite}
+.hero-deco svg:nth-child(1){top:6%;left:3%;width:170px;animation-delay:0s}
+.hero-deco svg:nth-child(2){top:10%;right:5%;width:130px;animation-delay:5s}
+.hero-deco svg:nth-child(3){bottom:10%;left:8%;width:150px;animation-delay:10s}
+.hero-deco svg:nth-child(4){bottom:14%;right:3%;width:200px;animation-delay:15s}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+.hero-gate{width:72px;height:80px;margin-bottom:1.8rem;animation:gateGlow 4s ease-in-out infinite alternate}
+@keyframes gateGlow{from{filter:drop-shadow(0 0 8px rgba(240,201,106,0.4))}to{filter:drop-shadow(0 0 20px rgba(240,201,106,0.9))}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,7.5rem);font-weight:900;color:#fff;line-height:1;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero-tagline{margin-top:1.2rem;font-size:clamp(0.9rem,2vw,1.1rem);color:rgba(255,255,255,0.58);font-weight:300;max-width:520px;line-height:1.75}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-top:2rem}
+.chip{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);color:rgba(255,255,255,0.8);padding:0.38rem 1rem;border-radius:50px;font-size:0.77rem;font-weight:500;letter-spacing:0.04em}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.32);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;animation:fadeIn 2s 1.5s both}
+.hero-scroll-arrow{width:15px;height:15px;border-right:2px solid rgba(255,255,255,0.28);border-bottom:2px solid rgba(255,255,255,0.28);transform:rotate(45deg);animation:arrowBounce 1.4s infinite}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--prussian);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 3px 22px rgba(0,0,0,0.35)}
+nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:0.9rem 1.1rem;color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s}
+nav a:hover{color:#fff;border-bottom-color:var(--gold-light)}
+
+/* LAYOUT */
+.section-wrap{max-width:1100px;margin:0 auto;padding:4rem 1.25rem}
+.eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--prussian);line-height:1.15;margin-bottom:1.2rem}
+.section-intro{font-size:1rem;color:var(--muted);max-width:680px;line-height:1.85;margin-bottom:3rem}
+
+/* FACT CAROUSEL */
+.fact-carousel{background:var(--prussian-mid);position:relative;overflow:hidden;user-select:none}
+.fact-track{display:flex;transition:transform 0.45s cubic-bezier(.4,0,.2,1)}
+.fact-item{flex:0 0 100%;padding:2rem 4rem;text-align:center}
+.fact-num{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:var(--gold-light);line-height:1}
+.fact-lbl{font-size:1rem;color:rgba(255,255,255,0.72);margin-top:0.5rem;font-weight:400;line-height:1.5}
+.fact-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:2}
+.fact-btn:hover{background:rgba(255,255,255,0.22)}
+.fact-prev{left:10px}
+.fact-next{right:10px}
+.fact-dots{display:flex;justify-content:center;gap:6px;padding-bottom:0.8rem;background:var(--prussian-mid)}
+.fact-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.28);border:none;cursor:pointer;padding:0;transition:background 0.2s}
+.fact-dot.active{background:var(--gold-light)}
+
+/* SITE CARDS */
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));gap:1.5rem}
+.site-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.06);transition:transform 0.28s cubic-bezier(.2,.8,.2,1),box-shadow 0.28s}
+.site-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,49,83,0.15)}
+.card-icon-wrap{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#c0cfe0;cursor:pointer;transition:height 0.45s cubic-bezier(.4,0,.2,1)}
+.card-icon-wrap.expanded{height:340px}
+.card-icon-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.site-card:hover .card-icon-wrap img{transform:scale(1.05)}
+.card-icon-wrap.expanded img{transform:scale(1)!important}
+.card-tag{position:absolute;top:13px;left:13px;font-size:0.64rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.26rem 0.75rem;border-radius:50px;background:rgba(255,255,255,0.9);color:var(--prussian);z-index:2}
+.expand-hint{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.42);color:#fff;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:50px;letter-spacing:0.05em;pointer-events:none;transition:opacity 0.3s}
+.card-icon-wrap.expanded .expand-hint{opacity:0}
+.card-body{padding:1.4rem}
+.card-title{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:var(--prussian);margin-bottom:0.4rem;line-height:1.2}
+.card-subtitle{font-size:0.9rem;color:var(--blue);font-weight:500;letter-spacing:0.04em;margin-bottom:0.7rem}
+.card-text{font-size:0.97rem;color:var(--muted);line-height:1.76}
+.teen-tip{margin-top:1rem;background:#eef4fb;border-left:3px solid var(--red);padding:0.7rem 0.9rem;border-radius:0 8px 8px 0;font-size:0.93rem;color:var(--text);line-height:1.6}
+.teen-tip strong{color:var(--red);font-weight:600}
+
+/* ACCORDION */
+.hmm-boxes{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.hmm-box{background:rgba(0,49,83,0.04);border:1px solid rgba(0,49,83,0.15);border-left:3px solid var(--prussian-mid);border-radius:4px;padding:12px 16px;cursor:pointer;transition:background 0.2s}
+.hmm-box:hover{background:rgba(0,49,83,0.09)}
+.hmm-header{display:flex;align-items:center;gap:9px;font-size:0.88rem;font-weight:600;color:var(--prussian);letter-spacing:0.03em;user-select:none}
+.hmm-arrow{margin-left:auto;font-size:0.75rem;transition:transform 0.3s;color:var(--prussian-mid);flex-shrink:0}
+.hmm-box.open .hmm-arrow{transform:rotate(180deg)}
+.hmm-body{max-height:0;overflow:hidden;transition:max-height 0.5s ease,padding 0.3s;font-size:0.93rem;line-height:1.76;color:var(--muted)}
+.hmm-box.open .hmm-body{max-height:800px;padding-top:10px}
+
+/* WALL SECTION (dark) */
+.wall-section{background:var(--prussian)}
+.wall-inner{max-width:1100px;margin:0 auto;padding:4rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+@media(max-width:700px){.wall-inner{grid-template-columns:1fr;gap:2rem}}
+.wall-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.5rem}
+.wall-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem}
+.wall-intro{font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.82;margin-bottom:1.5rem}
+.wall-steps{display:flex;flex-direction:column;gap:1rem}
+.wall-step{display:flex;gap:1rem;align-items:flex-start;background:rgba(255,255,255,0.05);padding:1rem 1.2rem;border-radius:12px;border:1px solid rgba(255,255,255,0.09)}
+.step-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold-light);line-height:1;flex-shrink:0;width:2rem}
+.step-text{font-size:0.95rem;color:rgba(255,255,255,0.68);line-height:1.65}
+.step-text strong{color:#fff;display:block;margin-bottom:0.3rem;font-size:1rem}
+.wall-stat{display:flex;flex-direction:column;gap:0.8rem}
+.wstat{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:1.2rem 1.4rem}
+.wstat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--gold-light);line-height:1}
+.wstat-lbl{font-size:0.9rem;color:rgba(255,255,255,0.6);margin-top:0.3rem;line-height:1.5}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2.2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--prussian-mid),var(--red),var(--gold));border-radius:2px}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-left:1.5rem}
+.tl-item::before{content:'';position:absolute;left:-2.55rem;top:6px;width:14px;height:14px;border-radius:50%;background:var(--prussian);border:3px solid var(--gold-light)}
+.tl-year{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--red);line-height:1}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--prussian);margin:0.2rem 0 0.5rem}
+.tl-text{font-size:0.97rem;color:var(--muted);line-height:1.78}
+
+/* PEOPLE */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:1.5rem}
+.person-card{background:#fff;border-radius:16px;padding:1.8rem;text-align:center;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s}
+.person-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,49,83,0.12)}
+.person-emoji{font-size:3rem;margin-bottom:0.8rem;display:block}
+.person-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--prussian);margin-bottom:0.2rem}
+.person-years{font-size:0.74rem;color:var(--red);font-weight:600;letter-spacing:0.08em;margin-bottom:0.8rem}
+.person-text{font-size:0.93rem;color:var(--muted);line-height:1.72}
+
+/* FUN FACTS */
+.fun-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(270px,100%),1fr));gap:1.2rem}
+.fun-card{border-radius:16px;padding:1.6rem;border:1px solid var(--border);background:#fff;position:relative;overflow:hidden}
+.fun-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--prussian),var(--red),var(--gold))}
+.fun-emoji{font-size:2rem;margin-bottom:0.8rem;display:block}
+.fun-q{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--prussian);margin-bottom:0.5rem}
+.fun-a{font-size:0.93rem;color:var(--muted);line-height:1.72;display:none;margin-top:0.5rem}
+.fun-a.open{display:block}
+.fun-toggle{font-size:0.82rem;font-weight:600;letter-spacing:0.06em;color:var(--blue);cursor:pointer;margin-top:0.6rem;display:inline-block;text-transform:uppercase;background:none;border:none;padding:0;font-family:inherit}
+
+/* DIVIDER */
+.stripe-divider{height:5px;background:linear-gradient(90deg,var(--prussian) 0%,var(--prussian) 33%,#fff 33%,#fff 66%,var(--red) 66%,var(--red) 100%)}
+
+/* FOOTER */
+footer{background:var(--prussian);padding:2rem 1.5rem;text-align:center;color:rgba(255,255,255,0.38);font-size:0.78rem;line-height:1.8}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(.2,.8,.2,1),transform 0.65s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:600px){
+  .section-wrap{padding:2.5rem 1rem}
+  .wall-inner{padding:2.5rem 1rem}
+  .fact-item{padding:1.5rem 2.5rem}
+  .trabi-grid{grid-template-columns:1fr!important}
+  .card-title{font-size:1.3rem}
+  .wall-title{font-size:1.5rem}
+  .timeline{padding-left:1.8rem}
+  .tl-item{padding-left:1.2rem}
+  .tl-item::before{left:-2.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-deco">
+    <!-- Brandenburg Gate silhouette motifs -->
+    <svg viewBox="0 0 100 120"><rect x="10" y="80" width="80" height="40" fill="none" stroke="#fff" stroke-width="2"/><rect x="10" y="80" width="12" height="40" fill="#fff" opacity="0.6"/><rect x="78" y="80" width="12" height="40" fill="#fff" opacity="0.6"/><rect x="30" y="80" width="12" height="40" fill="#fff" opacity="0.6"/><rect x="58" y="80" width="12" height="40" fill="#fff" opacity="0.6"/><rect x="5" y="65" width="90" height="15" fill="#fff" opacity="0.5"/><polygon points="50,20 5,65 95,65" fill="none" stroke="#fff" stroke-width="2"/></svg>
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="none" stroke="#fff" stroke-width="2"/><line x1="50" y1="15" x2="50" y2="85" stroke="#fff" stroke-width="1.5"/><line x1="15" y1="50" x2="85" y2="50" stroke="#fff" stroke-width="1.5"/><circle cx="50" cy="50" r="8" fill="#fff" opacity="0.4"/></svg>
+    <svg viewBox="0 0 100 160"><rect x="38" y="0" width="24" height="100" fill="#fff" opacity="0.5"/><rect x="10" y="100" width="80" height="60" fill="none" stroke="#fff" stroke-width="2"/><line x1="30" y1="100" x2="30" y2="160" stroke="#fff" stroke-width="1.5"/><line x1="50" y1="100" x2="50" y2="160" stroke="#fff" stroke-width="1.5"/><line x1="70" y1="100" x2="70" y2="160" stroke="#fff" stroke-width="1.5"/></svg>
+    <svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="55" ry="55" fill="none" stroke="#fff" stroke-width="1.5"/><ellipse cx="60" cy="60" rx="35" ry="35" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M60 5 L60 115 M5 60 L115 60" stroke="#fff" stroke-width="1.5" opacity="0.5"/></svg>
+  </div>
+
+  <!-- Brandenburg Gate Icon -->
+  <svg class="hero-gate" viewBox="0 0 80 90" fill="none">
+    <rect x="5" y="65" width="70" height="25" rx="2" fill="rgba(240,201,106,0.9)"/>
+    <rect x="5" y="62" width="70" height="8" rx="2" fill="rgba(240,201,106,0.7)"/>
+    <rect x="8" y="70" width="9" height="20" rx="1" fill="rgba(0,49,83,0.7)"/>
+    <rect x="23" y="70" width="9" height="20" rx="1" fill="rgba(0,49,83,0.7)"/>
+    <rect x="38" y="70" width="9" height="20" rx="1" fill="rgba(0,49,83,0.7)"/>
+    <rect x="53" y="70" width="9" height="20" rx="1" fill="rgba(0,49,83,0.7)"/>
+    <rect x="63" y="70" width="9" height="20" rx="1" fill="rgba(0,49,83,0.7)"/>
+    <polygon points="40,5 5,62 75,62" fill="rgba(240,201,106,0.85)"/>
+    <!-- chariot on top -->
+    <circle cx="40" cy="6" r="5" fill="#f0c96a"/>
+  </svg>
+
+  <h1>Explore<br/><em>Berlin</em></h1>
+  <p class="hero-tagline">A family adventure through 800 years of history — from Prussian kings and Nazi darkness to Cold War walls and triumphant reunification</p>
+
+  <div class="hero-chips">
+    <span class="chip">🏛️ Historic Sites</span>
+    <span class="chip">🧱 Berlin Wall</span>
+    <span class="chip">🏰 Prussian History</span>
+    <span class="chip">🌍 Cold War Stories</span>
+    <span class="chip">🚗 The Trabant</span>
+    <span class="chip">👨‍👩‍👧‍👦 Families &amp; Teens</span>
+  </div>
+
+  <div class="hero-scroll">Scroll to explore<div class="hero-scroll-arrow"></div></div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#sites">📍 Top Sites</a>
+  <a href="#wall">🧱 Berlin Wall</a>
+  <a href="#history">📜 History</a>
+  <a href="#people">🧑‍🎓 Key Figures</a>
+  <a href="#trabi">🚗 The Trabi</a>
+  <a href="#facts">💡 Did You Know?</a>
+</nav>
+
+<!-- FACT CAROUSEL -->
+<div class="fact-carousel" id="factCarousel">
+  <button class="fact-btn fact-prev" onclick="moveFact(-1)">&#8249;</button>
+  <div class="fact-track" id="factTrack">
+    <div class="fact-item"><div class="fact-num">96 mi</div><div class="fact-lbl">Total length of the Berlin Wall that surrounded West Berlin</div></div>
+    <div class="fact-item"><div class="fact-num">28</div><div class="fact-lbl">Years the Berlin Wall divided the city (1961–1989)</div></div>
+    <div class="fact-item"><div class="fact-num">5,000</div><div class="fact-lbl">Documented successful escapes across the Berlin Wall</div></div>
+    <div class="fact-item"><div class="fact-num">3M</div><div class="fact-lbl">East Germans who fled to freedom before the Wall was built</div></div>
+    <div class="fact-item"><div class="fact-num">2,711</div><div class="fact-lbl">Coffin-shaped pillars in the Holocaust Memorial</div></div>
+    <div class="fact-item"><div class="fact-num">155 ft</div><div class="fact-lbl">Height of the Reichstag's modern glass dome</div></div>
+    <div class="fact-item"><div class="fact-num">1200</div><div class="fact-lbl">Approximate year Berlin was founded on a marshy river island</div></div>
+    <div class="fact-item"><div class="fact-num">96</div><div class="fact-lbl">Members of the Reichstag who spoke out against Hitler — and were murdered for it</div></div>
+  </div>
+  <button class="fact-btn fact-next" onclick="moveFact(1)">&#8250;</button>
+</div>
+<div class="fact-dots" id="factDots"></div>
+
+<!-- TOP SITES -->
+<div id="sites" style="background:#dce8f4">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Where to go</p>
+    <h2 class="section-title">Top Sites for Families</h2>
+    <p class="section-intro">Berlin is a sprawling city packed with history at every corner. These are the must-see spots — dramatic, thought-provoking, and fascinating for the whole family, bringing to life the stories of ordinary people who lived through extraordinary times.</p>
+  </div>
+
+  <div class="sites-grid">
+
+    <!-- 1. REICHSTAG -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Reichstag.jpg" alt="Reichstag Berlin" loading="lazy"/>
+        <span class="card-tag">Government</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">The Reichstag</h3>
+        <p class="card-text">Germany's parliament building has witnessed the fall of a kaiser, the rise of Hitler, and the reunification of a nation. British architect Norman Foster added its iconic glass dome in 1999 — a symbol of democracy reborn. The dome rises 155 feet and lets visitors spiral to the top for sweeping city views.</p>
+        <div class="teen-tip"><strong>🔍 Challenge:</strong> Climb the spiral ramp inside the glass dome. As you go up, you can look directly down into the parliament chamber below — the government is literally under the people!</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🔥</span> What's the Reichstag fire — and why does it matter? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">In 1933, the Reichstag building nearly burned down. Many historians believe Hitler planned the fire as an excuse to blame communists and seize emergency powers. Whether he did or not, Hitler used the fire to end real democracy in Germany. Within months he was Führer — absolute ruler — and the Reichstag was barely used for another 60 years.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🪟</span> Why is the dome made of glass? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The glass dome is a deliberate symbol: the German people can literally look down into their parliament at work. It represents transparency in government — a direct reaction to the secrecy of the Nazi era and communist East Germany. The 360 mirrors also bounce natural sunlight into the legislative chamber below.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏳️</span> What happened at the Reichstag at the end of World War II? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">As Soviet troops closed in on Berlin in 1945, some 1,500 German soldiers made their last stand right here at the Reichstag. The famous photo of Soviet soldiers raising the Red Flag on the roof became one of the most iconic images of World War II. You can still see shell damage on the building's exterior walls.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. BERLIN WALL VICTIMS MEMORIAL -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="victims_of_the_Berlin_Wall_memorial.jpg" alt="Berlin Wall Victims Memorial crosses" loading="lazy"/>
+        <span class="card-tag">Memorial</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Berlin Wall Victims Memorial</h3>
+        <p class="card-text">A row of white crosses stands along Ebertstrasse, right where the Berlin Wall once ran north to south, dividing the city. This side was democratic West Berlin; the other side, Soviet-controlled East Berlin. Each cross commemorates one of the many brave East Berliners who died trying to cross the Wall to freedom.</p>
+        <div class="teen-tip"><strong>✝️ Read the Names:</strong> The last person killed here was 20-year-old Chris Gueffroy, shot through the heart — just nine months before the Wall fell. Fresh roses are often left at his cross. A thin strip of memorial bricks embedded in the street pavement marks exactly where the Wall stood.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🧱</span> How close was the Wall to the Reichstag? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Berlin Wall ran right behind the Reichstag — Germany's parliament building sat just feet from the Iron Curtain. The Reichstag fell into disuse during the Cold War because it was so close to the Wall. West Germany even moved its capital to the remote city of Bonn during this period, partly because divided Berlin felt too exposed and unstable.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌹</span> Are there other memorials nearby? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Yes — several memorials dedicated to other groups targeted by the Nazis are located in the same vicinity, including memorials to the Sinti and Roma people and to gay people persecuted under the Nazi regime. The area around the Reichstag and Brandenburg Gate is one of the densest concentrations of memorial sites anywhere in the world.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MEMORIAL TO POLITICIANS WHO OPPOSED HITLER -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="memorial_to_politicians.jpg" alt="Memorial to Politicians Who Opposed Hitler" loading="lazy"/>
+        <span class="card-tag">Memorial</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Memorial to Politicians Who Opposed Hitler</h3>
+        <p class="card-text">Just outside the Reichstag entrance, a row of 96 slate slabs rises from the ground — they look almost like a bike rack. These honor the 96 Reichstag members who had the courage to speak out against Adolf Hitler and the rising tide of fascism. For their bravery, they were arrested, persecuted, and ultimately murdered.</p>
+        <div class="teen-tip"><strong>📋 Look Closely:</strong> Each slab shows a name, political party — most are KPD (Communists) or SPD (Social Democrats) — and the date and location of death. The letters "KZ" on a slab mean that person died in a concentration camp.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🗳️</span> How did Hitler come to power if people voted against him? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Hitler's Nazi party never won a majority in a fair election — they reached about 37% at their peak. But after the Reichstag fire of 1933, Hitler used emergency powers to suspend civil liberties, arrest opponents, and intimidate the remaining members into passing an "Enabling Act" that gave him dictatorial control. The politicians honored by these slabs were among those who voted against that act — knowing the danger they faced.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>💬</span> Why does this memorial matter today? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">These 96 people show that resistance was possible even in the darkest times. They chose to speak out when silence would have been safer. Germany honors them here — right next to the parliament building — as a reminder that democracy requires active defenders, and that courage in the face of tyranny is something worth remembering and celebrating.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. BRANDENBURG GATE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Brandenburg_Gate.jpg" alt="Brandenburg Gate Berlin" loading="lazy"/>
+        <span class="card-tag">Landmark</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Brandenburg Gate</h3>
+        <p class="card-text">The grandest of Berlin's original 14 city gates, this massive monument became the symbol of a divided city — stranded in no-man's-land between East and West from 1961 to 1989. On November 9, 1989, jubilant Berliners stood atop the Wall right here, celebrating their freedom with flowers and hammers.</p>
+        <div class="teen-tip"><strong>🕊️ Think About This:</strong> For 28 years, German families were separated — some on one side of this gate, some on the other — and could not visit each other. Imagine not being able to see your grandparents or cousins for your entire childhood.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🐴</span> What's the statue on top — and why did Napoleon steal it? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The four-horse chariot on top is driven by the Goddess of Peace (later renamed Goddess of Victory). When Napoleon conquered Prussia in 1806, he carted the statue off to the Louvre in Paris as a war trophy. When the Prussians defeated Napoleon and took it back in 1813, they renamed it to celebrate their triumph!</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎤</span> What famous American speech was given near here? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">In 1987, US President Ronald Reagan stood in front of the Brandenburg Gate (on the Western side) and famously challenged Soviet leader Gorbachev: "Mr. Gorbachev, tear down this wall!" Two years later — the Wall actually came down. Earlier, in 1963, President Kennedy had declared "Ich bin ein Berliner" (I am a Berliner) in solidarity with West Berliners.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. HOLOCAUST MEMORIAL -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Berlin_holocaust_memorial.jpg" alt="Holocaust Memorial Berlin" loading="lazy"/>
+        <span class="card-tag">Memorial</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Memorial to the Murdered Jews of Europe</h3>
+        <p class="card-text">A field of 2,711 gray concrete pillars of varying heights covers an entire city block. Designed by Jewish-American architect Peter Eisenman and completed in 2005, this was the first formal German-government-sponsored Holocaust memorial. The underground information center tells the devastating stories of real victims and families.</p>
+        <div class="teen-tip"><strong>💭 Walk Through:</strong> As you walk between the pillars, the ground slopes and the columns grow taller until you feel surrounded and disoriented. That feeling is intentional — it gives a small sense of the isolation and fear Holocaust victims felt.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>✡️</span> Why was the word "murdered" in the title such a big deal? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Using the word "murdered" was a profound statement — Germany, as a nation, was officially admitting to a crime, not softening it with phrases like "who died" or "who perished." This kind of direct moral reckoning was, and still is, rare in history.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>👨‍👩‍👧</span> How many Jewish people lived in Berlin when Hitler came to power? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">More than 160,000 Jewish people called Berlin home when Hitler took power in 1933. Tens of thousands managed to flee. Many others were arrested, sent to Sachsenhausen concentration camp nearby, and eventually murdered. The memorial remembers them and the six million Jews killed across Europe during the Holocaust.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. POTSDAMER PLATZ -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Potsdamer_Platz%2C_Berlin%2C_151024%2C_ako.jpg/960px-Potsdamer_Platz%2C_Berlin%2C_151024%2C_ako.jpg" alt="Potsdamer Platz Berlin" loading="lazy"/>
+        <span class="card-tag">Historic Square</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Potsdamer Platz</h3>
+        <p class="card-text">Before World War II, Potsdamer Platz was the "Times Square of Berlin" — possibly the busiest square in all of Europe. It was pulverized in the war, then left a deserted no-man's-land for 40 years, cut in two by the Berlin Wall at the intersection of the American, British, and Soviet sectors. Two subtle lines in the pavement still mark where the Wall once ran. With reunification, a massive redevelopment campaign transformed it overnight — Sony, Daimler, and Deutsche Bahn built gleaming skyscrapers here, turning the square into a modern city center once again.</p>
+        <div class="teen-tip"><strong>🕐 Spot the Clock:</strong> The small green clock tower is a replica of the first electronic traffic light in Europe, which once stood at this very intersection. Also look for the slanted glass cylinders sticking out of the ground — mirrors on their tops rotate with the sun to collect daylight and send it down into the underground train station below.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎸</span> What concert marked the start of Potsdamer Platz's rebirth? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">In 1990, Pink Floyd performed The Wall right here — a concert that doubled as a symbol of Berlin's reunification and the square's rebirth. The show attracted hundreds of thousands of people to what was still largely a wasteland. Within a decade, it had become one of Europe's most impressive modern urban developments.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏙️</span> What are the notable buildings around the square? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The curved, green-glass crescent is the DB Tower — headquarters of Deutsche Bahn, Germany's national railway. To its right are the twin blocky-gray Beisheim Center towers, designed to evoke 1920s Chicago skyscrapers. To the left is the 25-story red-brick Potsdamer Platz 1 building — which looks like a 1920s New York Art Deco tower but was built in 1999. The glass-wedge Forum Tower was designed by renowned Italian architect Renzo Piano, who created the master plan for the entire Potsdamer Platz renovation.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>💰</span> What does Potsdamer Platz symbolize today? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Like great Christian churches built upon ancient holy sites, Potsdamer Platz — with its corporate logos flying high above what was once the Berlin Wall — trumpets the triumph of capitalism over communism. Where barbed wire and guard towers once stood, Sony and Daimler now have their headquarters. It's one of the most dramatic urban transformations in modern European history.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. UNTER DEN LINDEN -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Unter_den_Linden.jpg" alt="Unter den Linden boulevard Berlin" loading="lazy"/>
+        <span class="card-tag">Boulevard ▲▲</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Unter den Linden</h3>
+        <p class="card-text">Berlin's grandest boulevard — the "Champs-Élysées of Berlin" — stretches east from the Brandenburg Gate through the heart of imperial Germany. The name means "under the linden trees," and the street has been the city's ceremonial spine since the 15th century, when it connected the royal palace to the king's hunting grounds.</p>
+        <div class="teen-tip"><strong>🌳 Walk the Boulevard:</strong> During Berlin's golden age in the late 1800s, this was one of Europe's most glamorous promenades. After World War II it became the main street of communist East Berlin — so the same street has played starring roles in Prussian splendor, Nazi pageantry, and Soviet-style communism.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>👑</span> Who built most of the grand buildings here? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Frederick the Great, who ruled Prussia from 1740 to 1786, is responsible for most of the landmark buildings along Unter den Linden. Aristocrats built their palaces here to be close to the king. Frederick believed that grand architecture, opera, and education were essential to a civilized society — so he funded institutions like the state library, the opera house, and Humboldt University, all visible along this boulevard.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🪨</span> What are the bronze plaques embedded in the cobblestones? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">In front of Humboldt University's main gate, look down for a row of square bronze plaques — Stolpersteine, or "stumbling stones." Each one bears the name of a university student who was executed by the Nazis. Similar plaques appear all over Berlin, embedded in the pavement in front of the last homes of Holocaust victims. They're meant to make you literally stumble upon history.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. NEUE WACHE -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="Berlin__Neue_Wache_.jpg" alt="Neue Wache Berlin" loading="lazy"/>
+        <span class="card-tag">Memorial</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Neue Wache (New Guardhouse)</h3>
+        <p class="card-text">Built in 1816 as a fancy barracks for royal bodyguards, this Neoclassical building — modeled on a Greek temple — has been transformed over the years into Germany's central memorial for victims of war and tyranny. Step inside to find a deeply moving sculpture at its heart: a replica of Käthe Kollwitz's <em>Mother with Her Dead Son</em>.</p>
+        <div class="teen-tip"><strong>☁️ Look Up:</strong> The memorial is open to the sky — rain, snow, and sunshine all fall directly onto the sculpture. This is intentional. The elements share in the grief. The inscription reads: "To the victims of war and tyranny." Beneath the floor lie the tombs of Germany's unknown soldier and an unknown concentration camp victim.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎨</span> Who was Käthe Kollwitz, and why was she chosen? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Käthe Kollwitz was a Berlin artist who lived through both world wars and lost her own son in World War I. Her work focused on working-class suffering, grief, and the human cost of war. She created the original sculpture — <em>Mother with Her Dead Son</em> — as a deeply personal expression of loss. When Germany needed a central war memorial, her image of universal grief was the perfect choice.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⚖️</span> Why is it complicated to honor German war dead? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Germany started — and lost — both World War I and World War II. Honoring soldiers who fought for the Nazi regime is deeply fraught. The Neue Wache navigates this by focusing on victims of war and tyranny broadly — both German soldiers and victims of Hitler's regime, including concentration camp victims. The inscription avoids glorifying war, instead mourning its costs on all sides.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. MUSEUM ISLAND & BERLIN CATHEDRAL -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="berlin_cathedral.jpg" alt="Museum Island Berlin Cathedral" loading="lazy"/>
+        <span class="card-tag">History &amp; Museums</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Museum Island &amp; Berlin Cathedral</h3>
+        <p class="card-text">Berlin was born on this marshy island in the Spree River around the year 1200. For centuries it was home to the Prussian royal palace. Today it holds five world-class museums — the Pergamon Museum (ancient Greek and Middle Eastern antiquities), the Neues Museum (Egyptian collection including the bust of Nefertiti), the Alte Nationalgalerie (19th-century European art), the Bode Museum (Byzantine art and sculpture), and the Altes Museum (classical antiquities). Dominating the island is the spectacular Berlin Cathedral, built by Kaiser Wilhelm II in an over-the-top mix of Baroque and Renaissance styles dripping with gold mosaics. The cathedral's crypt holds the tombs of Hohenzollern royalty, and its dome can be climbed for panoramic city views.</p>
+        <div class="teen-tip"><strong>🏺 Did You Know:</strong> The Pergamon Museum houses a full-scale reconstruction of the Pergamon Altar — a 2,000-year-old Greek monument so massive they built the museum around it. You can also walk through the ancient Ishtar Gate of Babylon, originally built by King Nebuchadnezzar II in 575 BC.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏰</span> What happened to the original palace that stood here? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The original Stadtschloss was considered the most important secular Baroque building north of the Alps. Heavily damaged in World War II, it was controversially demolished by the communist East German government in 1950 and replaced with a boxy parliament building. That too was later torn down. For years the site was a grassy lot — until the palace was faithfully reconstructed as the Humboldt Forum, reopening in 2021.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌍</span> What is the Humboldt Forum? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Humboldt Forum is the reborn royal palace — rebuilt on the outside to look exactly as it did before World War II, but filled inside with a cutting-edge cultural museum. It houses the ethnological collections of Berlin's state museums, showcasing cultures from Africa, Asia, Oceania, and the Americas. Named after the Humboldt brothers — explorer Alexander and educator Wilhelm — it celebrates global knowledge and human curiosity. Entry to the permanent exhibitions is free.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⛪</span> Why is the Berlin Cathedral so over-the-top? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Kaiser Wilhelm II — the jingoistic emperor in the spiked helmet who led Europe into World War I — built the cathedral at the turn of the 20th century to project imperial grandeur. The result is a garish mix of Neoclassical, Neo-Baroque, and Neo-Renaissance styles, with rippling stucco and gold-tiled mosaics. It's most impressive from the outside.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. BEBELPLATZ -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="bebelplatz.jpg" alt="Bebelplatz Book Burning Memorial" loading="lazy"/>
+        <span class="card-tag">Memorial</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Bebelplatz: Book Burning Memorial</h3>
+        <p class="card-text">Look down through a small glass window set into the cobblestones and you'll see a haunting underground room of empty white bookshelves. On May 10, 1933, Nazis burned 20,000 books here — works by Einstein, Freud, Hemingway, and others. Hitler chose this square, built by Frederick the Great to celebrate culture, to symbolize the end of tolerance.</p>
+        <div class="teen-tip"><strong>📚 Think About This:</strong> Books by some of the world's greatest minds — scientists, novelists, doctors — were thrown into a fire because the Nazis found the ideas dangerous. The German poet Heinrich Heine wrote in 1820: "Where they burn books, they will ultimately burn people also."</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>📖</span> Who were the students who built the bonfire? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The bonfire was built by staff and students from Humboldt University — one of Europe's most prestigious institutions — right across the street. Nazi propaganda minister Joseph Goebbels oversaw the event. This is a sobering reminder that even highly educated people can be drawn into terrible movements. Embedded in the cobblestones nearby are bronze plaques bearing the names of university students executed by the Nazis.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. ALEXANDERPLATZ & TV TOWER -->
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)">
+        <img src="alexanderplaatz.jpg" alt="TV Tower Berlin Alexanderplatz" loading="lazy"/>
+        <span class="card-tag">Landmark</span>
+        <span class="expand-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Alexanderplatz &amp; the TV Tower</h3>
+        <p class="card-text">Alexanderplatz has been Berlin's eastern hub since 1805 — a trade gateway, a roaring 1920s cabaret district, and then the pride of communist East Berlin's commercial center. On November 4, 1989, more than half a million East Berliners flooded this square demanding freedom. Five days later, the Wall fell. Today the square mixes DDR-era buildings with modern shops, anchored by the iconic TV Tower.</p>
+        <div class="teen-tip"><strong>😂 Best Joke:</strong> The TV Tower was built in 1969 to celebrate communist power — but when sunlight hits its mirrored ball, it creates a glowing cross. East Berliners called it "The Pope's Revenge." They also joked: if it fell over, they'd finally have an elevator to freedom in the West.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>✝️</span> Why did a cross appear on an atheist government's tower? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Communist East Germany was officially atheist and was actively removing religious symbols from churches. But when sunlight hit the TV Tower's mirrored globe, the reflected light created a huge, unmistakable cross. The government tried darkening the glass — the cross kept appearing. Berliners delighted in calling it "The Pope's Revenge."</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🕐</span> What is the World Time Clock? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Standing in Alexanderplatz is the Weltzeituhr — a rotating World Time Clock installed in 1969 that shows the time in cities around the globe. It was a nostalgic symbol of communist East Germany's desire to seem connected to the wider world, even as its citizens were forbidden from traveling there. It remains a beloved meeting point for Berliners today.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="stripe-divider"></div>
+
+<!-- BERLIN WALL SECTION -->
+<div id="wall">
+<div class="wall-section">
+  <div class="wall-inner">
+    <div>
+      <p class="wall-eyebrow">The Iron Curtain</p>
+      <h2 class="wall-title">The Berlin Wall: A City Divided</h2>
+      <p class="wall-intro">On August 13, 1961, East Germans woke up to find barbed wire going up overnight. Within days, a concrete wall followed. For 28 years, families were separated, and an estimated 136 people were killed trying to cross to freedom.</p>
+      <div class="wall-steps">
+        <div class="wall-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>The Wall went up overnight</strong>On August 13, 1961, East Germany sealed the border. Residents woke to find barbed wire outside their windows. People leapt from apartment buildings onto waiting rescue nets held by West Berlin firefighters below.</div>
+        </div>
+        <div class="wall-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Two walls, one death strip</strong>The Wall was actually two parallel walls with a 30–160 foot "death strip" between them: barbed wire, spike strips, patrol dogs, floodlights, and guards with orders to shoot to kill.</div>
+        </div>
+        <div class="wall-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>5,000 people escaped</strong>Despite the danger, about 5,000 people made it across — through tunnels, in hidden compartments, across rooftops, even in hot-air balloons. Remarkably, 565 of those who escaped were East German border guards themselves.</div>
+        </div>
+        <div class="wall-step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>November 9, 1989: The Wall falls</strong>An East German spokesman accidentally announced that new travel rules would take effect "immediately." Crowds swarmed the checkpoints. Stunned guards let them through. The Wall was torn down with hammers and bare hands that same night.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="wall-eyebrow" style="margin-bottom:1rem">Berlin Wall Memorial — Bernauer Strasse</p>
+      <div class="wall-stat">
+        <div class="wstat"><div class="wstat-num">Aug 13, 1961</div><div class="wstat-lbl">The night the Wall went up — barbed wire appeared in Berlin's streets. East Germans woke to find their city severed.</div></div>
+        <div class="wstat"><div class="wstat-num">136</div><div class="wstat-lbl">People killed at the Wall trying to reach freedom. The last was Chris Gueffroy, shot through the heart on February 6, 1989 — nine months before the Wall fell.</div></div>
+        <div class="wstat"><div class="wstat-num">~1 mile</div><div class="wstat-lbl">Length of the preserved Wall stretch at the Berlin Wall Memorial on Bernauer Strasse — the most complete surviving section, including a guard tower and the original "death strip."</div></div>
+        <div class="wstat"><div class="wstat-num">Nov 9, 1989</div><div class="wstat-lbl">The Wall falls. More than 500,000 East Berliners had gathered at Alexanderplatz days before, chanting "Wir wollen raus!" — We want out!</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- WALL MAP -->
+<div style="background:var(--prussian);padding:0 1.5rem 3.5rem">
+  <div style="max-width:860px;margin:0 auto;text-align:center" class="reveal">
+    <p class="wall-eyebrow" style="padding-top:0.5rem;margin-bottom:0.8rem">Landmark Map</p>
+    <img src="berlin_wall_landmarks.png" alt="Map of Berlin Wall landmarks showing West and East Berlin with key sites marked" style="width:100%;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:block"/>
+  </div>
+</div>
+
+<!-- HISTORY TIMELINE -->
+<div id="history">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">800 Years in Brief</p>
+    <h2 class="section-title">A History of Berlin</h2>
+    <p class="section-intro">From a marshy trading post to the capital of a reunified nation — Berlin's story is one of ambition, catastrophe, resilience, and rebirth. Here's the sweep of history your family will feel in every corner of the city.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-year">~1200</div>
+      <div class="tl-title">Berlin Is Born</div>
+      <div class="tl-text">A humble trading settlement grows on a marshy island in the Spree River. It's an unpromising start for what will become one of Europe's great capitals.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1400s</div>
+      <div class="tl-title">Hohenzollern Princes Take Over</div>
+      <div class="tl-text">The Hohenzollern dynasty makes Berlin their capital. Over the next four centuries, they transform it from a regional backwater into the seat of a powerful European kingdom.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1701</div>
+      <div class="tl-title">Kingdom of Prussia</div>
+      <div class="tl-text">Berlin becomes capital of the newly declared Kingdom of Prussia — a rising military and cultural power that will reshape European history.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1740–1786</div>
+      <div class="tl-title">Frederick the Great's Golden Age</div>
+      <div class="tl-text">Frederick the Great — a military genius and lover of the arts — puts Prussia on the map. He builds Unter den Linden's grand institutions, promotes religious tolerance, and turns Berlin into a cultural capital. Most of the great landmarks you'll see were built or inspired by him.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1871</div>
+      <div class="tl-title">United Germany — Berlin as Capital</div>
+      <div class="tl-text">Germany unifies as a modern nation and Berlin is its natural capital. The city booms with industrialization, quadrupling its population in just 40 years.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1918–1933</div>
+      <div class="tl-title">Weimar Republic &amp; the Roaring Twenties</div>
+      <div class="tl-text">After Germany's humiliating defeat in World War I, Berlin thrives as a wild, creative, anything-goes cultural capital. Jazz clubs, cabarets, and avant-garde art flourish — until the Great Depression, unemployment, and political chaos open the door to Adolf Hitler.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1933–1945</div>
+      <div class="tl-title">Hitler's Berlin</div>
+      <div class="tl-text">Berlin becomes the headquarters of the Nazi regime. Book burnings, persecution of Jews and minorities, and the machinery of the Holocaust are organized from here. The city suffers devastating Allied bombing raids. Hitler dies in a bunker beneath the city as Soviet troops take control in May 1945.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1945–1961</div>
+      <div class="tl-title">A City Divided</div>
+      <div class="tl-text">Berlin is split into four Allied sectors. The American, British, and French sectors become West Berlin; the Soviet sector becomes East Berlin. In 1948–49, the Soviets blockade West Berlin, but an Allied airlift keeps 2.2 million residents fed and supplied for nearly a year. Three million East Germans flee west before the Wall goes up.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1961</div>
+      <div class="tl-title">The Wall Goes Up — Overnight</div>
+      <div class="tl-text">On August 13, 1961, East Germany seals the border. The 96-mile Berlin Wall encircles all of West Berlin, turning it into an island of democracy inside communist East Germany. Families are split apart in a single night.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">1989</div>
+      <div class="tl-title">The Wall Comes Down</div>
+      <div class="tl-text">On November 9, 1989 — one of history's most joyful nights — the Berlin Wall falls. Berliners from east and west embrace each other, climb the Wall, and chip it apart with hammers. A year later, East and West Germany are reunified as one nation.</div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-year">Today</div>
+      <div class="tl-title">A New Berlin</div>
+      <div class="tl-text">More than 30 years after reunification, Berlin is a dynamic, creative, and welcoming world capital — ready to share its extraordinary story with every visitor. The scars remain, but so does an irrepressible spirit.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- TRABI SECTION -->
+<div id="trabi" style="background:#dce8f4">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Life Under Communism</p>
+    <h2 class="section-title">The Trabant: East Germany's Beloved Rattletrap</h2>
+    <p class="section-intro">Communist East Germany (a.k.a. the DDR) is forever linked to its trademark automobile — the Trabant, or, affectionately, the Trabi (TRAH-bee).</p>
+  </div>
+
+  <div class="trabi-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start">
+    <div>
+      <img src="trabi.jpg" alt="Trabant Trabi East German car" style="width:100%;border-radius:16px;box-shadow:0 8px 28px rgba(0,49,83,0.15);display:block"/>
+    </div>
+    <div>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.82;margin-bottom:1.2rem">Built in Zwickau, Saxony, starting in 1957, the Trabi was the DDR's big play to compete with the popular West German Volkswagen Beetle. But its design and engineering — limited by a centrally planned economy — were nowhere near VW standards. A ride in a Trabi was cramped, bumpy, and smelly.</p>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.82;margin-bottom:1.2rem">To gas up your Trabi, you'd open the hood and pour a gas-oil mix into a tank above the two-cylinder, two-stroke engine, which used gravity instead of a fuel pump. The body was made of a recycled, cloth-reinforced plastic resin called Duroplast — so the body was as "green" as the engine was polluting.</p>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.82;margin-bottom:1.2rem">On the upside, the construction was so simple that handy East Germans — who, out of necessity, were excellent do-it-yourselfers — could fix just about any problem with a hammer, a screwdriver, and a wrench. Production was limited, so the privilege of owning a Trabi required signing up on a waiting list and waiting many years.</p>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.82">In the summer of 1989, when Hungary suddenly opened its borders, whole fleets of Trabis were left behind by East Germans who went to vacation on Lake Balaton… and decided to flee West, never to come home. The Trabi remained in production until 1991, totaling more than three million rattletraps with lawnmower engines on Eastern Europe's roads.</p>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:2.5rem">
+    <div class="hmm-boxes">
+      <div class="hmm-box" onclick="toggleHmm(this)">
+        <div class="hmm-header"><span>😂</span> Trabi Jokes — Who Says Germans Don't Have a Sense of Humor? <span class="hmm-arrow">▾</span></div>
+        <div class="hmm-body" style="max-height:600px">
+          <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem">
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">🚗 <strong>Why is the Trabi the world's quietest car?</strong> Because your knees cover your ears.</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">⛽ <strong>How do you double a Trabi's value?</strong> Fill the tank.</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">🪟 <strong>"I'd like two windshield wipers for my Trabi."</strong> "Sounds like a fair trade."</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">👷 <strong>How many workers does it take to build a Trabi?</strong> Three: One to cut, one to fold, and one to paste.</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">🌡️ <strong>Why is the Trabi's back window heated?</strong> To keep your hands warm while pushing.</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">🏎️ <strong>When does a Trabi reach top speed?</strong> When it's being towed.</li>
+            <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">💨 <strong>What's the longest car on the market?</strong> The Trabi, of course, at 60 feet long — 6 feet of car and 54 feet of smoke.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- KEY FIGURES -->
+<div id="people" class="wall-section">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="wall-eyebrow">People Who Shaped Berlin</p>
+    <h2 class="wall-title">Key Figures in Berlin's Story</h2>
+    <p class="wall-intro">Understanding these individuals helps bring Berlin's history to life — from visionary rulers to ordinary people who changed history with their courage.</p>
+  </div>
+  <div class="people-grid">
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">👑</span>
+      <div class="person-name" style="color:#fff">Frederick the Great</div>
+      <div class="person-years" style="color:var(--gold-light)">1712 – 1786</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">Prussia's most celebrated king — a brilliant military tactician and passionate arts lover who played flute, wrote poetry, and built Berlin's grandest institutions. His buildings line Unter den Linden to this day. He promoted religious tolerance and enlightened values... while also waging brutal wars.</div>
+    </div>
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">⚔️</span>
+      <div class="person-name" style="color:#fff">Napoleon Bonaparte</div>
+      <div class="person-years" style="color:var(--gold-light)">1769 – 1821</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">Conquered Berlin in 1806 and stole the famous Goddess of Victory statue from atop the Brandenburg Gate, carting it to Paris. The Prussians got it back when they helped defeat Napoleon in 1813 — and renamed her the Goddess of Victory to celebrate their triumph.</div>
+    </div>
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">🎨</span>
+      <div class="person-name" style="color:#fff">Käthe Kollwitz</div>
+      <div class="person-years" style="color:var(--gold-light)">1867 – 1945</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">A Berlin artist who lived through both world wars, losing her son in World War I. Her powerful sculpture <em>Mother with Her Dead Son</em> — a replica of which sits in the Neue Wache memorial — captures the grief of a nation. Her work speaks directly to the human cost of war.</div>
+    </div>
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">🏗️</span>
+      <div class="person-name" style="color:#fff">Norman Foster</div>
+      <div class="person-years" style="color:var(--gold-light)">born 1935</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">British architect who renovated the Reichstag and added its iconic glass dome. His design — transparent, open, and allowing visitors to look down into the parliament — became a powerful symbol of Germany's renewed commitment to democracy after decades of totalitarianism.</div>
+    </div>
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">🧱</span>
+      <div class="person-name" style="color:#fff">Chris Gueffroy</div>
+      <div class="person-years" style="color:var(--gold-light)">1968 – 1989</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">The last person killed trying to cross the Berlin Wall. He was just 20 years old, shot through the heart on February 6, 1989. Nine months later, the Wall fell. His white cross stands in the Berlin Wall Victims Memorial near the Reichstag.</div>
+    </div>
+    <div class="person-card reveal" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12)">
+      <span class="person-emoji">✊</span>
+      <div class="person-name" style="color:#fff">Ida Siekmann</div>
+      <div class="person-years" style="color:var(--gold-light)">1902 – 1961</div>
+      <div class="person-text" style="color:rgba(255,255,255,0.65)">The very first person to die at the Berlin Wall. On August 22, 1961 — just days after the Wall went up — she jumped from her third-floor apartment on Bernauer Strasse, hoping to reach West Berlin. She didn't survive the fall. Her story is told at the Berlin Wall Memorial.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FUN FACTS Q&A -->
+<div id="facts">
+<section class="section-wrap">
+  <div class="reveal">
+    <h2 class="section-title">Did You Know?</h2>
+    <p class="section-intro">Berlin is full of surprising stories. Can you guess the answers before you reveal them?</p>
+  </div>
+  <div class="fun-grid">
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🌉</span>
+      <div class="fun-q">How did the Berlin Airlift save 2.2 million people without firing a single shot?</div>
+      <div class="fun-a">In 1948, the Soviets blocked all roads and railways into West Berlin, hoping to starve the city into submission. Instead of fighting their way in, the Western Allies flew in everything West Berliners needed — food, coal, medicine — for nearly a year. By the time the Soviets gave up the blockade in 1949, Allied planes had made over 200,000 flights. Not a single shot was fired.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🍞</span>
+      <div class="fun-q">When JFK said "Ich bin ein Berliner" — did he accidentally say "I am a jelly donut"?</div>
+      <div class="fun-a">This is one of history's most repeated myths — and it's almost entirely false. Kennedy said exactly what he meant: "I am a Berliner." In German, calling yourself a "Berliner" means you're from Berlin. A "Berliner" can also refer to a type of jelly donut, but no one at the time thought Kennedy was calling himself a pastry. Berliners were moved and electrified by his speech. The "donut" story only became popular decades later.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🪧</span>
+      <div class="fun-q">What are the tiny brass plaques embedded in Berlin's sidewalks — and why do people polish them?</div>
+      <div class="fun-a">All over Berlin, small brass squares called Stolpersteine — "stumbling stones" — are embedded in the pavement in front of the last known addresses of Holocaust victims. Each one bears a name, birth year, and fate. They were created by artist Gunter Demnig, who began installing them in 1992. Today there are over 100,000 across Europe. Locals sometimes polish them so the names stay bright and legible — a small, ongoing act of remembrance.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🏛️</span>
+      <div class="fun-q">Why is the Reichstag (parliament) built to be six feet taller than the Chancellor's office?</div>
+      <div class="fun-a">It was deliberately designed that way to remind Germany's Chancellor who is really in charge — the people, through their elected representatives in parliament. The Chancellor is powerful, but the Bundestag (parliament) is literally higher. Germany takes this symbolism seriously, especially given the history of Hitler, who swept away parliament and made himself absolute ruler.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="stripe-divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Content based on Rick Steves' <em>Germany</em> and <em>Berlin</em> travel guides.</p>
+  <p style="margin-top:0.4rem">Berlin, Germany &nbsp;·&nbsp; Familienreise &nbsp;·&nbsp; Family Travel &nbsp;·&nbsp; For Teens &amp; Their Families</p>
+</footer>
+
+<script>
+// Photo expand
+function togglePhoto(el) { el.classList.toggle('expanded'); }
+
+// Fact carousel
+(function(){
+  const track = document.getElementById('factTrack');
+  const dotsEl = document.getElementById('factDots');
+  const items = track.querySelectorAll('.fact-item');
+  let current = 0, autoTimer;
+  items.forEach((_,i) => {
+    const d = document.createElement('button');
+    d.className = 'fact-dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+  function goTo(n) {
+    current = (n + items.length) % items.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.fact-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+    resetAuto();
+  }
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 4200);
+  }
+  window.moveFact = (dir) => goTo(current + dir);
+  let startX = 0;
+  track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+  });
+  resetAuto();
+})();
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 55);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+revealEls.forEach(el => obs.observe(el));
+
+// Accordion
+function toggleHmm(el) { el.classList.toggle('open'); }
+
+// Fun fact toggle
+function toggleFact(btn) {
+  const card = btn.closest('.fun-card');
+  const ans = card.querySelector('.fun-a');
+  const open = ans.classList.toggle('open');
+  btn.textContent = open ? 'Hide Answer ▴' : 'Reveal Answer ▾';
+}
+</script>
+</body>
+</html>

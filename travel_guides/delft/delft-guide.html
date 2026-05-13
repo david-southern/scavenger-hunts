@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Discover Delft — Family Adventure Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --navy:#162347;
+  --delft:#1e3c8a;
+  --blue:#2d5fbf;
+  --sky:#e8f0fa;
+  --cream:#faf7f2;
+  --gold:#c8881a;
+  --gold-light:#f0c96a;
+  --white:#ffffff;
+  --text:#1c2438;
+  --muted:#5a6480;
+  --border:#dde5f0;
+}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;font-size:18px}
+
+/* HERO */
+.hero{min-height:100vh;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:55px 55px}
+.tile-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tile-deco svg{position:absolute;opacity:0.07;animation:floatTile 18s ease-in-out infinite}
+.tile-deco svg:nth-child(1){top:5%;left:4%;width:160px;animation-delay:0s}
+.tile-deco svg:nth-child(2){top:12%;right:6%;width:120px;animation-delay:4s}
+.tile-deco svg:nth-child(3){bottom:8%;left:10%;width:140px;animation-delay:8s}
+.tile-deco svg:nth-child(4){bottom:18%;right:4%;width:190px;animation-delay:12s}
+@keyframes floatTile{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+.hero-windmill{width:68px;height:68px;margin-bottom:1.8rem;animation:spinBlades 16s linear infinite;transform-origin:50% 50%}
+@keyframes spinBlades{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,9vw,7rem);font-weight:700;color:#fff;line-height:1;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero-tagline{margin-top:1.2rem;font-size:clamp(0.95rem,2vw,1.15rem);color:rgba(255,255,255,0.6);font-weight:300;max-width:480px;line-height:1.7}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-top:2rem}
+.chip{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.82);padding:0.38rem 1rem;border-radius:50px;font-size:0.77rem;font-weight:500;letter-spacing:0.04em}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.35);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;animation:fadeIn 2s 1.5s both}
+.hero-scroll-arrow{width:15px;height:15px;border-right:2px solid rgba(255,255,255,0.3);border-bottom:2px solid rgba(255,255,255,0.3);transform:rotate(45deg);animation:arrowBounce 1.4s infinite}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--navy);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 3px 20px rgba(0,0,0,0.3)}
+nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:1rem 1.3rem;color:rgba(255,255,255,0.58);text-decoration:none;font-size:0.77rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s}
+nav a:hover{color:#fff;border-bottom-color:var(--gold-light)}
+
+/* LAYOUT */
+.section-wrap{max-width:1100px;margin:0 auto;padding:5rem 1.5rem}
+.eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--navy);line-height:1.15;margin-bottom:1.2rem}
+.section-intro{font-size:1.02rem;color:var(--muted);max-width:660px;line-height:1.8;margin-bottom:3rem}
+
+/* FACT CAROUSEL */
+.fact-carousel{background:var(--delft);position:relative;overflow:hidden;user-select:none}
+.fact-track{display:flex;transition:transform 0.45s cubic-bezier(.4,0,.2,1)}
+.fact-item{flex:0 0 100%;padding:2rem 4rem;text-align:center}
+.fact-num{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--gold-light);line-height:1}
+.fact-lbl{font-size:1rem;color:rgba(255,255,255,0.75);margin-top:0.5rem;font-weight:400;line-height:1.5}
+.fact-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.12);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:2}
+.fact-btn:hover{background:rgba(255,255,255,0.25)}
+.fact-prev{left:10px}
+.fact-next{right:10px}
+.fact-dots{display:flex;justify-content:center;gap:6px;padding-bottom:0.8rem;background:var(--delft)}
+.fact-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;cursor:pointer;padding:0;transition:background 0.2s}
+.fact-dot.active{background:var(--gold-light)}
+
+/* SITE CARDS */
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+.site-card{background:#fff;border-radius:18px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.06);transition:transform 0.28s cubic-bezier(.2,.8,.2,1),box-shadow 0.28s}
+.site-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(22,35,71,0.15)}
+.card-icon-wrap{height:200px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden;background:#c8d8e8;cursor:pointer;transition:height 0.45s cubic-bezier(.4,0,.2,1)}
+.card-icon-wrap.expanded{height:340px}
+.card-icon-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.site-card:hover .card-icon-wrap img{transform:scale(1.05)}
+.card-icon-wrap.expanded img{transform:scale(1)!important}
+.card-tag{position:absolute;top:13px;left:13px;font-size:0.64rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.26rem 0.75rem;border-radius:50px;background:rgba(255,255,255,0.88);color:var(--navy);z-index:2}
+.expand-hint{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.45);color:#fff;font-size:0.65rem;padding:0.2rem 0.55rem;border-radius:50px;letter-spacing:0.05em;pointer-events:none;transition:opacity 0.3s}
+.card-icon-wrap.expanded .expand-hint{opacity:0}
+.card-body{padding:1.4rem}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem;line-height:1.2}
+.card-subtitle{font-size:0.9rem;color:var(--blue);font-weight:500;letter-spacing:0.04em;margin-bottom:0.7rem}
+.card-text{font-size:1rem;color:var(--muted);line-height:1.72}
+.teen-tip{margin-top:1rem;background:#f0f5fc;border-left:3px solid var(--gold);padding:0.7rem 0.9rem;border-radius:0 8px 8px 0;font-size:0.95rem;color:var(--text);line-height:1.55}
+.teen-tip strong{color:var(--gold);font-weight:600}
+
+/* HMM ACCORDIONS */
+.hmm-boxes{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.hmm-box{background:rgba(200,136,26,0.06);border:1px solid rgba(200,136,26,0.22);border-left:3px solid var(--gold);border-radius:4px;padding:12px 16px;cursor:pointer;transition:background 0.2s}
+.hmm-box:hover{background:rgba(200,136,26,0.12)}
+.hmm-header{display:flex;align-items:center;gap:9px;font-size:0.92rem;font-weight:600;color:var(--gold);letter-spacing:0.04em;user-select:none}
+.hmm-arrow{margin-left:auto;font-size:0.75rem;transition:transform 0.3s;color:var(--gold);flex-shrink:0}
+.hmm-box.open .hmm-arrow{transform:rotate(180deg)}
+.hmm-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.95rem;line-height:1.72;color:var(--muted)}
+.hmm-box.open .hmm-body{max-height:400px;padding-top:10px}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--delft),var(--gold));border-radius:2px}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-left:1.5rem}
+.tl-item::before{content:'';position:absolute;left:-2.38rem;top:5px;width:14px;height:14px;border-radius:50%;background:var(--delft);border:3px solid var(--gold-light)}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--gold);line-height:1}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--navy);margin:0.2rem 0 0.5rem}
+.tl-text{font-size:1rem;color:var(--muted);line-height:1.75}
+
+/* DELFTWARE BLUE SECTION */
+.blue-section{background:var(--navy)}
+.blue-inner{max-width:1100px;margin:0 auto;padding:5rem 1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+@media(max-width:700px){.blue-inner{grid-template-columns:1fr;gap:2rem}}
+.process-steps{display:flex;flex-direction:column;gap:1rem}
+.process-step{display:flex;gap:1rem;align-items:flex-start;background:rgba(255,255,255,0.06);padding:1rem 1.2rem;border-radius:12px;border:1px solid rgba(255,255,255,0.1)}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold-light);line-height:1;flex-shrink:0;width:1.8rem}
+.step-text{font-size:0.95rem;color:rgba(255,255,255,0.7);line-height:1.65}
+.step-text strong{color:#fff;display:block;margin-bottom:0.2rem;font-size:1rem}
+
+/* PEOPLE */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem}
+.person-card{background:#fff;border-radius:16px;padding:1.8rem;text-align:center;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s}
+.person-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(22,35,71,0.12)}
+.person-emoji{font-size:3rem;margin-bottom:0.8rem;display:block}
+.person-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:0.2rem}
+.person-years{font-size:0.74rem;color:var(--gold);font-weight:600;letter-spacing:0.08em;margin-bottom:0.8rem}
+.person-text{font-size:0.95rem;color:var(--muted);line-height:1.7}
+
+/* FUN FACTS */
+.fun-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem}
+.fun-card{border-radius:16px;padding:1.6rem;border:1px solid var(--border);background:#fff;position:relative;overflow:hidden}
+.fun-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--delft),var(--gold))}
+.fun-emoji{font-size:2rem;margin-bottom:0.8rem;display:block}
+.fun-q{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem}
+.fun-a{font-size:0.95rem;color:var(--muted);line-height:1.7;display:none;margin-top:0.5rem}
+.fun-a.open{display:block}
+.fun-toggle{font-size:0.82rem;font-weight:600;letter-spacing:0.06em;color:var(--blue);cursor:pointer;margin-top:0.6rem;display:inline-block;text-transform:uppercase;background:none;border:none;padding:0;font-family:inherit}
+
+/* TIPS */
+.tips-bg{background:linear-gradient(135deg,#eef4fc 0%,var(--cream) 100%)}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.tip-card{background:#fff;border-radius:14px;padding:1.4rem;border:1px solid var(--border)}
+.tip-icon{font-size:1.8rem;margin-bottom:0.6rem;display:block}
+.tip-title{font-weight:600;font-size:0.9rem;color:var(--navy);margin-bottom:0.4rem}
+.tip-text{font-size:0.82rem;color:var(--muted);line-height:1.65}
+
+/* MAP CTA */
+.map-cta{background:var(--delft);padding:4rem 1.5rem;text-align:center}
+.map-cta h2{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:#fff;margin-bottom:0.8rem}
+.map-cta p{color:rgba(255,255,255,0.68);font-size:0.95rem;margin-bottom:1.8rem}
+.cta-btn{display:inline-block;background:var(--gold);color:#fff;text-decoration:none;font-weight:600;padding:0.9rem 2.2rem;border-radius:50px;font-size:0.9rem;letter-spacing:0.04em;transition:background 0.2s,transform 0.2s}
+.cta-btn:hover{background:#a0700e;transform:translateY(-2px)}
+
+/* FOOTER */
+footer{background:var(--navy);padding:2rem 1.5rem;text-align:center;color:rgba(255,255,255,0.38);font-size:0.78rem;line-height:1.8}
+
+/* DIVIDER */
+.tile-divider{height:4px;background:linear-gradient(90deg,var(--delft) 0%,var(--gold) 50%,var(--delft) 100%)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s cubic-bezier(.2,.8,.2,1),transform 0.65s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:600px){
+  .section-wrap{padding:3rem 1.2rem}
+  .blue-inner{padding:3rem 1.2rem}
+  .fact-item{min-width:150px;padding:1.5rem 1rem}
+  .sites-grid{grid-template-columns:1fr}
+  .people-grid{grid-template-columns:1fr}
+  .fun-grid{grid-template-columns:1fr}
+  .site-card:hover{transform:none}
+  .person-card:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="tile-deco">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M50 12 Q70 32 50 52 Q30 32 50 12Z" fill="#fff"/><line x1="50" y1="52" x2="50" y2="88" stroke="#fff" stroke-width="2.5"/></svg>
+    <svg viewBox="0 0 100 100"><rect x="12" y="12" width="76" height="76" rx="10" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M50 22 Q65 38 50 54 Q35 38 50 22Z" fill="#fff"/><line x1="50" y1="54" x2="50" y2="82" stroke="#fff" stroke-width="2"/></svg>
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M28 62 Q50 18 72 62 Q62 78 50 72 Q38 78 28 62Z" fill="#fff"/></svg>
+    <svg viewBox="0 0 100 100"><path d="M18 82 Q50 8 82 82 Q65 94 50 88 Q35 94 18 82Z" fill="#fff"/></svg>
+  </div>
+
+  <svg class="hero-windmill" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="6" fill="#f0c96a"/>
+    <path d="M50 44 L45 8 L55 8 Z" fill="#f0c96a" opacity="0.85"/>
+    <path d="M56 50 L92 45 L92 55 Z" fill="#f0c96a" opacity="0.85"/>
+    <path d="M50 56 L55 92 L45 92 Z" fill="#f0c96a" opacity="0.85"/>
+    <path d="M44 50 L8 55 L8 45 Z" fill="#f0c96a" opacity="0.85"/>
+    <rect x="47" y="50" width="6" height="38" rx="3" fill="rgba(255,255,255,0.25)"/>
+  </svg>
+
+  <h1>Discover<br/><em>Delft</em></h1>
+  <p class="hero-tagline">A family adventure through cobblestone lanes, leaning spires, royal mysteries, and the world's most famous blue pottery</p>
+
+  <div class="hero-chips">
+    <span class="chip">🏰 Historic Sites</span>
+    <span class="chip">🎨 Delftware</span>
+    <span class="chip">🚲 Canal Walks</span>
+    <span class="chip">👑 Royal History</span>
+    <span class="chip">🔬 Famous Inventors</span>
+    <span class="chip">👨‍👩‍👧‍👦 Family Friendly</span>
+  </div>
+
+  <div class="hero-scroll">Scroll to explore<div class="hero-scroll-arrow"></div></div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#sites">📍 Top Sites</a>
+  <a href="#history">📜 History</a>
+  <a href="#people">🧑‍🎓 Famous People</a>
+  <a href="#delftware">🏺 Delftware</a>
+  <a href="#facts">💡 Fun Facts</a>
+</nav>
+
+<!-- FACT CAROUSEL -->
+<div class="fact-carousel" id="factCarousel">
+  <button class="fact-btn fact-prev" onclick="moveFact(-1)">&#8249;</button>
+  <div class="fact-track" id="factTrack">
+    <div class="fact-item"><div class="fact-num">1536</div><div class="fact-lbl">Great fire that rebuilt Delft</div></div>
+    <div class="fact-item"><div class="fact-num">200</div><div class="fact-lbl">Breweries in Delft's golden age</div></div>
+    <div class="fact-item"><div class="fact-num">376</div><div class="fact-lbl">Steps up the New Church tower</div></div>
+    <div class="fact-item"><div class="fact-num">1477</div><div class="fact-lbl">First printed Dutch Bible, made here</div></div>
+    <div class="fact-item"><div class="fact-num">32</div><div class="fact-lbl">Original Delftware factories (only 1 remains)</div></div>
+    <div class="fact-item"><div class="fact-num">400+</div><div class="fact-lbl">Years linking China &amp; Delft</div></div>
+  </div>
+  <button class="fact-btn fact-next" onclick="moveFact(1)">&#8250;</button>
+</div>
+<div class="fact-dots" id="factDots"></div>
+
+<!-- TOP SITES -->
+<div id="sites" style="background:#d6e0ee">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Where to go</p>
+    <h2 class="section-title">Top Sites for Families</h2>
+    <p class="section-intro">Delft is compact enough to walk everywhere, yet packed with enough history, art, and quirky details to fill two wonderful days. Here are the must-sees — all within easy walking distance of each other.</p>
+  </div>
+
+  <div class="sites-grid">
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="new_church.jpg" alt="New Church Delft" loading="lazy"/><span class="card-tag">Church</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Markt Square</div>
+        <h3 class="card-title">New Church (Nieuwe Kerk)</h3>
+        <p class="card-text">The 14th-century needle around which Delft spins — holding the tombs of Dutch royalty, including William of Orange's elaborate monument. Two statues inside: white marble and bronze. The whole bronze figure is balanced on just one slender ankle.</p>
+        <div class="teen-tip"><strong>🧗 Challenge:</strong> Climb 376 steps to the top in a very narrow staircase! On a clear day you can see The Hague one way and Rotterdam the other.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>👑</span> Why is the royal family buried here — not somewhere else? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">When William of Orange was assassinated in 1584, his hometown of Breda was occupied by Spain. So he was buried in Delft instead — and the tradition stuck. To this day, the House of Orange buries its nobility in this church.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🐕</span> What does the dog at William's feet mean? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The dog symbolizes loyalty. Above it, an angel of Fame blows a trumpet announcing William's greatness. The amazing engineering detail: the entire bronze statue — armored king, dog, and angel — is supported by just one of William's ankles.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🔒</span> What's in the crypt under the floor? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">A large stone slab near William's tomb marks the entrance to a sprawling underground labyrinth that holds the remains of the Dutch royal family. The crypt is strictly off-limits to everyone except family members.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="old_church.jpg" alt="Old Church Delft" loading="lazy"/><span class="card-tag">Church</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Near Oude Delft Canal</div>
+        <h3 class="card-title">Old Church (Oude Kerk)</h3>
+        <p class="card-text">Older, smaller, and famously crooked — the spire leans visibly because it was built on an unstable foundation over a filled-in canal. For 150 years it was the tallest spire in Delft. Inside are tombs of Vermeer, van Leeuwenhoek, and Admiral Piet Hein.</p>
+        <div class="teen-tip"><strong>🔍 Spot This:</strong> Vermeer's actual tombstone is just a simple floor plaque. A grander monument was only installed in 2007 — find both!</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>📜</span> What happened to all the Catholic art inside? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Iconoclastic riots in 1566 and 1572 violently destroyed every hint of Roman Catholic imagery in the church. That's why the interior looks so sober and clean today — it was deliberately stripped bare by Protestant reformers who saw Catholic decoration as idolatry.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎵</span> Who is Piet Hein and why is there a children's song about him? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Admiral Piet Hein captured an entire Spanish silver fleet during the Eighty Years' War — a stunning achievement that thrilled the whole nation. He became so beloved a song was written about him, still sung in the Netherlands today. His tomb sits in the center nave at the front of the church.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🪑</span> What's special about the pulpit? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The wooden canopied pulpit dates from 1548 and is considered one of the finest in all of the Netherlands. The carvings on its sides demonstrate a remarkable mastery of perspective — extraordinarily sophisticated for its era.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="stadhuis.jpg" alt="Stadhuis Delft" loading="lazy"/><span class="card-tag">Historic Building</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Markt Square</div>
+        <h3 class="card-title">Stadhuis (Town Hall)</h3>
+        <p class="card-text">Rebuilt in 1620 in the Renaissance style, this law court features Lady Justice on the facade. Above her: Holland's red lion coat of arms. Below: Delft's own crest featuring a canal — because "Delft" literally means canal.</p>
+        <div class="teen-tip"><strong>🦁 Look Up:</strong> Find the red lion above Lady Justice, then the canal symbol below it. Two symbols, two stories, one facade.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⚖️</span> Why was the tower originally built here? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The sturdy stone tower at the core of the building was originally a prison. Because a prison needed to be built of heavy stone, and this marshy city needed a solid clay foundation to support that weight, builders chose this specific spot — the most geologically stable ground in Delft. The town hall simply grew up around it.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🦁</span> What was Holland's role in the Dutch Republic? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Of the seven provinces that broke from Spain to form the Dutch Republic, Holland was by far the most powerful — driving 85% of the entire country's economy. Amsterdam was Holland's engine. The red lion coat of arms on the Town Hall facade represents Holland's dominance within the Republic.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="market_square.jpg" alt="Delft Market Square" loading="lazy"/><span class="card-tag">Market Square</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">City Center</div>
+        <h3 class="card-title">The Markt (Market Square)</h3>
+        <p class="card-text">The rectangular heart of Delft, framed by the New Church and Town Hall. Everything above ground in brick was built after the great fire of 1536, though the ancient cellars beneath survived. The square has never been renovated — always ready for a royal funeral.</p>
+        <div class="teen-tip"><strong>🍔 Wild Fact:</strong> Look for the building above the Subway sandwich shop where a carved Bible on the corner recalls the first printed Dutch Bible, produced right here in Delft in 1477.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>📖</span> Why is there a Bible carved above a Subway? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">In 1477 — nearly 550 years ago — the first Dutch-language Bible was printed in this very building. The carved Bible on the upstairs corner is the only clue most visitors ever notice. Below it today: a Subway sandwich shop. The contrast is very Delft.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⚡</span> How did the fire of 1536 change Delft forever? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Lightning struck the New Church spire and the fire destroyed two-thirds of the town. Delft was rebuilt in brick — which is why everything you see above ground on the Markt today dates from after 1536. The cellars beneath the buildings, however, are much older and survived the fire intact.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⚖️</span> Who is the statue on the square, and why does he matter? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The statue in front of the New Church honors Hugo Grotius, born in Delft in 1583. He invented the concept of freedom of the seas — the idea that oceans should be free-trade territory for all nations. England disagreed so strongly the two countries went to war. The eventual settlement forms the basis of international maritime law used today worldwide.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="Prinsenhof_Museum.jpg" alt="Prinsenhof Delft" loading="lazy"/><span class="card-tag">Museum</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Agathaplein 1</div>
+        <h3 class="card-title">Prinsenhof Museum</h3>
+        <p class="card-text">This former convent of St. Agatha is where William of Orange hid from Spanish assassins and was ultimately killed in 1584. Two bullet holes from the assassination are still visible in the wall. Check prinsenhof-delft.nl — may be closed for renovation.</p>
+        <div class="teen-tip"><strong>🕵️ Real Crime Scene:</strong> The actual bullet holes from a royal assassination are still in the wall — more than 400 years later.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🎯</span> Why did the assassin fail to collect his reward? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The assassin shot William hoping to collect a bounty offered by Spanish King Philip II. Instead of getting rich, he was caught on the spot, tortured, and executed. The bullet holes — two of them — remain embedded in the wall at the base of the stairs, exactly where the shots were fired in 1584.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🏮</span> What are those blue-and-white lampposts in the courtyard? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Three distinctive blue-and-white lampposts were made in Delft's Chinese sister city. They represent the 400-year relationship between Chinese porcelain makers and Delft's craftspeople — the very connection that gave birth to Delftware. The only color that survived the intense heat of Chinese porcelain firing was blue, which is why Delftware is blue.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌿</span> Is there anything free to see here? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Yes — the tranquil monastic herb garden in the middle of the courtyard is free and open daily 11:00–17:00. At its center stands a statue of William of Orange, considered the founder of the Netherlands. Even if the museum is closed for renovation, the courtyard, herb garden, and lampposts are all still accessible.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="Royal_Delft_Museum.jpg" alt="Royal Delft factory" loading="lazy"/><span class="card-tag">Museum &amp; Factory</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Rotterdamseweg 196</div>
+        <h3 class="card-title">Royal Delft Museum</h3>
+        <p class="card-text">The only surviving Delftware factory out of 32 that once operated — running since 1653. Watch real painters at work and see how blue-and-white earthenware is made, from raw clay to finished glaze.</p>
+        <div class="teen-tip"><strong>🎨 Magic Trick:</strong> Artists paint with black paint that transforms into brilliant blue in the kiln. No erasing — the biscuit clay soaks up paint instantly.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🇨🇳</span> How did Chinese pottery inspire Delftware? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Dutch East India Company (partly headquartered in Delft) imported beautiful Chinese porcelain with intricate blue-and-white designs — flowers, peacocks, geometric patterns. Local Dutch potters were so inspired they started copying the style. The only color that could survive the intense heat required was blue, which is why Delftware is always blue and white.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>👑</span> How does a company earn the "Royal" title in the Netherlands? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">To receive the "Royal" designation in the Netherlands, a company must be at least 100 years old and demonstrate sustained excellence. This factory began in 1653 — it has more than earned the title. Of the 32 original Delftware factories, this is the only one still operating today.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🧱</span> Why isn't Dutch clay used for Delftware? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The clay found in the Netherlands sits below sea level in waterlogged soil — making it "dirty clay" full of impurities. It's only good for making bricks. The fine clay used for Delftware is imported from England and Germany, where the soil conditions produce much purer material suitable for delicate pottery.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="vehmeer_museum.webp" alt="Vermeer Museum Delft" loading="lazy"/><span class="card-tag">Museum</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Voldersgracht 21</div>
+        <h3 class="card-title">Vermeer Museum (Vermeer Centrum)</h3>
+        <p class="card-text">Housed in the striking black-and-yellow diamond-patterned building in the heart of old Delft, this museum is dedicated to Johannes Vermeer — the city's most famous son. Vermeer was born, worked, and died here, and all 37 of his known paintings were made in Delft.</p>
+        <div class="teen-tip"><strong>🎨 Cool to Know:</strong> Not a single original Vermeer painting is in Delft — they're scattered in museums worldwide. This museum is about the man and his world, not his canvases. Knowing that actually makes it more interesting.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🖼️</span> Why are there no original Vermeer paintings in Delft? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Vermeer died in 1675 leaving his family in debt. Over the centuries his paintings were sold and dispersed to collections across Europe and America. Today they hang in the Rijksmuseum, the Louvre, the Met, and other great museums — but none remain in his hometown of Delft.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>⏳</span> Why wasn't Vermeer famous during his lifetime? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Vermeer produced only about 37 paintings in his entire lifetime — far fewer than other Dutch masters of his era. He was known locally in Delft but never achieved wider fame. The grander monument to him in the Old Church floor was only installed in 2007, reflecting how much more celebrated he is today than he was in his own time.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>📍</span> What is the photo cube outside the Old Church? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Under the trees across from the Old Church, there is a rotating photo cube that tells the story of Vermeer, who was born, lived, and is buried in Delft. You can spin it to learn about the painter and his connection to this city.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="smallest_house.webp" alt="Smallest house Delft" loading="lazy"/><span class="card-tag">Curiosity</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Oude Delft 147</div>
+        <h3 class="card-title">Smallest House of Delft</h3>
+        <p class="card-text">Said to be the tiniest house in the entire city, tucked along the historic Oude Delft canal — the city's very first and most important trading waterway. One of Delft's delightful blink-and-you'll-miss-it surprises.</p>
+        <div class="teen-tip"><strong>📐 Photo Challenge:</strong> See if your whole family can fit in front of it. Then try to imagine actually living inside!</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🛶</span> What was the Oude Delft canal used for? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Oude Delft is the oldest canal in the city — dating back to the 11th century. In Delft's golden age, barges loaded with goods and produce traveled this waterway, fueling the entire local economy. From April through September, barges still line the canal today — but now they serve as sunny outdoor restaurant decks, fueling the new economy: tourism.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🔬</span> Who is commemorated on the iron fence nearby? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">On the black iron fence at the corner where Boterbrug meets the Oude Delft canal, there's a memorial plaque to Antonie van Leeuwenhoek (1632–1723) — the Delft scientist who invented an early microscope and used it to discover bacteria for the first time in human history. He is buried in the Old Church, visible in the distance down the canal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="boterbrug.JPG" alt="Boterbrug Delft" loading="lazy"/><span class="card-tag">Historic Street</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Between the Waag and Oude Delft Canal</div>
+        <h3 class="card-title">Boterbrug (Butter Bridge)</h3>
+        <p class="card-text">"Boterbrug" means Butter Bridge. This wide street was once an actual approach canal (now paved over) leading to the customs house. Merchants had a simple drill: before you traded, first you weighed, then you paid.</p>
+        <div class="teen-tip"><strong>🇺🇸 History Connection:</strong> The Dutch revolt against Spanish taxation and the American Revolution both happened around the same era, for the same reason: unfair taxes. Two revolutions, one cause, two continents.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>💰</span> How did taxation here lead to revolution? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">During Spanish rule, every merchant bringing goods through Delft had to weigh their cargo and pay a tax before trading. As Spanish taxes grew increasingly heavy and unjust, resentment built across the Netherlands — ultimately sparking the Dutch revolt led by William of Orange. The parallel to the American Revolution (also triggered by unfair British taxes) is striking: same era, same cause, different continents.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌊</span> Why is a street called a bridge? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Boterbrug was originally an approach canal — a waterway that led boats directly to the Waag customs house. At some point the canal was filled in and paved over, becoming a street. The name "Butter Bridge" is a memory of when goods arrived here by water rather than on foot.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="waag.jpg" alt="The Waag Delft" loading="lazy"/><span class="card-tag">Historic Building</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Behind the Town Hall</div>
+        <h3 class="card-title">The Waag</h3>
+        <p class="card-text">The city's medieval weighing and customs house, with workspaces for goldsmiths and silversmiths upstairs. Now a bar/restaurant — step inside to see the enormous timbers and massive old scales. Look for the Vleeshal (meat market) with cow heads above the doors!</p>
+        <div class="teen-tip"><strong>🐄 Look for the Cows:</strong> The old meat market still has carved cow heads above its doors. Once a medieval butcher's market — now a great photo op!</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🐟</span> Where was the fish market? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">Just to the left of the Vleeshal (meat market) was the Visbanken — the fish market. Meat on one side, fish on the other, and the weighing house in the middle. This cluster of buildings was the entire commercial engine of medieval Delft: every transaction in the city flowed through here.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🚤</span> How did goods arrive at the Waag? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">At the back side of the Waag building, down below, is the old water gate — the point where canal boats pulled up to off-load produce and goods to be weighed and taxed. Everything coming into Delft by water passed through this gate before it could be traded.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-card reveal">
+      <div class="card-icon-wrap" onclick="togglePhoto(this)"><img src="gemeenlandshuis.webp" alt="Gemeenlandshuis Delft" loading="lazy"/><span class="card-tag">Historic Building</span><span class="expand-hint">tap to expand</span></div>
+      <div class="card-body">
+        <div class="card-subtitle">Oude Delft 167</div>
+        <h3 class="card-title">Gemeenlandshuis</h3>
+        <p class="card-text">Headquarters of the 17th-century water authority, responsible for keeping waterways dredged and managing water levels. The exterior wall is covered in colorful coats of arms of the water-authority directors — the powerful officials who literally kept the Netherlands from flooding.</p>
+        <div class="teen-tip"><strong>💧 Mind-Bending Fact:</strong> Look for the NAP yardstick across the canal — the red mark shows average sea level in Amsterdam. Most of the Dutch countryside sits about 9 feet below that line.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>🌊</span> What would happen if the water authority stopped working? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">The Dutch countryside — called polders — sits about three yards below sea level. This land was reclaimed from the sea and depends on constant management of water levels to stay dry. The water authority based at this building was responsible for keeping the waterways dredged and water levels under control across the towns and polders of the region.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>📏</span> What is the NAP and why does it matter? <span class="hmm-arrow">▾</span></div>
+            <div class="hmm-body">NAP stands for "Normaal Amsterdams Peil" — Normal Amsterdam Level. It's the benchmark for measuring sea level across the entire Netherlands. The red NAP marking on the yardstick across the canal shows average sea level. Standing at the Gemeenlandshuis, you're actually above it — but look across the countryside and you're staring at land that sits well below the sea.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="tile-divider"></div>
+
+<div id="history">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Through the Ages</p>
+    <h2 class="section-title">Delft's Dramatic History</h2>
+    <p class="section-intro">From a marshy village to a golden-age powerhouse, Delft has seen fire, revolution, royal assassination, and artistic genius. Here's the story.</p>
+  </div>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-year">11th C</div>
+      <div class="tl-title">The Canal Is Dug</div>
+      <p class="tl-text">The Oude Delft canal — the oldest in the city — is dug, and Delft begins to take shape as a trading settlement. "Delft" means canal in Dutch. Built on marshy lowlands, the city's builders always had to be clever about foundations.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1477</div>
+      <div class="tl-title">First Printed Dutch Bible</div>
+      <p class="tl-text">The first Dutch-language Bible is printed right here in Delft, at what is now #57 on the Markt. A carved Bible on the building's upstairs corner still marks the spot today — directly above a Subway sandwich shop.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1536</div>
+      <div class="tl-title">The Great Fire</div>
+      <p class="tl-text">Lightning strikes the spire of the New Church, igniting a fire that destroys two-thirds of the town. Delft is rebuilt in brick. Everything you see above ground on the Markt dates from after this catastrophe, though ancient cellars survived underground.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1579–1648</div>
+      <div class="tl-title">The Dutch Revolt</div>
+      <p class="tl-text">Seven of the 17 Spanish Netherlands provinces break away to form the Dutch Republic. William of Orange leads the revolt from Delft after Spain puts a bounty on his head. Heavy taxation — the same spark that later ignited the American Revolution — fuels the rebellion.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1584</div>
+      <div class="tl-title">Assassination of William of Orange</div>
+      <p class="tl-text">William I of Orange, leader of the Dutch revolt, is shot and killed at the Prinsenhof in Delft. His hometown of Breda was occupied by Spain, so he was buried in Delft's New Church — beginning the tradition of Dutch royalty being interred there. The assassin hoped to collect the bounty offered by Spanish King Philip II but was caught, tortured, and executed instead. The bullet holes remain in the wall.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1600s</div>
+      <div class="tl-title">The Golden Age</div>
+      <p class="tl-text">Delft thrives with 200 breweries, exporting 80% of its beer. The Dutch East India Company (partly based here) imports Chinese porcelain, inspiring local potters to create Delftware. Vermeer paints his masterpieces. Van Leeuwenhoek invents the microscope and discovers bacteria. This small city punches far above its weight in world history.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1653</div>
+      <div class="tl-title">Royal Delft Factory Founded</div>
+      <p class="tl-text">The factory now known as Royal Delft opens — the only one of 32 original Delftware factories to survive to the present day. To earn the "Royal" designation in the Netherlands, a business must operate for at least 100 years.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">1700s</div>
+      <div class="tl-title">Economic Collapse &amp; Sleeping Beauty</div>
+      <p class="tl-text">Without a river, major harbor, or connecting roads, Delft is left behind as trade shifts. The city becomes a "sleeping beauty" — its medieval structure perfectly preserved, simply awaiting rediscovery. Today that preservation is the reason visiting Delft feels like stepping back in time.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="tile-divider"></div>
+
+<!-- FAMOUS PEOPLE -->
+<div id="people" style="background:#d6e0ee">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Born or Buried Here</p>
+    <h2 class="section-title">Delft's Famous Residents</h2>
+    <p class="section-intro">For a small city, Delft produced an astonishing list of world-changers. These are the people whose names you'll encounter on every corner.</p>
+  </div>
+  <div class="people-grid">
+    <div class="person-card reveal">
+      <span class="person-emoji">⚔️</span>
+      <div class="person-name">William of Orange</div>
+      <div class="person-years">1533 – 1584</div>
+      <p class="person-text">Leader of the Dutch revolt against Spanish rule and considered the founder of the Netherlands. Hid from assassins in Delft's Prinsenhof convent and was ultimately killed there. His death began the tradition of Dutch royalty being buried in the New Church. His memorial there features two statues, a loyal dog, and an angel of Fame balanced on a single ankle.</p>
+    </div>
+    <div class="person-card reveal">
+      <span class="person-emoji">🎨</span>
+      <div class="person-name">Johannes Vermeer</div>
+      <div class="person-years">1632 – 1675</div>
+      <p class="person-text">One of the greatest painters in history — famous for works like "Girl with a Pearl Earring." Born, lived, and buried right here in Delft. During his lifetime he wasn't especially famous; a grander monument was only installed in the Old Church floor in 2007, reflecting how much more celebrated he is now than in his own time.</p>
+    </div>
+    <div class="person-card reveal">
+      <span class="person-emoji">🔬</span>
+      <div class="person-name">Antonie van Leeuwenhoek</div>
+      <div class="person-years">1632 – 1723</div>
+      <p class="person-text">Born the same year as Vermeer! Van Leeuwenhoek invented an early microscope powerful enough to discover bacteria — forever changing medicine and biology. He's buried in the Old Church and commemorated by a plaque on the iron fence along Oude Delft. Without him, modern medicine as we know it would be unimaginable.</p>
+    </div>
+    <div class="person-card reveal">
+      <span class="person-emoji">⚖️</span>
+      <div class="person-name">Hugo Grotius</div>
+      <div class="person-years">1583 – 1645</div>
+      <p class="person-text">Born in Delft, Grotius was the first to argue that the world's oceans should be free-trade territory open to all nations. The English disagreed so strongly they went to war over it. The eventual compromise — your waters extend to cannonball range from shore; everything beyond is open to all — still forms the basis of international maritime law today.</p>
+    </div>
+    <div class="person-card reveal">
+      <span class="person-emoji">⚓</span>
+      <div class="person-name">Admiral Piet Hein</div>
+      <div class="person-years">1577 – 1629</div>
+      <p class="person-text">A Dutch naval hero buried in the Old Church who, during the Eighty Years' War, captured an entire Spanish silver fleet — one of the greatest naval coups in Dutch history. He became so beloved that he's still the subject of a famous Dutch children's song sung today. His tomb is in the center nave at the front of the Old Church.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- DELFTWARE -->
+<div id="delftware" class="blue-section">
+  <div class="blue-inner">
+    <div class="reveal">
+      <p class="eyebrow" style="color:var(--gold-light)">The Famous Blue Pottery</p>
+      <h2 class="section-title" style="color:#fff">How Delftware Is Made</h2>
+      <p class="section-intro" style="color:rgba(255,255,255,0.62)">The Dutch East India Company brought Chinese porcelain to the Netherlands, and Delft's potters were so inspired — and competitive — they learned to make their own version. The only color that could survive the intense heat of the Chinese technique was blue. That's why Delftware is blue. Here's how it's still made today at the Royal Delft factory.</p>
+      <div class="teen-tip" style="margin-top:1.5rem;background:rgba(255,255,255,0.08);border-left-color:var(--gold-light)">
+        <strong style="color:var(--gold-light)">🧪 Science Fact:</strong> <span style="color:rgba(255,255,255,0.72)">Artists paint with black paint containing cobalt and copper oxide. A chemical reaction in the kiln transforms the black into brilliant blue — and the opaque white glaze melts into a transparent, glass-like outer shell.</span>
+      </div>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step"><div class="step-num">1</div><div class="step-text"><strong>Mix the Clay</strong>Clay imported from England and Germany is mixed with water into a liquid slurry. Dutch clay is too "dirty" for fine pottery — it's only good for bricks!</div></div>
+      <div class="process-step"><div class="step-num">2</div><div class="step-text"><strong>Shape It</strong>Plates: liquid clay is spun on a disk like a Dutch pancake and pressed into plate molds. Vases and figurines: liquid clay is poured into hollow plaster molds. The plaster absorbs the water, leaving a clay shell of the right thickness.</div></div>
+      <div class="process-step"><div class="step-num">3</div><div class="step-text"><strong>First Firing</strong>The dry clay object goes into the kiln, where it transforms from gray to white. The result is called "biscuit" — unfired, unglazed, and undecorated.</div></div>
+      <div class="process-step"><div class="step-num">4</div><div class="step-text"><strong>Paint the Design</strong>Artists paint the biscuit using black paint made with cobalt and copper oxide, applied with sable-hair brushes. The porous biscuit soaks up paint immediately — there is absolutely no erasing mistakes!</div></div>
+      <div class="process-step"><div class="step-num">5</div><div class="step-text"><strong>Glaze &amp; Second Firing</strong>The piece is dipped in opaque white glaze, then fired again. Heat triggers the chemical reaction: black becomes brilliant blue, and the glaze melts into a transparent glass-like shell. The famous Delft Blue is born.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FUN FACTS -->
+<div id="facts" style="background:#d6e0ee">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Did You Know?</p>
+    <h2 class="section-title">Fun Facts &amp; Quirky Trivia</h2>
+    <p class="section-intro">Tap each card to reveal the answer — perfect for quizzing each other on the walk!</p>
+  </div>
+  <div class="fun-grid">
+    <div class="fun-card reveal">
+      <span class="fun-emoji">⚖️</span>
+      <div class="fun-q">How far out to sea does a country "own" the water around it?</div>
+      <div class="fun-a">Thanks to Hugo Grotius — born right here in Delft — the rule became: as far as a cannonball fired from your shore can reach. Beyond that range, the sea is open to all nations. That agreement, sparked by a century-long argument with England, still forms the basis of international maritime law today.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🐮</span>
+      <div class="fun-q">What unusual decoration can you find above the doors of the old meat market near the Waag?</div>
+      <div class="fun-a">Carved cow heads! The Vleeshal — the medieval meat market just around the corner from the Waag — still has cow heads carved above its doors. The fish market, called the Visbanken, sat just to the left of it. Both were part of the commercial heart of medieval Delft.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🇪🇸</span>
+      <div class="fun-q">How many of the 17 Spanish Netherlands provinces broke away to form the Dutch Republic?</div>
+      <div class="fun-a">Seven out of 17. Those seven provinces seceded and formed the Dutch Republic — the United Provinces of the Netherlands. Holland was the most powerful of the seven, driving 85% of the country's economy. The other ten provinces remained under Spanish control.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🌿</span>
+      <div class="fun-q">What can you visit for free inside the Prinsenhof grounds?</div>
+      <div class="fun-a">A tranquil monastic herb garden, open daily from 11:00 to 17:00, with no entry fee. It was originally a convent herb garden, and at its center stands a statue of William of Orange — considered the founder of the Netherlands. It's one of the quietest spots in central Delft.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🚤</span>
+      <div class="fun-q">When can you eat lunch on a canal barge in Delft?</div>
+      <div class="fun-a">From April through September, barges line the Oude Delft canal and serve as outdoor restaurant decks for the city's restaurants. In earlier centuries those same barges carried goods and produce that fueled the entire local economy. Now they fuel a different economy: tourism.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">⛪</span>
+      <div class="fun-q">The New Church has the most important royal tombs — but what is unusual about the TV monitors inside?</div>
+      <div class="fun-a">TV monitors in the transept show footage from the last few royal burials held in the church. The Dutch royal family still uses this church for royal funerals to this day, which is also why the Markt square has never been significantly renovated — it must always be ready to host a royal funeral on short notice.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🏮</span>
+      <div class="fun-q">Why are there three blue-and-white lampposts in the Prinsenhof courtyard?</div>
+      <div class="fun-a">They were made in Delft's Chinese sister city and gifted to the city as a reminder of the 400-year relationship between porcelain makers in China and the craftspeople of Delft. That long connection is the reason Delftware looks the way it does — the Chinese blue-and-white style was the original inspiration.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🏛️</span>
+      <div class="fun-q">Why did Delft's economy collapse in the 1700s when it had been so successful in the 1600s?</div>
+      <div class="fun-a">Because Delft lacked the infrastructure of a real trading city — no river, no local harbor, and no major roads connecting it to larger markets. When trade patterns shifted, Delft was simply left behind. The result was that the city was preserved almost perfectly in its medieval form, which is exactly why it looks so beautiful today.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+    <div class="fun-card reveal">
+      <span class="fun-emoji">🕍</span>
+      <div class="fun-q">What does the English service time at the Old Church tell you about Delft today?</div>
+      <div class="fun-a">The Old Church holds a Dutch Reformed English-language service every Sunday at 12:30. The church has been active for centuries — the names of its ministers going all the way back to 1572 are listed on the wall as you enter. It is a working church, not just a tourist attraction.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Content based on Rick Steves' <em>Amsterdam &amp; the Netherlands</em> travel guide.</p>
+  <p style="margin-top:0.4rem">Delft, South Holland, Netherlands &nbsp;·&nbsp; Familie-vriendelijk &nbsp;·&nbsp; Family Friendly</p>
+</footer>
+
+<script>
+// Photo expand toggle
+function togglePhoto(el) { el.classList.toggle('expanded'); }
+
+// Fact carousel
+(function(){
+  const track = document.getElementById('factTrack');
+  const dotsEl = document.getElementById('factDots');
+  const items = track.querySelectorAll('.fact-item');
+  let current = 0;
+  let autoTimer;
+
+  // Build dots
+  items.forEach((_,i) => {
+    const d = document.createElement('button');
+    d.className = 'fact-dot' + (i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    current = (n + items.length) % items.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.fact-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+    resetAuto();
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 4000);
+  }
+
+  window.moveFact = (dir) => goTo(current + dir);
+
+  // Swipe support
+  let startX = 0;
+  track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+  });
+
+  resetAuto();
+})();
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 55);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => obs.observe(el));
+
+// Hmm-box accordion toggle
+function toggleHmm(el) { el.classList.toggle('open'); }
+
+// Fun fact toggle
+function toggleFact(btn) {
+  const card = btn.closest('.fun-card');
+  const ans = card.querySelector('.fun-a');
+  const open = ans.classList.toggle('open');
+  btn.textContent = open ? 'Hide Answer ▴' : 'Reveal Answer ▾';
+}
+</script>
+</body>
+</html>

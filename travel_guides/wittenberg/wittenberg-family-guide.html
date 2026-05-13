@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lutherstadt Wittenberg &mdash; Family Adventure Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --forest:#1a2e14;--green:#2d5020;--moss:#3d6b2e;
+  --parchment:#f5eedc;--parchment-mid:#ede3c8;--parchment-dark:#e0d4b0;
+  --copper:#b5642a;--copper-light:#d4854e;--white:#fffdf8;
+  --text:#1c2014;--muted:#5a6050;--border:#cec6a8;
+}
+body{font-family:'Outfit',sans-serif;background:var(--parchment);color:var(--text);overflow-x:hidden}
+
+/* HERO */
+.hero{min-height:100svh;background:var(--forest);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.25rem 5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:52px 52px;pointer-events:none}
+.hero-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-deco svg{position:absolute;opacity:0.06;animation:floatDeco 22s ease-in-out infinite}
+.hero-deco svg:nth-child(1){top:5%;left:3%;width:120px;animation-delay:0s}
+.hero-deco svg:nth-child(2){top:8%;right:5%;width:90px;animation-delay:6s}
+.hero-deco svg:nth-child(3){bottom:9%;left:7%;width:110px;animation-delay:11s}
+.hero-deco svg:nth-child(4){bottom:14%;right:4%;width:140px;animation-delay:17s}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+.hero-icon{width:56px;height:56px;margin-bottom:1.4rem;animation:iconFade 1.2s ease both}
+@keyframes iconFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,10vw,7rem);font-weight:700;color:#fff;line-height:1;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:var(--copper-light)}
+.hero-tagline{margin-top:1.1rem;font-size:clamp(0.92rem,2.5vw,1.1rem);color:rgba(255,255,255,0.58);font-weight:300;max-width:480px;line-height:1.75}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:1.6rem}
+.chip{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);color:rgba(255,255,255,0.8);padding:0.35rem 0.9rem;border-radius:50px;font-size:0.73rem;font-weight:500;letter-spacing:0.04em}
+.hero-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:rgba(255,255,255,0.32);font-size:0.67rem;letter-spacing:0.16em;text-transform:uppercase;white-space:nowrap;animation:scrollFade 2s 1.8s both}
+@keyframes scrollFade{from{opacity:0;transform:translateX(-50%) translateY(6px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.scroll-arrow{width:13px;height:13px;border-right:2px solid rgba(255,255,255,0.28);border-bottom:2px solid rgba(255,255,255,0.28);transform:rotate(45deg);animation:arrowBounce 1.5s infinite}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--forest);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 3px 18px rgba(0,0,0,0.35);-webkit-overflow-scrolling:touch}
+nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:0.9rem 1.05rem;color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.72rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+nav a:hover,nav a:focus{color:#fff;border-bottom-color:var(--copper-light)}
+
+/* CAROUSEL */
+.carousel-wrap{background:var(--green);position:relative;overflow:hidden;user-select:none;touch-action:pan-y}
+.car-track{display:flex;transition:transform 0.42s cubic-bezier(.4,0,.2,1)}
+.car-item{flex:0 0 100%;padding:1.8rem 3rem;text-align:center}
+.car-num{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--copper-light);line-height:1}
+.car-lbl{font-size:0.84rem;color:rgba(255,255,255,0.72);margin-top:0.4rem;line-height:1.5}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.11);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2;-webkit-tap-highlight-color:transparent}
+.car-btn:hover{background:rgba(255,255,255,0.24)}
+.car-prev{left:8px}.car-next{right:8px}
+.car-dots{display:flex;justify-content:center;gap:8px;padding:0.55rem 0 0.85rem;background:var(--green)}
+.car-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.28);border:none;cursor:pointer;padding:0;transition:background .2s;-webkit-tap-highlight-color:transparent}
+.car-dot.active{background:var(--copper-light)}
+
+/* LAYOUT */
+.section-wrap{max-width:1100px;margin:0 auto;padding:4rem 1.25rem}
+.eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--moss);margin-bottom:0.45rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,5vw,3rem);font-weight:700;color:var(--forest);line-height:1.15;margin-bottom:0.9rem}
+.section-intro{font-size:0.97rem;color:var(--muted);max-width:660px;line-height:1.8;margin-bottom:2.5rem}
+.copper-divider{height:4px;background:linear-gradient(90deg,var(--green) 0%,var(--copper) 50%,var(--green) 100%)}
+
+/* SITE CARDS */
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:1.4rem}
+.site-card{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.07);transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s}
+@media(hover:hover){.site-card:hover{transform:translateY(-5px);box-shadow:0 16px 38px rgba(26,46,20,0.13)}}
+.card-img-wrap{height:220px;position:relative;overflow:hidden;background:var(--parchment-dark);cursor:zoom-in;transition:height .45s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent}
+.card-img-wrap.expanded{height:400px;cursor:zoom-out}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;pointer-events:none}
+@media(hover:hover){.site-card:hover .card-img-wrap:not(.expanded) img{transform:scale(1.03)}}
+.card-img-wrap.expanded img{transform:scale(1)!important}
+.img-expand-hint{position:absolute;bottom:10px;right:10px;background:rgba(26,46,20,0.72);color:#fff;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.3rem 0.65rem;border-radius:50px;pointer-events:none;transition:opacity .3s}
+.card-img-wrap.expanded .img-expand-hint{opacity:0}
+.card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:linear-gradient(135deg,var(--parchment-dark),var(--parchment-mid))}
+.card-tag{position:absolute;top:12px;left:12px;font-size:0.63rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.75rem;border-radius:50px;background:rgba(255,255,255,0.92);color:var(--forest);z-index:2}
+.card-body{padding:1.3rem}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.38rem;font-weight:700;color:var(--forest);margin-bottom:0.3rem;line-height:1.2}
+.card-subtitle{font-size:0.74rem;color:var(--moss);font-weight:500;letter-spacing:0.05em;margin-bottom:0.6rem}
+.card-text{font-size:0.875rem;color:var(--muted);line-height:1.74}
+.teen-tip{margin-top:1rem;background:#eef4e6;border-left:3px solid var(--copper);padding:0.75rem 0.9rem;border-radius:0 8px 8px 0;font-size:0.81rem;color:var(--text);line-height:1.6}
+.teen-tip strong{color:var(--copper);font-weight:600}
+
+/* ACCORDIONS */
+.hmm-boxes{display:flex;flex-direction:column;gap:7px;margin-top:1rem}
+.hmm-box{background:rgba(181,100,42,0.05);border:1px solid rgba(181,100,42,0.2);border-left:3px solid var(--copper);border-radius:4px;padding:12px 14px;cursor:pointer;transition:background .2s;-webkit-tap-highlight-color:transparent}
+.hmm-box:hover{background:rgba(181,100,42,0.09)}
+.hmm-header{display:flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:600;color:var(--copper);letter-spacing:0.03em;user-select:none;line-height:1.35}
+.hmm-arrow{margin-left:auto;font-size:0.67rem;transition:transform .3s;color:var(--copper);flex-shrink:0;padding-left:6px}
+.hmm-box.open .hmm-arrow{transform:rotate(180deg)}
+.hmm-body{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;font-size:0.83rem;line-height:1.74;color:var(--muted)}
+.hmm-box.open .hmm-body{max-height:600px;padding-top:9px}
+
+/* DARK SECTION */
+.dark-section{background:var(--forest)}
+.dark-inner{max-width:1100px;margin:0 auto;padding:4rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.dark-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--copper-light);margin-bottom:0.45rem}
+.dark-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:0.9rem}
+.dark-title em{font-style:italic;color:var(--copper-light)}
+.dark-body{font-size:0.875rem;color:rgba(255,255,255,0.62);line-height:1.82;margin-bottom:1.1rem}
+.steps{display:flex;flex-direction:column;gap:0.85rem}
+.step{display:flex;gap:0.9rem;align-items:flex-start;background:rgba(255,255,255,0.055);padding:0.95rem 1.1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.09)}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:var(--copper-light);line-height:1;flex-shrink:0;width:1.6rem}
+.step-txt{font-size:0.83rem;color:rgba(255,255,255,0.68);line-height:1.65}
+.step-txt strong{color:#fff;display:block;margin-bottom:0.15rem;font-size:0.87rem}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--green),var(--copper));border-radius:2px}
+.tl-item{position:relative;margin-bottom:2.2rem;padding-left:1.4rem}
+.tl-item::before{content:'';position:absolute;left:-2.34rem;top:6px;width:14px;height:14px;border-radius:50%;background:var(--green);border:3px solid var(--copper-light)}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--copper);line-height:1}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--forest);margin:0.2rem 0 0.4rem}
+.tl-text{font-size:0.875rem;color:var(--muted);line-height:1.76}
+
+/* PEOPLE */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:1.3rem}
+.person-card{background:var(--white);border-radius:16px;padding:1.6rem;text-align:center;border:1px solid var(--border);transition:transform .2s,box-shadow .2s}
+@media(hover:hover){.person-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(26,46,20,0.12)}}
+.person-emoji{font-size:2.6rem;margin-bottom:0.65rem;display:block}
+.person-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--forest);margin-bottom:0.18rem}
+.person-years{font-size:0.72rem;color:var(--copper);font-weight:600;letter-spacing:0.08em;margin-bottom:0.7rem}
+.person-text{font-size:0.83rem;color:var(--muted);line-height:1.72;text-align:left}
+
+/* FUN FACTS */
+.fun-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,258px),1fr));gap:1.2rem}
+.fun-card{border-radius:16px;padding:1.5rem;border:1px solid var(--border);background:var(--white);position:relative;overflow:hidden}
+.fun-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--green),var(--copper))}
+.fun-emoji{font-size:1.9rem;margin-bottom:0.65rem;display:block}
+.fun-q{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--forest);margin-bottom:0.4rem;line-height:1.38}
+.fun-a{font-size:0.84rem;color:var(--muted);line-height:1.72;display:none;margin-top:0.4rem}
+.fun-a.open{display:block}
+.fun-toggle{font-size:0.72rem;font-weight:600;letter-spacing:0.07em;color:var(--moss);cursor:pointer;margin-top:0.4rem;display:inline-flex;align-items:center;min-height:44px;text-transform:uppercase;background:none;border:none;padding:0;font-family:inherit;transition:color .2s;-webkit-tap-highlight-color:transparent}
+.fun-toggle:hover{color:var(--copper)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* FOOTER */
+footer{background:var(--forest);padding:2rem 1.25rem;text-align:center;color:rgba(255,255,255,0.36);font-size:0.78rem;line-height:1.85}
+footer em{color:var(--copper-light)}
+
+/* MOBILE */
+@media(max-width:600px){
+  .dark-inner{grid-template-columns:1fr;gap:2rem;padding:3rem 1.1rem}
+  .section-wrap{padding:3rem 1.1rem}
+  .car-item{padding:1.5rem 2.8rem}
+  .car-num{font-size:2.6rem}
+  .card-img-wrap{height:200px}
+  .card-img-wrap.expanded{height:300px}
+  .timeline{padding-left:1.6rem}
+  .tl-item{padding-left:1.1rem}
+  .tl-item::before{left:-2rem}
+  nav a{padding:0.85rem 0.85rem;font-size:0.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-deco">
+    <svg viewBox="0 0 100 100"><rect x="44" y="10" width="12" height="80" rx="3" fill="#fff"/><rect x="14" y="34" width="72" height="12" rx="3" fill="#fff"/></svg>
+    <svg viewBox="0 0 100 100"><path d="M10 25 Q50 15 90 25 L90 80 Q50 70 10 80Z" fill="none" stroke="#fff" stroke-width="3"/><line x1="50" y1="18" x2="50" y2="77" stroke="#fff" stroke-width="2.5"/></svg>
+    <svg viewBox="0 0 100 100"><path d="M15 85 Q40 30 85 10 Q65 40 55 60 Q45 75 15 85Z" fill="#fff"/><line x1="15" y1="85" x2="34" y2="66" stroke="#fff" stroke-width="2"/></svg>
+    <svg viewBox="0 0 100 100"><rect x="42" y="20" width="16" height="55" rx="4" fill="#fff"/><rect x="28" y="14" width="44" height="18" rx="5" fill="#fff"/></svg>
+  </div>
+  <svg class="hero-icon" viewBox="0 0 60 60" fill="none">
+    <path d="M8 52 Q28 18 54 6 Q40 26 34 42 Q28 52 8 52Z" fill="rgba(181,100,42,0.85)" stroke="rgba(212,133,78,0.5)" stroke-width="1.5"/>
+    <path d="M8 52 L20 40" stroke="rgba(245,230,200,0.55)" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <h1>Lutherstadt<br/><em>Wittenberg</em></h1>
+  <p class="hero-tagline">Where one frustrated professor posted 95 arguments to a church door &mdash; and accidentally launched the Protestant Reformation</p>
+  <div class="hero-chips">
+    <span class="chip">&#9962; Reformation Birthplace 1517</span>
+    <span class="chip">&#128221; 95 Theses on a Church Door</span>
+    <span class="chip">&#127912; Lucas Cranach's Workshop</span>
+    <span class="chip">&#128146; Monk Married a Nun</span>
+    <span class="chip">&#128214; Bible Translated in Disguise</span>
+    <span class="chip">&#128106; Family Friendly</span>
+  </div>
+  <div class="hero-scroll">Scroll to explore<div class="scroll-arrow"></div></div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#sites">Top Sites</a>
+  <a href="#luther">Luther's Story</a>
+  <a href="#history">Timeline</a>
+  <a href="#people">Key People</a>
+  <a href="#facts">Did You Know?</a>
+</nav>
+
+<!-- CAROUSEL -->
+<div class="carousel-wrap" id="carouselWrap">
+  <button class="car-btn car-prev" onclick="moveCar(-1)" aria-label="Previous">&#8249;</button>
+  <div class="car-track" id="carTrack">
+    <div class="car-item"><div class="car-num">1517</div><div class="car-lbl">Year Luther posted his 95 Theses to the Castle Church door</div></div>
+    <div class="car-item"><div class="car-num">95</div><div class="car-lbl">Arguments that sparked the Protestant Reformation</div></div>
+    <div class="car-item"><div class="car-num">2,000+</div><div class="car-lbl">Times Luther preached in the Town Church of St. Mary</div></div>
+    <div class="car-item"><div class="car-num">~2,000</div><div class="car-lbl">Luther portraits produced by Cranach and his workshop</div></div>
+    <div class="car-item"><div class="car-num">10</div><div class="car-lbl">Weeks Luther spent translating the New Testament into German while in hiding</div></div>
+    <div class="car-item"><div class="car-num">17</div><div class="car-lbl">Children raised by the Luthers &mdash; 6 of their own, 11 adopted orphans</div></div>
+    <div class="car-item"><div class="car-num">500</div><div class="car-lbl">Anniversary of the 95 Theses celebrated in Wittenberg in 2017</div></div>
+  </div>
+  <button class="car-btn car-next" onclick="moveCar(1)" aria-label="Next">&#8250;</button>
+</div>
+<div class="car-dots" id="carDots"></div>
+
+<!-- TOP SITES -->
+<div id="sites" style="background:var(--parchment-mid)">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Where to go</p>
+    <h2 class="section-title">Top Sites for Families</h2>
+    <p class="section-intro">Wittenberg's entire historic core can be walked in about 20 minutes &mdash; but every block holds a story. Here are the must-sees, with the details worth stopping for.</p>
+  </div>
+  <div class="sites-grid">
+
+    <!-- CASTLE CHURCH -->
+    <div class="site-card reveal">
+      <div class="card-img-wrap" onclick="toggleImg(this)">
+        <img src="Schlosskirche_Wittenberg_castle_church.jpg" alt="Castle Church Wittenberg at dusk" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>&#9962;</div>'"/>
+        <span class="card-tag">Church &#9733;&#9733;</span>
+        <span class="img-expand-hint">tap to expand +</span>
+      </div>
+      <div class="card-body">
+        <div class="card-subtitle">West end of the Old Town</div>
+        <h3 class="card-title">Castle Church (Schlosskirche)</h3>
+        <p class="card-text">Ground zero of the Protestant Reformation. On October 31, 1517, Martin Luther posted his 95 Theses to the wooden door of this church. The original door was destroyed during the Seven Years' War in 1760, but the church was rebuilt in the Neo-Gothic style in the 19th century as a monument to Luther. His tomb is inside.</p>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128296;</span> Did Luther actually use a hammer? <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Historians debate this. The church door served as a university bulletin board &mdash; posting notices there was completely normal. What is not debated: Cranach had a printing press nearby and turned the Theses into pamphlets that spread across Germany within weeks.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128197;</span> Why October 31st? <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">The very next day &mdash; All Saints' Day, November 1st &mdash; was the one day per year the Castle Church opened to the public. People came from all around to view Frederick the Wise's enormous relic collection and purchase indulgences. Luther's Theses on the door the day before guaranteed a maximum audience for the debate he wanted to start.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#9901;</span> Who is buried inside? <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Martin Luther and Philipp Melanchthon are both buried here. Near the altar, large tomb markers honor Frederick the Wise and his brother John the Steadfast &mdash; the two princes who sheltered Luther when he was legally an outlaw who could be killed on sight.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127945;</span> The communist-era stained glass <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Two sets of stained-glass windows fill the nave. The upper ones show the coats of arms of German city-states that joined the Reformation. The lower ones &mdash; depicting Reformers in what Rick Steves calls "DDR Tupperware colors" &mdash; were grudgingly added by the East German government for Luther's 500th birthday in 1983. Once you see them you will know immediately which set he means.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKET SQUARE -->
+    <div class="site-card reveal">
+      <div class="card-img-wrap" onclick="toggleImg(this)">
+        <img src="market_square.jpg" alt="Market Square Wittenberg" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>&#127963;</div>'"/>
+        <span class="card-tag">Town Center</span>
+        <span class="img-expand-hint">tap to expand +</span>
+      </div>
+      <div class="card-body">
+        <div class="card-subtitle">Center of the Old Town</div>
+        <h3 class="card-title">Market Square (Marktplatz)</h3>
+        <p class="card-text">This wide square looks much the same today as it did in Luther's time, used for everything from tournaments to executions. The Renaissance Town Hall dominates one side. In the center stand 19th-century statues of both Luther and Melanchthon. Visiting church groups from across the world regularly gather here to sing.</p>
+        <div class="teen-tip"><strong>&#128269; Spot This:</strong> Look at the right side of the Town Hall for seven small filled-in doorways. They once opened into a shopping gallery in the building's cellar.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128167;</span> A fountain running since 1556 <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">The small pavilion in the square holds a fountain that has provided clean spring water since 1556 &mdash; a genuine luxury at a time when most water was contaminated. A few of the original oak pipes are still underground and still in use today.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127754;</span> Luther was disgusted by the town's canals <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">The main street through town is lined with open gurgling canals &mdash; a feature also found in German cities like Freiburg and Augsburg. When Luther first arrived in Wittenberg he found them revolting: they carried drinking water into town and smelly sewage out. They were eventually covered over, then later reopened to evoke the atmosphere of Luther's time.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127758;</span> Choirs travel here from every continent <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Most tourists in Wittenberg are German or American Lutheran. But the city increasingly hosts church groups from Africa, Asia, and Latin America &mdash; where Lutheranism now has more followers than in Europe. Pastors sign up far in advance for the privilege of preaching here, and choirs travel great distances just to sing in this square.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRANACH COURTYARD -->
+    <div class="site-card reveal">
+      <div class="card-img-wrap" onclick="toggleImg(this)">
+        <img src="CranachHof.JPG" alt="Cranach Courtyard Wittenberg" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>&#127912;</div>'"/>
+        <span class="card-tag">Historic Courtyard</span>
+        <span class="img-expand-hint">tap to expand +</span>
+      </div>
+      <div class="card-body">
+        <div class="card-subtitle">Schlossstrasse 1 &mdash; corner of Market Square</div>
+        <h3 class="card-title">Cranach Courtyard (Cranachhof)</h3>
+        <p class="card-text">The large Renaissance building on the corner of Market Square was the home and studio of Lucas Cranach the Elder &mdash; official court painter, printing entrepreneur, pharmacist, and Martin Luther's closest friend. Step into the surprisingly large courtyard and find the statue of Cranach sketching at the far end. A small Cranach museum is at #4 on the square (&#8364;7, daily 10:00&ndash;17:00).</p>
+        <div class="teen-tip"><strong>&#128424; Go See This:</strong> At the far end of the courtyard, an old-fashioned print shop (Druckerstube) still uses traditional methods to make postcards and replicas of works by Luther and Cranach. Closed Sundays.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128444;</span> He painted Luther's portrait around 2,000 times <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Cranach was the only artist with official permission to paint Martin Luther and his family. He, his son Lucas Cranach the Younger, and their workshop produced and reproduced around 2,000 Luther portraits. Before photography, painted portraits were the only way to spread someone's image &mdash; Cranach was essentially running Luther's personal media operation.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128145;</span> Luther's future wife once lived in this courtyard <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Katharina von Bora &mdash; the ex-nun who eventually married Luther &mdash; stayed in this courtyard when she first arrived in Wittenberg after escaping her convent. Cranach's house was her temporary refuge, until Luther helped arrange a new life for her &mdash; including eventually marrying her himself.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOWN CHURCH OF ST MARY -->
+    <div class="site-card reveal">
+      <div class="card-img-wrap" onclick="toggleImg(this)">
+        <img src="Stadtkirche_st_mary.jpg" alt="Town Church of St Mary Wittenberg" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>&#9962;</div>'"/>
+        <span class="card-tag">Church &#9733;&#9733;</span>
+        <span class="img-expand-hint">tap to expand +</span>
+      </div>
+      <div class="card-body">
+        <div class="card-subtitle">End of Market Square</div>
+        <h3 class="card-title">Town Church of St. Mary (Stadtkirche)</h3>
+        <p class="card-text">The oldest building in Wittenberg and Luther's home church &mdash; where he was married, his children were baptized, and where he preached over 2,000 times. The twin towers don't quite match: the original pointy Gothic spires were knocked down in a 1546 battle and later rebuilt in a rounder Renaissance style.</p>
+        <div class="teen-tip"><strong>&#127919; Find This:</strong> Behind the altar painting, theology students scratched their names into the paint &mdash; on the left if they passed their studies, or on the right (in hell) if they failed. Look for "Johannes Luther" &mdash; Martin's own son &mdash; among the damned. He later switched to law.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127876;</span> The first Protestant church service <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">On Christmas Day 1521, what many consider the very first Protestant service in history was held here &mdash; even though Luther was not present, as he was hiding in Wartburg Castle at the time. The readings were in German instead of Latin, Communion was offered to everyone rather than just priests, and the congregation sang hymns together. Each of those things was considered radical at the time.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128119;</span> The baptismal font drains toward hell <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">At the front of the church, look at the baptismal font. A tube extends directly downward from the basin so that water &mdash; after washing away a baby's sin &mdash; could drain through the sandy floor. Around the lower legs of the font, demons are shown trying to claw their way up to grab the baby being baptized, but righteous saints block them.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128012;</span> The pig carved on the outside wall <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Exiting the church, turn left and look up at the roofline for a carved relief of a pig &mdash; the Judensau, a piece of medieval anti-Semitic propaganda designed to intimidate the Jewish community that lived behind the church. Rather than remove it, the Jewish community in Berlin suggested leaving it and adding a modern plaque in the cobblestones below, where four paving stones appear to be pushed apart from underneath. A cedar tree donated by students in Tel Aviv stands nearby.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127929;</span> "A Mighty Fortress" was first sung here <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Luther's most famous hymn, "A Mighty Fortress Is Our God," was first sung in this church. Free organ concerts are held on Fridays at 18:00. Around the back of the church, near Trattoria Toscana, a 16th-century fountain is still working &mdash; part of Frederick the Wise's wooden-pipe water network. Nobody knows quite how it still functions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LUTHER HOUSE -->
+    <div class="site-card reveal">
+      <div class="card-img-wrap" onclick="toggleImg(this)">
+        <img src="Lutherhaus.jpg" alt="Luther House Wittenberg" loading="lazy" onerror="this.parentNode.innerHTML='<div class=card-img-placeholder>&#127968;</div>'"/>
+        <span class="card-tag">Museum &#9733;&#9733;&#9733;</span>
+        <span class="img-expand-hint">tap to expand +</span>
+      </div>
+      <div class="card-body">
+        <div class="card-subtitle">Collegienstrasse 54</div>
+        <h3 class="card-title">Luther House (Lutherhaus)</h3>
+        <p class="card-text">Luther's former home is now an excellent museum displaying original paintings, manuscripts, and Reformation-era artifacts &mdash; including the actual pulpit Luther preached from, famous Cranach portraits, and Luther's original New Testament and Bible translations into High German. Even if the museum is closed, walk through the passage at #59 to see the enormous turreted building in the inner courtyard.</p>
+        <div class="teen-tip"><strong>&#128214; Worth Knowing:</strong> This was not originally a house &mdash; it was an Augustinian monastery. Luther lived here first as a monk, then later moved back in when a prince gave it to him as a wedding gift. He and Katharina rented out rooms to students to help support the household.</div>
+        <div class="hmm-boxes">
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#127806;</span> Katharina ran absolutely everything <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Luther handed the family finances over to "my lord Katie." Katharina cultivated a garden, brewed beer, raised cattle, rented rooms to theology students, and raised six children plus 11 adopted orphans. A statue of Katharina, erected on her 500th birthday in 1999, stands in the courtyard, symbolizing her leaving convent life behind. Without her managing the household, Luther could not have traveled and written as freely as he did.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#128682;</span> A birthday doorway for romantic talk <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">Look for Katharina's Portal &mdash; a carved doorway with two built-in bench seats. Katharina gave it to Martin as a birthday gift on his 57th birthday in 1540 so the two of them could sit together "for romantic talk." Given their household was packed with students, children, and orphans, a private bench was likely the only quiet spot in the whole building.</div>
+          </div>
+          <div class="hmm-box" onclick="toggleHmm(this)">
+            <div class="hmm-header"><span>&#9994;</span> A secret democracy group met here in the 1980s <span class="hmm-arrow">&#9660;</span></div>
+            <div class="hmm-body">A modern rusty monument in the courtyard, added in 2017, honors a secret pro-democracy group that was active here during the final years of communist East Germany. Inside the monument you will find represented all the tools needed to "pound a sword into a plowshare."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="copper-divider"></div>
+
+<!-- LUTHER'S LIFE -->
+<div id="luther" class="dark-section">
+  <div class="dark-inner">
+    <div>
+      <p class="dark-eyebrow">The Man Behind It All</p>
+      <h2 class="dark-title">Martin Luther's<br/><em>Extraordinary Life</em></h2>
+      <p class="dark-body">Born the son of a copper-smelter owner in 1483, Luther became a monk after a near-death experience in a thunderstorm, a theology professor after a crisis of faith, and one of the most consequential figures in Western history after a pilgrimage to Rome left him appalled by church corruption.</p>
+      <p class="dark-body">He was excommunicated, declared an outlaw (meaning he could legally be killed on sight), hid under a false name and a beard, translated the New Testament in ten weeks, married an ex-nun, and died in the same town where he was born &mdash; having permanently changed Christianity, the German language, and the political map of Europe.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-txt"><strong>The Lightning Bolt (1505)</strong>Caught in a violent thunderstorm, Luther cried out "St. Anne, save me and I will become a monk!" He survived and kept his promise the very next morning.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-txt"><strong>The Trip to Rome (1509)</strong>Luther walked to Rome on pilgrimage and was horrified to find corrupt priests selling paid forgiveness of sins while Michelangelo painted the Sistine Chapel ceiling and Raphael decorated the Vatican's hallways nearby.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-txt"><strong>The 95 Theses (1517)</strong>Luther posted his arguments to the Castle Church door. Cranach's printing press turned them into pamphlets. The Reformation had begun &mdash; though Luther intended only to open a debate, not to split the Church.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-txt"><strong>Declared an Outlaw (1521)</strong>Facing Emperor Charles V, Luther refused to recant. Declared an outlaw, he was secretly taken by supporters to Wartburg Castle, where he translated the entire New Testament from Greek into German in ten weeks.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-txt"><strong>The Complete German Bible (1534)</strong>Luther finished translating the entire Bible. Cranach illustrated it with woodcuts and published it &mdash; shaping the modern German language the way the King James Bible would later shape written English.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="copper-divider"></div>
+
+<!-- TIMELINE -->
+<div id="history" style="background:var(--parchment)">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">How it happened</p>
+    <h2 class="section-title">A Timeline of Wittenberg</h2>
+    <p class="section-intro">From a fishing village chosen by a prince, to the center of the Christian world &mdash; and back. Wittenberg's history is inseparable from the people who lived and worked here.</p>
+  </div>
+  <div class="timeline">
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1463</div>
+      <div class="tl-title">Frederick the Wise chooses Wittenberg</div>
+      <div class="tl-text">Prince-elector Frederick III "the Wise" inherits half of Saxony and decides to make Wittenberg his royal seat. He builds a castle there in 1492 and transforms a humble fishing village into a Renaissance town &mdash; with a planned grid of streets, unusual for German cities of the era.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1502</div>
+      <div class="tl-title">Frederick founds a university and hires Cranach</div>
+      <div class="tl-text">Frederick stocks his new university with some of the brightest minds of his time, including the young theologian Martin Luther and classical-languages specialist Philipp Melanchthon. He also hires Lucas Cranach the Elder as his court painter. Cranach, Luther, and Melanchthon become close friends who regularly socialize and swap ideas.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1505</div>
+      <div class="tl-title">A lightning bolt changes everything</div>
+      <div class="tl-text">Martin Luther &mdash; a law student at the time &mdash; is caught in a violent thunderstorm on July 2 and knocked to the ground by lightning. He cries out to Saint Anne: "Save me, and I will become a monk!" He survives, sells his possessions, and knocks on the door of an Augustinian monastery the next morning.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1509</div>
+      <div class="tl-title">Luther walks to Rome &mdash; and is appalled</div>
+      <div class="tl-text">Luther makes a pilgrimage to Rome on foot and is dismayed by what he finds: rich, corrupt priests selling indulgences &mdash; paid forgiveness of sins &mdash; to fund Pope Julius II's lavish renovation of Vatican City. Michelangelo is painting the Sistine Chapel ceiling. Raphael is at work decorating nearby hallways. The wealth and corruption clash with everything Luther believes about faith and grace.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1517</div>
+      <div class="tl-title">The 95 Theses &mdash; October 31st</div>
+      <div class="tl-text">On October 31, Luther posts his 95 Theses to the Castle Church door &mdash; a list of arguments questioning indulgences and Church corruption. Cranach's printing press turns them into pamphlets that spread across Germany. Luther did not set out to start a new religion; he wanted to open a debate. But the timing and the press made his act unstoppable.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1520&ndash;21</div>
+      <div class="tl-title">Excommunication and the Diet of Worms</div>
+      <div class="tl-text">Pope Leo X formally excommunicates Luther, who burns the edict publicly. Emperor Charles V calls a congress at Worms; Luther enters to cheering crowds, refuses to disavow his beliefs, and is declared an outlaw. He is secretly taken by his own supporters to Wartburg Castle, where he disguises himself as "Junker J&#246;rg" and translates the New Testament from Greek into German in ten weeks.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1525</div>
+      <div class="tl-title">Luther marries Katharina von Bora</div>
+      <div class="tl-text">The 41-year-old ex-priest marries a 26-year-old ex-nun "to please my father and annoy the pope." Their wedding sets the precedent allowing Protestant clergy to marry. They move into the former Wittenberg monastery &mdash; today's Luther House. Katharina manages the finances, the farm, the brewery, and raises their six children plus 11 adopted orphans.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1534</div>
+      <div class="tl-title">The complete German Bible</div>
+      <div class="tl-text">Luther finishes translating the entire Bible. Cranach illustrates it with woodcuts and publishes it on his printing presses. The Martin Luther Bible shapes the modern German written language for millions of people &mdash; much as the King James Bible would later shape written English.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1546</div>
+      <div class="tl-title">Luther dies</div>
+      <div class="tl-text">Martin Luther dies on February 18 in Eisleben &mdash; the same town where he was born. He is buried in the Castle Church in Wittenberg. His Reformation has already permanently split Christianity, and the political and religious shockwaves continue for centuries.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">1983</div>
+      <div class="tl-title">Communist East Germany celebrates a Christian reformer</div>
+      <div class="tl-text">Wittenberg is inside atheistic East Germany, a regime that had been tearing down churches elsewhere. But ignoring Luther's 500th birthday would have made the unpopular government seem out of touch &mdash; and the regime sensed an opportunity to attract Lutheran tourists and the Western currency they would bring. So the communists rehabilitated Luther's memory and tidied up the historic sites. Wittenberg emerged from communism in better shape than most East German towns.</div>
+    </div>
+
+    <div class="tl-item reveal">
+      <div class="tl-year">2017</div>
+      <div class="tl-title">500th anniversary of the 95 Theses</div>
+      <div class="tl-text">Wittenberg celebrates 500 years since the Theses with a major round of renovation. The city is now polished and well-maintained, welcoming pilgrims, tourists, and choir groups from every corner of the globe &mdash; including increasingly from Africa, Asia, and Latin America, where Lutheranism now has more followers than in Europe.</div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="copper-divider"></div>
+
+<!-- KEY PEOPLE -->
+<div id="people" style="background:var(--parchment-mid)">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">The cast</p>
+    <h2 class="section-title">Key People of Wittenberg</h2>
+    <p class="section-intro">The Reformation was not a solo performance. Here are the visionaries, rebels, artists, and partners who made it happen.</p>
+  </div>
+  <div class="people-grid">
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#9889;</span>
+      <div class="person-name">Martin Luther</div>
+      <div class="person-years">1483 &ndash; 1546</div>
+      <p class="person-text">Born in Eisleben, Luther became a monk after a lightning bolt, arrived in Wittenberg as a theology professor, and concluded that God makes sinners righteous through faith &mdash; not through purchasing indulgences or earning it through good deeds. His 95 Theses launched the Reformation. Excommunicated and declared an outlaw, he translated the Bible while hiding under a false identity. He later married Katharina von Bora, wrote hymns, and died in Eisleben &mdash; his birth town.</p>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#128218;</span>
+      <div class="person-name">Philipp Melanchthon</div>
+      <div class="person-years">1497 &ndash; 1560</div>
+      <p class="person-text">Born Philipp Schwartzerdt, he changed his name to its Greek translation: Melanchthon, meaning "black soil." Despite being short, young, sickly, and &mdash; by contemporary accounts &mdash; notoriously unattractive, he impressed everyone in Wittenberg with his intellect. He taught ancient languages, theology, and pedagogy; provided invaluable help translating the Bible from the original Greek and Hebrew; and wrote the Augsburg Confession &mdash; a foundational document of Protestantism. He also encouraged women to pursue university study.</p>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#127912;</span>
+      <div class="person-name">Lucas Cranach the Elder</div>
+      <div class="person-years">c. 1472 &ndash; 1553</div>
+      <p class="person-text">Official court painter to Frederick the Wise and one of the wealthiest men in Wittenberg. Luther's closest friend and the only artist with permission to paint Luther portraits &mdash; around 2,000 in total. As an entrepreneur he also ran a pharmacy and a printing operation, and was one of the first printers of Luther's writings. His altar painting in the Town Church of St. Mary is one of the Reformation's most important artworks.</p>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#128081;</span>
+      <div class="person-name">Frederick III "the Wise"</div>
+      <div class="person-years">1463 &ndash; 1525</div>
+      <p class="person-text">The prince-elector who built Wittenberg into a city worth visiting. He founded the university, hired Cranach, built a castle, and chose this backwater town as his royal seat. Although Frederick remained a devout Catholic his entire life, his support for Luther, Melanchthon, and the early Reformers never wavered &mdash; likely saving the Reformation from being crushed. When Luther was declared an outlaw, Frederick arranged his safe passage to Wartburg Castle.</p>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#127806;</span>
+      <div class="person-name">Katharina von Bora</div>
+      <div class="person-years">1499 &ndash; 1552</div>
+      <p class="person-text">An ex-nun who escaped her convent and arrived in Wittenberg, eventually marrying Martin Luther in 1525 &mdash; a marriage that set the precedent for Protestant clergy to marry. Luther called her "my lord Katie" and handed her the family finances entirely. She cultivated a garden, brewed beer, raised cattle, rented rooms to students, and raised six children plus 11 adopted orphans. A statue of Katharina stands in the Luther House courtyard, erected on her 500th birthday in 1999.</p>
+    </div>
+
+    <div class="person-card reveal">
+      <span class="person-emoji">&#128396;</span>
+      <div class="person-name">Lucas Cranach the Younger</div>
+      <div class="person-years">1515 &ndash; 1586</div>
+      <p class="person-text">The son who continued his father's legacy. He co-created the famous altar painting in the Town Church of St. Mary &mdash; and painted himself into it, handing a Communion chalice directly to Martin Luther, who appears wearing his "Junker J&#246;rg" disguise. He kept the Cranach workshop running after his father's death, maintaining the family's central role in Reformation art for another generation.</p>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="copper-divider"></div>
+
+<!-- DID YOU KNOW -->
+<div id="facts" style="background:var(--parchment)">
+<section class="section-wrap">
+  <div class="reveal">
+    <p class="eyebrow">Stranger than fiction</p>
+    <h2 class="section-title">Did You Know?</h2>
+    <p class="section-intro">Details from Wittenberg's history found nowhere else on this page &mdash; tap each card to reveal the answer.</p>
+  </div>
+  <div class="fun-grid">
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#9889;</span>
+      <div class="fun-q">What was Luther studying when the thunderstorm struck in 1505?</div>
+      <div class="fun-a">Law. Luther had earned a liberal-arts degree and enrolled in law school at the University of Erfurt &mdash; his father's ambition for him, since owning a copper smelter had given the family a middle-class standing unusual for the era. The storm that knocked him to the ground on July 2, 1505, ended his law career before it began.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#128200;</span>
+      <div class="fun-q">Why did Frederick the Wise protect Luther &mdash; even though he disagreed with him?</div>
+      <div class="fun-a">Frederick remained a devout Catholic his entire life and never converted to Protestantism. Yet his support for Luther and the early Reformers never wavered. Historians note that Frederick's successor &mdash; his brother John the Steadfast &mdash; did convert, and in a burst of religious zeal had Frederick's impressive collection of holy relics destroyed. As Rick Steves wryly notes, "Frederick may be stuck in purgatory to this day."</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#9917;</span>
+      <div class="fun-q">Why did the Protestant movement splinter into so many denominations?</div>
+      <div class="fun-a">Because of one argument that could not be resolved. In 1529, Luther attended a summit of Protestant leaders at Marburg Castle to forge a unified alliance. They agreed on nearly everything &mdash; except whether Christ was physically present in the bread and wine of Communion (Luther's view) or only symbolically so (Swiss Reformer Ulrich Zwingli's view). That single disagreement doomed any united Protestant front and caused the movement to fracture into dozens of separate sects.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#128296;</span>
+      <div class="fun-q">Did Luther support the peasants who revolted using his writings?</div>
+      <div class="fun-a">No &mdash; and it shocked many followers. In 1525, Luther's friend and follower Thomas M&#252;ntzer used Luther's writings to justify an uprising known as the Peasants' Revolt, in which poor farmers attacked their feudal lords with hoes and pitchforks. Luther condemned the uprising and supported its violent suppression. Thousands of peasants died and M&#252;ntzer was executed. Luther believed Church corruption did not justify outright rebellion against society.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#128218;</span>
+      <div class="fun-q">What did Melanchthon's name actually mean &mdash; and why did he change it?</div>
+      <div class="fun-a">Philipp Melanchthon was born Philipp Schwartzerdt. He changed his surname to its Greek translation: Melanchthon means "black soil," a direct rendering of Schwartzerdt (schwarz = black, Erde = earth/soil). Taking a Greek or Latin name was a common humanist practice among scholars of the era, and Melanchthon was particularly gifted with ancient languages &mdash; one of the things that made him so valuable to Luther when translating the Bible.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#128221;</span>
+      <div class="fun-q">What happened to Luther's reputation in his final years?</div>
+      <div class="fun-a">In his fifties, Luther's health declined and his writings grew bitter. Works such as "Against the Papacy at Rome Founded by the Devil" and "Of the Jews and Their Lies" reflect a hardening tone. His anti-Jewish writings were later invoked to justify anti-Semitic speech in the early days of Nazism &mdash; a painful legacy that Wittenberg acknowledges today with the modern cobblestone monument below the Judensau relief on the Town Church of St. Mary.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+    <div class="fun-card reveal">
+      <span class="fun-emoji">&#127981;</span>
+      <div class="fun-q">What was the altar painting in the Town Church of St. Mary actually trying to say?</div>
+      <div class="fun-a">The painting &mdash; completed in 1547 by Lucas Cranach the Elder, the Younger, and their school &mdash; was deliberate Reformation propaganda. The central Last Supper panel features a round table, symbolizing the Protestant belief that all are equal. The right panel shows a man trying to buy his way into heaven: his hands are tied and the key of heaven is behind him. The left panel shows a repentant sinner receiving the key. The message is clear: you cannot purchase paradise.</div>
+      <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer &#9660;</button>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Content drawn from Rick Steves' <em>Germany</em> travel guide. No facts invented.</p>
+  <p style="margin-top:0.4rem">Lutherstadt Wittenberg &middot; Saxony-Anhalt, Germany &middot; Reformationsstadt &middot; Family Friendly</p>
+</footer>
+
+<script>
+(function(){
+  var track=document.getElementById('carTrack');
+  var dotsEl=document.getElementById('carDots');
+  var items=track.querySelectorAll('.car-item');
+  var current=0,timer;
+  items.forEach(function(_,i){
+    var d=document.createElement('button');
+    d.className='car-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.onclick=function(){goTo(i);};
+    dotsEl.appendChild(d);
+  });
+  function goTo(n){
+    current=(n+items.length)%items.length;
+    track.style.transform='translateX(-'+current*100+'%)';
+    dotsEl.querySelectorAll('.car-dot').forEach(function(d,i){d.classList.toggle('active',i===current);});
+    reset();
+  }
+  function reset(){clearInterval(timer);timer=setInterval(function(){goTo(current+1);},4400);}
+  window.moveCar=function(dir){goTo(current+dir);};
+  var sx=0;
+  track.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',function(e){var dx=sx-e.changedTouches[0].clientX;if(Math.abs(dx)>40)goTo(current+(dx>0?1:-1));});
+  reset();
+})();
+
+var revealObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e,i){
+    if(e.isIntersecting){setTimeout(function(){e.target.classList.add('visible');},i*55);revealObs.unobserve(e.target);}
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(function(el){revealObs.observe(el);});
+
+function toggleImg(wrap){
+  var expanded=wrap.classList.toggle('expanded');
+  var hint=wrap.querySelector('.img-expand-hint');
+  if(hint)hint.textContent=expanded?'tap to close -':'tap to expand +';
+}
+function toggleHmm(el){el.classList.toggle('open');}
+function toggleFact(btn){
+  var ans=btn.closest('.fun-card').querySelector('.fun-a');
+  var open=ans.classList.toggle('open');
+  btn.textContent=open?'Hide Answer ▲':'Reveal Answer ▼';
+}
+</script>
+</body>
+</html>

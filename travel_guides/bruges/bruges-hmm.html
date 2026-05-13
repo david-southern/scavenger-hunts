@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Things That Make You Go Hmmmm… Bruges</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --red:       #C0392B;
+  --red2:      #9B2D23;
+  --red-light: #E8574A;
+  --green:     #1A3A22;
+  --green2:    #2A5435;
+  --parchment: #F2EAD8;
+  --gold:      #C8941A;
+  --gold-light:#F0C96A;
+  --white:     #ffffff;
+  --text:      #1A1A1A;
+  --muted:     #4A5A4E;
+  --border:    #D4C8B0;
+}
+body{font-family:'Outfit',sans-serif;background:var(--parchment);color:var(--text);overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{min-height:100svh;background:linear-gradient(150deg,var(--red2) 0%,var(--red) 50%,#7A1E14 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 1.5rem 5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+.arch-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.arch-deco svg{position:absolute;opacity:0.07;animation:floatArch 20s ease-in-out infinite}
+.arch-deco svg:nth-child(1){top:3%;left:2%;width:120px;animation-delay:0s}
+.arch-deco svg:nth-child(2){top:8%;right:3%;width:100px;animation-delay:5s}
+.arch-deco svg:nth-child(3){bottom:6%;left:8%;width:110px;animation-delay:10s}
+.arch-deco svg:nth-child(4){bottom:14%;right:5%;width:130px;animation-delay:15s}
+@keyframes floatArch{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-swan{width:88px;height:88px;margin-bottom:1.4rem;filter:drop-shadow(0 4px 18px rgba(0,0,0,0.3))}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,8vw,6.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero-sub{margin-top:0.5rem;font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,3vw,1.5rem);font-style:italic;color:rgba(255,255,255,0.65)}
+.hero-tagline{margin-top:1rem;font-size:clamp(0.92rem,2.2vw,1.05rem);color:rgba(255,255,255,0.6);font-weight:300;max-width:500px;line-height:1.75}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:1.6rem}
+.chip{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);padding:0.38rem 0.9rem;border-radius:50px;font-size:0.75rem;font-weight:500}
+.hero-scroll{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:rgba(255,255,255,0.38);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none}
+.hero-arrow{width:13px;height:13px;border-right:2px solid rgba(255,255,255,0.38);border-bottom:2px solid rgba(255,255,255,0.38);transform:rotate(45deg);animation:bounce 1.4s infinite}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+
+/* ── DIVIDERS ── */
+.divider-red{height:4px;background:linear-gradient(90deg,transparent,var(--red),var(--gold),var(--red),transparent)}
+.divider-green{height:4px;background:linear-gradient(90deg,transparent,var(--green),var(--gold),var(--green),transparent)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1160px;margin:0 auto;padding:0 1.25rem}
+.eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:0.5rem}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,3rem);font-weight:700;color:var(--green);line-height:1.12;margin-bottom:0.8rem}
+.sec-title em{color:var(--red);font-style:italic}
+.sec-intro{font-size:1rem;color:var(--muted);max-width:680px;line-height:1.8;margin-bottom:2rem}
+
+/* ── SITES SECTION ── */
+.sites-section{background:var(--parchment);padding:3.5rem 0}
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:1.4rem}
+
+/* ── SITE CARD ── */
+.site-card{background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,0.06);opacity:0;transform:translateY(20px);transition:opacity 0.55s ease,transform 0.55s ease,box-shadow 0.25s}
+.site-card.visible{opacity:1;transform:translateY(0)}
+@media(hover:hover){.site-card:hover{transform:translateY(-5px)!important;box-shadow:0 16px 40px rgba(192,57,43,0.13)}}
+
+.card-img{height:210px;overflow:hidden;background:var(--green);position:relative;cursor:pointer}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+@media(hover:hover){.site-card:hover .card-img img{transform:scale(1.04)}}
+.card-img.expanded{height:340px}
+.card-img.expanded img{transform:none!important}
+.card-img .no-photo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green),var(--green2))}
+.tap-hint{position:absolute;bottom:9px;right:9px;background:rgba(0,0,0,0.45);color:#fff;font-size:0.63rem;padding:0.2rem 0.55rem;border-radius:50px;pointer-events:none;transition:opacity 0.3s}
+.card-img.expanded .tap-hint{opacity:0}
+
+.card-body{padding:1.4rem 1.4rem 1.6rem}
+.card-cat{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green2);margin-bottom:0.35rem}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--green);line-height:1.2;margin-bottom:0.65rem}
+.card-text{font-size:0.97rem;color:var(--muted);line-height:1.78}
+
+/* ── ACCORDIONS ── */
+.facts{display:flex;flex-direction:column;gap:7px;margin-top:1rem}
+.fact{background:rgba(192,57,43,0.04);border:1px solid rgba(192,57,43,0.18);border-left:3px solid var(--red);border-radius:6px;overflow:hidden}
+.fact-hd{display:flex;align-items:flex-start;gap:8px;padding:11px 14px;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--red);line-height:1.4;-webkit-tap-highlight-color:transparent}
+.fact-hd:hover{background:rgba(192,57,43,0.07)}
+.fact-hd span:first-child{flex-shrink:0;font-size:1rem}
+.fact-label{flex:1}
+.fact-arrow{flex-shrink:0;font-size:0.65rem;color:var(--red);margin-left:auto;padding-left:6px;transition:transform 0.3s;align-self:center}
+.fact.open .fact-arrow{transform:rotate(180deg)}
+.fact-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.93rem;line-height:1.76;color:var(--muted);padding:0 14px}
+.fact.open .fact-body{max-height:600px;padding:0 14px 12px}
+
+/* ── TIMELINE ── */
+.tl-section{background:var(--green);padding:4.5rem 0}
+.tl-inner{max-width:780px;margin:0 auto;padding:0 1.25rem}
+.tl-eyebrow{font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.4rem;text-align:center}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,3rem);font-weight:700;color:#fff;text-align:center;line-height:1.1;margin-bottom:0.4rem}
+.tl-title em{font-style:italic;color:var(--gold-light)}
+.tl-sub{text-align:center;font-size:0.97rem;color:rgba(255,255,255,0.5);margin-bottom:3rem;font-weight:300}
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:0;top:4px;bottom:0;width:3px;background:linear-gradient(to bottom,var(--red-light),var(--gold));border-radius:2px}
+.tl-item{position:relative;padding-left:1.4rem;margin-bottom:2.2rem;opacity:0;transform:translateX(-16px);transition:opacity 0.55s ease,transform 0.55s ease}
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-item::before{content:'';position:absolute;left:-2.42rem;top:4px;width:14px;height:14px;border-radius:50%;background:var(--red);border:3px solid var(--gold-light)}
+.tl-year{font-family:'Cormorant Garamond',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.14em;color:var(--gold-light);margin-bottom:3px;text-transform:uppercase}
+.tl-text{font-size:0.97rem;color:rgba(255,255,255,0.75);line-height:1.78}
+.tl-text strong{color:#fff}
+
+/* ── PEOPLE ── */
+.people-section{background:var(--parchment);padding:2.5rem 0 4rem}
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:1.3rem;margin-top:0.5rem}
+.person{background:var(--white);border-radius:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.05);padding:1.6rem;text-align:center;opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease,box-shadow 0.25s}
+.person.visible{opacity:1;transform:translateY(0)}
+@media(hover:hover){.person:hover{transform:translateY(-4px)!important;box-shadow:0 14px 36px rgba(192,57,43,0.11)}}
+.person-icon{font-size:2.6rem;margin-bottom:0.6rem;display:block}
+.person-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--green);margin-bottom:0.15rem}
+.person-dates{font-size:0.72rem;color:var(--red);font-weight:700;letter-spacing:0.09em;text-transform:uppercase;margin-bottom:0.75rem}
+.person-bio{font-size:0.92rem;color:var(--muted);line-height:1.74;text-align:left}
+
+/* ── FOOTER ── */
+footer{background:var(--red2);text-align:center;padding:2.5rem 1.5rem;border-top:4px solid var(--gold)}
+footer p{font-size:0.88rem;color:rgba(255,255,255,0.48);line-height:1.9}
+footer strong{color:var(--gold-light);font-weight:600}
+footer em{font-style:italic;color:rgba(255,255,255,0.4)}
+
+/* ── MOBILE FIXES ── */
+@media(max-width:480px){
+  .hero{padding:2.5rem 1.2rem 4.5rem}
+  .hero-chips{gap:0.4rem}
+  .chip{font-size:0.7rem;padding:0.32rem 0.75rem}
+  .wrap{padding:0 1rem}
+  .card-body{padding:1.1rem 1.1rem 1.4rem}
+  .card-img{height:190px}
+  .tl{padding-left:1.6rem}
+  .tl-item{padding-left:1.2rem}
+  .tl-item::before{left:-2.1rem;width:12px;height:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="arch-deco">
+    <svg viewBox="0 0 100 140" fill="none"><path d="M10 140 L10 60 Q50 0 90 60 L90 140Z" stroke="white" stroke-width="2" fill="none"/><path d="M20 140 L20 65 Q50 15 80 65 L80 140Z" stroke="white" stroke-width="1.2" fill="none"/></svg>
+    <svg viewBox="0 0 100 140" fill="none"><path d="M10 140 L10 60 Q50 0 90 60 L90 140Z" stroke="white" stroke-width="2" fill="none"/></svg>
+    <svg viewBox="0 0 100 140" fill="none"><path d="M10 140 L10 60 Q50 0 90 60 L90 140Z" stroke="white" stroke-width="2" fill="none"/><path d="M20 140 L20 65 Q50 15 80 65 L80 140Z" stroke="white" stroke-width="1.2" fill="none"/></svg>
+    <svg viewBox="0 0 100 140" fill="none"><path d="M10 140 L10 60 Q50 0 90 60 L90 140Z" stroke="white" stroke-width="2" fill="none"/></svg>
+  </div>
+
+  <div class="hero-swan">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="58" cy="65" rx="30" ry="18" fill="white" opacity="0.95"/>
+      <ellipse cx="55" cy="61" rx="25" ry="13" fill="white" opacity="0.72"/>
+      <path d="M32 63 Q22 44 28 30 Q31 22 37 19" stroke="white" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <circle cx="38" cy="17" r="8" fill="white"/>
+      <path d="M44 16 L55 15 L54 19 L44 19Z" fill="#F0C96A"/>
+      <circle cx="54" cy="17" r="1.8" fill="#9B2D23"/>
+      <circle cx="40" cy="14.5" r="1.8" fill="#1A3A22"/>
+      <path d="M83 63 Q92 55 90 66 Q88 73 81 70Z" fill="white" opacity="0.88"/>
+      <ellipse cx="52" cy="83" rx="34" ry="5" fill="white" opacity="0.12"/>
+    </svg>
+  </div>
+
+  <h1>Things That Make<br>You Go <em>Hmmmm…</em></h1>
+  <p class="hero-sub">Interesting Facts About Bruges</p>
+  <p class="hero-tagline">Step into Europe's best-preserved medieval city — where Vikings named the streets, medieval beer was psychedelic, a password got 200 people killed in a single night, and the swans on the canal are a 500-year-old punishment.</p>
+  <div class="hero-chips">
+    <span class="chip">🏰 Founded 800s</span>
+    <span class="chip">⚔️ Battle of the Golden Spurs</span>
+    <span class="chip">🍺 Psychedelic Medieval Beer</span>
+    <span class="chip">🦢 Swans as Punishment</span>
+    <span class="chip">🎨 Michelangelo's Only Export</span>
+  </div>
+  <a href="#sites" class="hero-scroll">Scroll to explore <div class="hero-arrow"></div></a>
+</section>
+
+<div class="divider-red"></div>
+
+<!-- STOP CARDS -->
+<section id="sites" class="sites-section">
+<div class="wrap">
+  <p class="eyebrow">Walk the Medieval City</p>
+  <h2 class="sec-title">13 Stops That Make You Go <em>Hmmmm…</em></h2>
+  <p class="sec-intro">Bruges is compact enough to walk everywhere, yet packed with enough history, legends, and outright weirdness to keep the whole family talking for days. Tap any card below to reveal the story.</p>
+
+  <div class="sites-grid">
+
+    <!-- 01 MARKET SQUARE -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Market_Square.jpg" alt="Market Square and Belfry, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 01 · The Commercial Heart</p>
+        <h3 class="card-title">Market Square · Markt</h3>
+        <p class="card-text">The modern heart of Bruges — ringed by gabled buildings and the massive Belfry tower. Stand here and imagine it in the 800s: swamps, forests, lakes, and Viking dragon boats sailing right to this spot. They called the place <em>Bryggija</em> — their word for "boat stop" — which became Brugge, then Bruges.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>⚓</span><span class="fact-label">A canal once ran right into this square</span><span class="fact-arrow">▾</span></div><div class="fact-body">Back in Bruges' glory days a canal came right up to the Market Square. Boats moored where the Historium building stands today. Cranes powered by workers walking inside giant hamster wheels loaded and unloaded goods beside the dock. A vast warehouse right next to the water stored and traded goods from merchants across Europe.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🧝</span><span class="fact-label">Imagine half-bald hobbits rushing past</span><span class="fact-arrow">▾</span></div><div class="fact-body">Medieval people were 25 to 30 centimetres shorter than people today. Fashionable wealthy ladies also shaved their foreheads as a sign of style. Picture this busy trading square filled with half-bald, very short people hurrying past with bolts of cloth and bags of goods — the guide describes them as "basically hobbits doing their grocery run."</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>⚔️</span><span class="fact-label">The password that got 200 people killed in one night</span><span class="fact-arrow">▾</span></div><div class="fact-body">On the night of 18 May 1302, rebels led by Jan Breydel and Pieter de Coninck knocked on every door in Bruges. Anyone who answered had to say the Flemish phrase "Schild en Vriend" — Shield and Friend. The French occupiers could not pronounce the guttural Flemish sounds correctly. Those who failed were struck down with a Flemish weapon called a <em>goedendag</em>, which translates to "Good Day." 200 French were killed that night.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🥇</span><span class="fact-label">The Battle of the Golden Spurs — history's great upset</span><span class="fact-arrow">▾</span></div><div class="fact-body">After the massacre, France sent an army of 8,000 men and knights toward Bruges. The Flemish gathered in a wide, swampy field and waited. When the French cavalry charged they stormed into the swamp, where their horses got stuck and the knights — wearing 20 kilograms of iron armour — fell and could not get up. The Flemish foot soldiers defeated them, then walked the battlefield the next morning collecting 500 golden spurs from the dead knights. This gave the battle its name. The date — 11 July 1302 — is still Flanders' national holiday today.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🏗️</span><span class="fact-label">The city rebuilt itself to look even MORE medieval</span><span class="fact-arrow">▾</span></div><div class="fact-body">Most of the gabled buildings around this square were actually rebuilt in the 19th century. As Bruges recovered from centuries of decline, city leaders wanted to return it to its former medieval glory. They built in an exaggerated style called Neo-Gothic — full of spiky spires, fanciful towers, and gargoyles. The result is a medieval city that looks "more Gothic than Gothic," as it is often described. One building on the square is genuinely old: look for the rectangular house with a gold ball on top — Bruges' oldest surviving house, from the 15th century.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 OUDE BURG -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Oude_Burg.jpg" alt="Oude Burg, the oldest street in Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 02 · Oldest Street in Bruges</p>
+        <h3 class="card-title">Oude Burg</h3>
+        <p class="card-text">You are walking on the oldest street in Bruges. The cobblestones look ordinary, but what lies underneath them is several metres of compressed medieval garbage.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🐷</span><span class="fact-label">Pigs ate the garbage — until they ate children</span><span class="fact-arrow">▾</span></div><div class="fact-body">Medieval streets filled up with garbage, food scraps, and animal waste. The solution was to release pigs onto the streets to eat it all up. This worked until the pigs started eating small children. Pigs were then banned. With no solution for the trash, people simply poured a new layer of sand over everything and created a new street surface. After centuries of this, you are now walking several metres above the original street level — on top of layers of ancient garbage.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>⛪</span><span class="fact-label">Why do Bruges churches look like they are sinking?</span><span class="fact-arrow">▾</span></div><div class="fact-body">If you look at old churches in Bruges, they appear to be sinking into the ground. They are not. The street level around them rose over the centuries — layer by layer of sand poured over garbage — while the churches stayed in place. It is the street that climbed, not the churches that sank.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 GRUUTHUSE -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Gruuthuse_Palace.jpg" alt="Gruuthuse Palace, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 03 · The Beer Monopoly Palace</p>
+        <h3 class="card-title">Gruuthuse Palace</h3>
+        <p class="card-text">"Huse" is old Flemish for house. "Gruut" was the secret spice blend used to brew beer before hops were invented. The family who owned this palace held the monopoly on selling gruut to every brewer in the region — and became enormously wealthy as a result.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🍄</span><span class="fact-label">Medieval beer was more psychedelic than alcoholic</span><span class="fact-arrow">▾</span></div><div class="fact-body">One of the herbs in the gruut spice blend was nightshade — a psychedelic plant. Medieval breweries could only reach about 1% alcohol with their equipment, so the beer was more of a hallucinogenic tea than a proper alcoholic drink. When medieval people claimed they saw witches flying through the sky or angels appearing above them, they may well have been seeing something — just not in the way they thought.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🦄</span><span class="fact-label">The two unicorns above the gate</span><span class="fact-arrow">▾</span></div><div class="fact-body">Above the palace gate, a carved shield is flanked by two unicorns. Louis of Gruuthuse — the most famous lord of the palace — was expressing his support for Scotland, which was at war with England. England's symbol is the lion. According to legend, the only animal powerful enough to defeat a lion was the unicorn. Scotland's national animal is still the unicorn today. Below the shield you can also find Louis's motto carved in stone: "Don't underestimate yourself."</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🙏</span><span class="fact-label">He attended Mass without ever leaving his home</span><span class="fact-arrow">▾</span></div><div class="fact-body">Louis of Gruuthuse installed a private chapel inside the palace with a wooden balcony that overlooked the interior of the Church of Our Lady next door. He could watch the priest say Mass through the window without setting foot outside — and without mixing with ordinary citizens on the street. You can still see this balcony today; it is on the left wall inside the church, to the left of the high altar.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🪵</span><span class="fact-label">Bruges used to be built entirely of wood</span><span class="fact-arrow">▾</span></div><div class="fact-body">Near the palace, along the canal, stands one of Bruges' last surviving old wooden houses. Most of the city was originally built this way. Fires were a constant catastrophe in medieval cities, so brick gradually replaced wood everywhere. Building in brick was also a sign of wealth — it meant you could afford to build something that would last. The shift to brick construction is one reason so much of medieval Bruges survived to the present day.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 ST JOHN'S HOSPITAL -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="St_Johns_Hospital.jpg" alt="St. John's Hospital, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 04 · 800 Years of Medicine</p>
+        <h3 class="card-title">St. John's Hospital</h3>
+        <p class="card-text">Built in the 1100s, this is one of the oldest hospitals in Europe. It operated continuously for over 800 years, until 1977. Today it houses a museum. The medical treatments practised here were, by modern standards, alarming.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🩸</span><span class="fact-label">The doctor who tasted your urine and then cut your wrist</span><span class="fact-arrow">▾</span></div><div class="fact-body">Medieval doctors diagnosed illness by tasting the patient's urine. Based on ancient Greek theories about four body humors — blood, phlegm, yellow bile, and black bile — the doctor would decide which one was out of balance. The answer was almost always the same: drain blood. A barber with the sharpest knife in the neighbourhood would come and cut the patient's wrist to let blood out, then try to stop it in time.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>💈</span><span class="fact-label">Why barber poles are red, white, and blue</span><span class="fact-arrow">▾</span></div><div class="fact-body">Barbers came to the hospital because they owned the sharpest knives. After performing bloodletting they would hang the used bandages — white cloth stained red with blood — on a stick outside their shop to dry. The wind made the bandages spin around the stick. Since most citizens could not read, this spinning red-and-white spiral became the recognised sign of a barber's trade. Americans later added blue to match their flag. That is why barber poles around the world are red, white, and blue today.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🛏️</span><span class="fact-label">Hospital beds were only 1.2 metres long</span><span class="fact-arrow">▾</span></div><div class="fact-body">Medieval hospital beds were very short — not only because people were smaller, but because patients were expected to sleep sitting upright. Medieval people believed that lying completely flat would allow too much blood to rush to the head, and that if this happened you would simply never wake up again. Patients propped themselves against pillows, using only the lower portion of the bed for their legs.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🥗</span><span class="fact-label">Medieval Bruges almost never ate beef</span><span class="fact-arrow">▾</span></div><div class="fact-body">Patients in the hospital were fed mostly vegetarian meals. Medieval people avoided beef not for moral reasons but for practical ones: they reasoned that cattle use too much land for the amount of meat they produce, and that cows were far more useful alive — for milk and farm labour. Without any awareness of modern environmental concerns, they reached a conclusion that sounds remarkably contemporary.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🏨</span><span class="fact-label">Where the word "hospitality" comes from</span><span class="fact-arrow">▾</span></div><div class="fact-body">Anyone could arrive at this hospital — sick or healthy, local resident or foreign traveller — and receive a free bed and a free meal, no questions asked. This generous and unconditional welcome to strangers is the direct origin of our modern word "hospitality." The hospital was, in essence, the world's first hotel.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 ROCHUS STATUE -->
+    <div class="site-card" data-anim>
+      <div class="card-img">
+        <div class="no-photo">
+          <svg width="80" height="80" viewBox="0 0 100 100" fill="none" style="opacity:0.5">
+            <ellipse cx="58" cy="65" rx="28" ry="16" fill="white"/>
+            <path d="M32 63 Q22 44 28 30 Q31 22 37 19" stroke="white" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+            <circle cx="38" cy="17" r="7.5" fill="white"/>
+            <path d="M44 16 L54 15 L53 19 L44 19Z" fill="#F0C96A"/>
+            <circle cx="40" cy="14.5" r="1.6" fill="#1A3A22"/>
+            <path d="M82 62 Q90 55 88 65 Q86 72 80 69Z" fill="white" opacity="0.85"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 05 · The Saint and the Dog</p>
+        <h3 class="card-title">The Rochus Statue</h3>
+        <p class="card-text">Born in the 1300s, Rochus gave away all his possessions and walked across Europe caring for people suffering from the Black Plague — until he caught it himself. What happened next involves a stray dog, mouldy bread, and possibly the world's first accidental penicillin cure.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🐶</span><span class="fact-label">The dog who saved a dying saint</span><span class="fact-arrow">▾</span></div><div class="fact-body">When Rochus caught the plague, he isolated himself deep in the woods so he would not infect anyone else. Starving and dying, he was visited every single day by a stray dog who picked up old bread from the streets of a nearby town and carried it to him in the forest. The bread kept Rochus alive until, miraculously, he recovered. In every statue of Rochus around the world, you can identify him the same way: a pilgrim in a hat with a staff, pulling up his robe to show the plague scars on his leg, with a dog sitting at his side holding a piece of bread in its mouth.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🍞</span><span class="fact-label">Was it actually accidental penicillin?</span><span class="fact-arrow">▾</span></div><div class="fact-body">The bread the dog collected from the streets was almost certainly old and mouldy. We now know that certain moulds — including the family that produces penicillin — kill bacteria. It is entirely possible that Rochus was not saved by a miracle but by accidentally consuming an early natural antibiotic through the mouldy bread. He survived the Black Plague, a disease that killed roughly one third of Europe's population. Miracle or medicine — you decide.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 BEGIJNHOF -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Begijnhof.jpg" alt="Begijnhof courtyard with daffodils, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 06 · The Women's City</p>
+        <h3 class="card-title">Begijnhof · Founded 1245</h3>
+        <p class="card-text">Founded in 1245 as a safe, independent community for single women and widows — a walled mini-city inside Bruges, with its own laws, church, bakery, brewery, and farm. Benedictine nuns still live here today and gather for sung vespers at 4:30pm daily. The public is welcome to attend.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>⚖️</span><span class="fact-label">The bridge where the law of Bruges stopped</span><span class="fact-arrow">▾</span></div><div class="fact-body">On the bridge leading to the Begijnhof, a stone marker called a pall sits in the middle of the path. The laws of Bruges were only valid up to that stone. Cross it, and Bruges law no longer applied to you. Above the entrance gate, golden letters spell out "Sauve Garde" — Safe Gate. This made the Begijnhof a genuine legal sanctuary. Criminals on the run knew exactly where to head — especially since, once inside, there was a working brewery.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>💍</span><span class="fact-label">Nuns who could leave, marry, and start a family</span><span class="fact-arrow">▾</span></div><div class="fact-body">The Beguines lived and dressed like nuns but did not take permanent vows. If a Beguine fell in love with a man in the city, she could choose to leave the community, get married, and have children. The Catholic Church strongly disapproved of this arrangement. The trade-off for those who left was significant: anyone who departed had to leave all of their possessions behind. This rule kept the community financially independent for centuries.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>💀</span><span class="fact-label">Where the phrase "stinking rich" actually came from</span><span class="fact-arrow">▾</span></div><div class="fact-body">Inside the beguinage church, the floor is covered with old stone grave markers. In the Middle Ages, wealthy people paid to be buried under the floor of a church — it was a sign of prestige. But the graves were not sealed tightly, and as the bodies decomposed they produced an unpleasant smell that spread through the church. Poor people kneeling in prayer began muttering "bah, stinking rich" about those wealthy people rotting beneath their feet. The phrase has been in use ever since.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 MINNEWATER -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Minnewater_park.jpg" alt="Minnewater Lake, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 07 · Swans, Legends &amp; a Murder</p>
+        <h3 class="card-title">Minnewater Lake</h3>
+        <p class="card-text">A peaceful, swan-filled park with weeping willows and canals. But Minnewater was once a busy working harbour — and the swans are not here for decoration. They are a punishment that has lasted more than 500 years.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🦢</span><span class="fact-label">Why swans are condemned to Bruges' canals forever</span><span class="fact-arrow">▾</span></div><div class="fact-body">In the 15th century, the people of Bruges beheaded their mayor — a man famous for his unusually long neck — after he collaborated with the Austrian rulers of the city. The Austrians, furious at his execution, issued a decree: long-necked swans must permanently inhabit the waters of Bruges as a reminder of the murder. The mayor's name was Pieter Lanchals, and his tomb — with a swan carved above it — can still be seen inside the Church of Our Lady.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>💔</span><span class="fact-label">The legend of Minna — how a lake became a grave</span><span class="fact-arrow">▾</span></div><div class="fact-body">According to local legend, a girl named Minna from one clan fell in love with Strombold from a rival clan. Her parents forbade the marriage. She fled into the forests, was found dying five days later by Strombold, and died in his arms. He built a dam to hold back the natural river that ran through the area, buried Minna on its banks, then broke the dam and flooded her grave — creating this lake. He carved the words "This is Minna Water" into a rock, which is believed to lie beneath the large tower on the far side of the lake today.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 STOOFSTRAAT -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Stoofstraat.jpg" alt="Stoofstraat, the narrowest street in Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 08 · World Records</p>
+        <h3 class="card-title">Stoofstraat · Smallest Street</h3>
+        <p class="card-text">Bruges is proud of its superlatives. Stoofstraat is the city's narrowest alley — barely wide enough for one person to walk through. Two people passing in opposite directions will need to turn sideways.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>📏</span><span class="fact-label">The Belfry tower leans — and nobody knows why it stopped</span><span class="fact-arrow">▾</span></div><div class="fact-body">As you walk around the city, look for the Belfry tower and notice that it leans about four feet off vertical. The lean has been carefully measured and recorded since 1740, and in nearly 300 years of monitoring, no further change has been detected. The Belfry was built in 1300, stands 290 feet tall, and contains 47 bells. Its rights chest — containing official documents secured behind 10 locks, requiring 10 different keyholders to open — is still inside the tower.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🪑</span><span class="fact-label">The "benches" on Bruges' bridges were not for sitting</span><span class="fact-arrow">▾</span></div><div class="fact-body">On several bridges in Bruges you will notice what look like stone benches built into the sides. They were not for sitting. Goods sold on a bridge were exempt from city taxes, which only applied within the city limits. Merchants discovered this loophole and set up their stalls on the bridges to trade without paying. These stone surfaces were their market stalls. Medieval tax avoidance, built permanently into the city's infrastructure.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09 CHURCH OF OUR LADY -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Church_of_Our_Lady.jpg" alt="Church of Our Lady, Bruges, aerial view"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 09 · Bricks, Michelangelo &amp; a Stolen Masterpiece</p>
+        <h3 class="card-title">Church of Our Lady</h3>
+        <p class="card-text">At 122 metres, this is the tallest building in Bruges and the tallest brick spire in the Low Countries. Every brick was laid by hand, one at a time. Construction began in 1230 and took over 200 years to finish.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🧱</span><span class="fact-label">Why brick and not stone?</span><span class="fact-arrow">▾</span></div><div class="fact-body">Bruges sits on deep clay soil. Medieval builders set up kilns right beside the construction site and baked the local clay into bricks on the spot, providing a continuous and cheap supply of building material. There was no need to quarry or transport heavy stone from elsewhere. The city literally built its most famous landmark out of the ground it stood on. Bricklayers were regarded more as artists than labourers — each course had to be laid with great precision, because the tower's enormous weight would cause cracks and collapse if the bricks were not perfectly aligned.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🎨</span><span class="fact-label">The Michelangelo that was stolen twice</span><span class="fact-arrow">▾</span></div><div class="fact-body">Inside the church is a marble Madonna and Child by Michelangelo — the only sculpture he created that left Italy during his lifetime. It was purchased by a wealthy Bruges merchant in 1504 while Michelangelo was taking breaks from work on his famous David. The merchant is buried in the same chapel. The statue was stolen during the French Revolution and then again by the Nazis during the Second World War. Both times, Bruges got it back.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>👑</span><span class="fact-label">The tombs that mark the moment Bruges began to decline</span><span class="fact-arrow">▾</span></div><div class="fact-body">Inside the church are the tombs of the last Dukes of Burgundy: Mary of Burgundy and her father Charles the Bold. Charles died in battle in 1477. Mary fell from her horse and died at age 25 in 1482, leaving behind a toddler and a husband who was heir to the Holy Roman Empire. Their deaths handed Bruges to Austria — rulers who had no interest in the city's needs. The harbour silted up, trade routes shifted to Antwerp and Amsterdam, and Bruges entered a long, slow decline. These two tombs mark the exact moment everything turned.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🪟</span><span class="fact-label">The world's smallest gothic window — a spy-hole for taxes</span><span class="fact-arrow">▾</span></div><div class="fact-body">In the garden beside the church, stand with your back to the canal and look right toward the Gruuthuse Palace wall. About five to six metres up, you will find a tiny gothic window — the smallest gothic window in the world. The Lord of Gruuthuse had it installed so he could watch the canal tollhouse directly below and make sure every passing boat was paying the correct dues. No boat could slip past without being seen.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 BONIFACE BRIDGE -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Boniface_bridge.jpg" alt="Boniface Bridge over a Bruges canal"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 10 · Beautiful but Only 100 Years Old</p>
+        <h3 class="card-title">Boniface Bridge</h3>
+        <p class="card-text">This bridge looks perfectly ancient and is endlessly photographed by visitors who call it the "Bridge of Love." The walking guide's honest admission: it is only about 100 years old — "a little fake," as they put it. But the canal view here is genuinely one of the most beautiful in the city.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🪨</span><span class="fact-label">Two ancient pillars nearby from an underground canal</span><span class="fact-arrow">▾</span></div><div class="fact-body">Just past this bridge, in a quiet courtyard off Dijver street, stand two ancient stone pillars that almost no one notices. They were unearthed during reconstruction work at the Market Square in the early 20th century and brought here as reminders of Bruges' trading history. In the Middle Ages, these pillars supported the central port building known as the Waterhall — a vast warehouse that straddled a canal running right into the heart of the city. That canal still runs underground beneath the streets today.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🚤</span><span class="fact-label">Why every canal in Bruges exists</span><span class="fact-arrow">▾</span></div><div class="fact-body">All of Bruges' canals were built out of practical necessity. The city was founded on a swamp with a high water table, and the ground is too soft and wet to have supported heavy overland trade. For centuries, shipping goods by boat through the canals was cheaper, faster, and safer than moving them over land. Every canal you see was deliberately dug through what was originally boggy, marshy ground. Without the canals, there would be no city of Bruges.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 ROSARY QUAY -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Rozenhoedkaai.jpg" alt="Rosary Quay canal view with Belfry, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 11 · Most Photographed View in Bruges</p>
+        <h3 class="card-title">Rosary Quay · Rozenhoedkaai</h3>
+        <p class="card-text">The Belfry tower reflected in a quiet canal lined with ancient gabled houses — this is the most photographed view in all of Bruges. The name <em>Rozenhoedkaai</em> means "Rosary Quay," because this canal-side spot was once where vendors sold rosary beads to pilgrims visiting the Holy Blood relic. But come back at night for the true magic.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🌙</span><span class="fact-label">The true magic of Bruges happens after dark</span><span class="fact-arrow">▾</span></div><div class="fact-body">The city has invested in sophisticated spotlighting of its buildings and waterways. After dark, the ancient facades glow gold against the dark surface of the canal, the daytime crowds disappear, and the swans — which travel in rows of four to ten — begin their nightly journeys along the canals. The local guide who created the walking tour writes: "I live here my whole life and I never get tired of coming here late to be amazed by the beauty and to wait for the swans to come by."</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🛶</span><span class="fact-label">The boat tour landing has been a working dock for centuries</span><span class="fact-arrow">▾</span></div><div class="fact-body">The boat tour landing just below this viewpoint has served as a working dock for many centuries. From this spot, boats carried goods from the canal network out toward the wider city warehouses and markets. The tourist boat landing you see today sits on the same ground where generations of boatmen loaded and unloaded cargo.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 FISH MARKET & BLIND DONKEY -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Blinde-Ezelstraat.jpg" alt="Blinde-Ezelstraat, Blind Donkey Alley, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 12 · Fish, Donkeys &amp; Hidden Details</p>
+        <h3 class="card-title">Fish Market &amp; Blind Donkey Alley</h3>
+        <p class="card-text">The North Sea is just 10 miles away. Until a generation ago the Vismarkt (Fish Market) was a thriving daily market with 17th-century Tuscan-pillared arcades. Locals particularly loved the shrimp, which were cooked on the fishing boat before it even arrived at the dock. Today one stall still sells fish; the rest sell crafts and souvenirs.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🐴</span><span class="fact-label">Why is it called Blind Donkey Street?</span><span class="fact-arrow">▾</span></div><div class="fact-body">The narrow alley connecting the Fish Market to the Burg Square is called Blinde-Ezelstraat — Blind Donkey Street. The name likely comes from the donkeys used to carry fish from the North Sea into the city. At this spot, the donkeys were fitted with blinders before crossing the water. Without blinders over their eyes, the donkeys refused to cross the canal between the old city and the fish market. Medieval animal management, solved with leather eyewear.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🗿</span><span class="fact-label">Our Lady of the Inkpot — still protecting the town council</span><span class="fact-arrow">▾</span></div><div class="fact-body">At the entrance to Blind Donkey Street, on the corner of City Hall, stands a statue of the Virgin Mary known locally as "Our Lady of the Inkpot." For centuries, Bruges citizens nodded respectfully to her as they passed. She is still regarded as the protector of the town council. Partway down the alley, on the left wall at roughly thigh height, you can see an original iron hinge from the city's old south gate — from the time when Bruges was ringed by a moat and all city gates were locked shut at 10 o'clock every night.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🧹</span><span class="fact-label">A deliberate black patch on the wall</span><span class="fact-arrow">▾</span></div><div class="fact-body">Centuries of soot and grime had turned the stone walls of Bruges entirely black. A major cleaning project in the 1960s removed the grime and revealed the warm sandstone tones you see on the buildings today. Right here in Blinde-Ezelstraat, look for a small square patch on one wall that was deliberately left uncleaned. It was preserved on purpose — to show visitors exactly how dark and grimy the entire city had become before the restoration. A small window into what Bruges once looked like.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13 BASILICA & STADTHUIS -->
+    <div class="site-card" data-anim>
+      <div class="card-img" onclick="expandImg(this)">
+        <img src="Stadhuis.jpg" alt="Stadthuis and Burg Square, Bruges"/>
+        <span class="tap-hint">tap to expand</span>
+      </div>
+      <div class="card-body">
+        <p class="card-cat">Stop 13 · The Political Heart of Bruges</p>
+        <h3 class="card-title">Basilica of the Holy Blood &amp; City Hall</h3>
+        <p class="card-text">The Burg Square has been Bruges' historical birthplace, political center, and religious heart for over a thousand years. Citizens still hold festivals and parades here today. Standing in this one square, you can see five major European architectural styles — spanning 600 years of history.</p>
+        <div class="facts">
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🏛️</span><span class="fact-label">Five architectural styles in a single square</span><span class="fact-arrow">▾</span></div><div class="fact-body">Turning counterclockwise around the Burg Square: the Romanesque lower chapel of the Basilica of the Holy Blood (built around 1150, round arches, heavy columns); the Gothic City Hall (completed around 1400, white sandstone, pointed spires, 49 statues on its facade); the Renaissance Old Civil Registry (1500s, gilded statues, well-proportioned windows); the Classicism government building (1726); and the Baroque former bishop's palace. No other square in Europe contains this many significant architectural styles so close together.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🩸</span><span class="fact-label">The Holy Blood — 800 years of processions, free to see</span><span class="fact-arrow">▾</span></div><div class="fact-body">The Basilica of the Holy Blood holds a rock-crystal vial said to contain drops of Christ's blood, brought from Jerusalem in 1150 by Flemish crusader Thierry of Alsace. Entry to see the relic is free. Once a year, on Ascension Day, the vial is carried through the streets of Bruges in a procession that involves around 1,700 local people and 50 floats. This procession has taken place every year for over 800 years without interruption, and is now protected by UNESCO.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🌟</span><span class="fact-label">Napoleon, Churchill, and Queen Elizabeth all slept here</span><span class="fact-arrow">▾</span></div><div class="fact-body">The ornate former bishop's palace on the Burg Square — built in the Baroque style — served as Bruges' premier accommodation for distinguished visitors for three centuries. Napoleon stayed there twice. Winston Churchill stayed for a longer period. Queen Elizabeth visited more recently. It was, effectively, the state guesthouse of Bruges.</div></div>
+          <div class="fact"><div class="fact-hd" onclick="expandFact(this)"><span>🏨</span><span class="fact-label">A free medieval cathedral hidden beneath a hotel</span><span class="fact-arrow">▾</span></div><div class="fact-body">The open, park-like space on the Burg Square was once occupied by the enormous Cathedral of Saint Donatius, which was destroyed during the French Revolution. The cathedral's archaeological remains still survive underground and can be visited completely free of charge by walking into the Crowne Plaza Hotel on the corner of the square and asking to see them. A medieval cathedral, preserved beneath a modern hotel lobby — and almost no one knows it is there.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end sites-grid -->
+</div><!-- end wrap -->
+</section>
+
+<div class="divider-green"></div>
+
+<!-- HISTORY TIMELINE -->
+<section class="tl-section">
+  <div class="tl-inner">
+    <p class="tl-eyebrow">From Viking Swamp to Sleeping Beauty</p>
+    <h2 class="tl-title">The <em>Wild</em> History of Bruges</h2>
+    <p class="tl-sub">Rise, fall, and revival</p>
+    <div class="tl">
+      <div class="tl-item" data-anim><p class="tl-year">800s · Founded as a Fortress</p><p class="tl-text"><strong>Baldwin I</strong> builds a fort in the marshy lowlands as a safe haven from Viking raiders. The Vikings had already been calling the settlement "Bryggija" — their word for boat stop — sailing their ships right into what is now the Market Square. That name gradually became Brugge, then Bruges.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1100s · Piety and Pilgrimage</p><p class="tl-text">The <strong>Holy Blood relic</strong> arrives from Jerusalem, brought by Crusader Thierry of Alsace. Bruges becomes a major pilgrimage destination across Northern Europe. St. John's Hospital is founded — one of the oldest hospitals in Europe.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1200s · Trading with the World</p><p class="tl-text">Bruges connects by sea to trading partners as far away as England and the Mediterranean. A canal runs directly into the Market Square. Flemish weavers spin imported wool into the finest cloth in Europe, then export it worldwide. Bruges becomes the commercial capital of Western Europe.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1245 · The Women's City</p><p class="tl-text">Johanna of Constantinople founds the <strong>Begijnhof</strong> — a walled, self-governing community for single women and widows, with its own church, brewery, bakery, and farm. The laws of Bruges stop at a stone marker on the bridge. Inside the gate: "Sauve Garde."</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1302 · Independence from France</p><p class="tl-text">The "Schild en Vriend" password massacre kills 200 French occupiers. France retaliates with 8,000 soldiers. On <strong>11 July</strong>, at the Battle of the Golden Spurs, Flemish foot soldiers lure the French cavalry into a swamp. Knights in iron armour sink and cannot rise. Five hundred golden spurs are collected from the dead the next morning. 11 July is still Flanders' national holiday.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1300s–1400s · The Golden Age</p><p class="tl-text">Bruges reaches a population of up to <strong>150,000</strong>. The Dukes of Burgundy make it their home. The Order of the Golden Fleece is founded here. Jan van Eyck, one of the greatest painters in European history, lives and works in Bruges. Michelangelo's Madonna and Child arrives. The City Hall is completed.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1477–1482 · The Beginning of the End</p><p class="tl-text"><strong>Charles the Bold</strong> dies in battle in 1477. His daughter <strong>Mary of Burgundy</strong> falls from her horse and dies aged 25 in 1482, handing Bruges to the Habsburg Empire. Rulers who have no interest in Bruges allow the harbour to silt up. Trade routes shift permanently to Antwerp and Amsterdam.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1500s–1800s · Decline and Sleep</p><p class="tl-text">Two centuries of slow decline. Bruges becomes a poor, neglected backwater, left behind by the Industrial Age. But its very neglect turns out to be its salvation — without money to modernise, the medieval streets, buildings, and canals simply remain. Bruges sleeps, perfectly preserved.</p></div>
+      <div class="tl-item" data-anim><p class="tl-year">1900s · The Sleeping Beauty Wakes</p><p class="tl-text">The first wave of modern tourists were Americans and Canadians who came after World War I to visit the graves of loved ones in nearby cemeteries — and discovered a perfectly preserved medieval city in the process. Citizens began to restore and revive Bruges. Today it is one of the most visited medieval cities in the world.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-red"></div>
+
+<!-- FAMOUS RESIDENTS -->
+<section class="people-section">
+  <div class="wrap">
+    <p class="eyebrow">The Artists, Knights &amp; Visionaries</p>
+    <h2 class="sec-title">Bruges' <em>Famous</em> Residents</h2>
+    <div class="people-grid">
+
+      <div class="person" data-anim>
+        <span class="person-icon">🎨</span>
+        <div class="person-name">Jan van Eyck</div>
+        <div class="person-dates">c. 1390 – 1441</div>
+        <p class="person-bio">One of the greatest painters in European history, Jan van Eyck lived and worked in Bruges under the direct patronage of Philip the Good, Duke of Burgundy. He is widely credited with perfecting the technique of oil painting, which allowed artists to achieve levels of detail and luminosity that had never before been possible. His paintings, including the altarpieces that established Flemish painting as Europe's leading art form, can be seen today at the Groeninge Museum — just minutes from the Market Square.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">⚔️</span>
+        <div class="person-name">Jan Breydel &amp; Pieter de Coninck</div>
+        <div class="person-dates">fl. 1302</div>
+        <p class="person-bio">A butcher and a 60-year-old weaver — not the heroes history usually celebrates. Yet these two ordinary citizens organised the uprising that changed Flemish history forever. Their statue stands at the center of the Market Square, swords raised and facing toward France. Jan Breydel was the butcher; Pieter de Coninck was the weaver. Together they led the citizens of Bruges against their French occupiers in 1302, triggering the chain of events that led to the Battle of the Golden Spurs and Flemish independence.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">🏰</span>
+        <div class="person-name">Louis of Gruuthuse</div>
+        <div class="person-dates">c. 1422 – 1492</div>
+        <p class="person-bio">Lord of the Gruuthuse Palace, knight of the Order of the Golden Fleece, and trusted advisor to the Duke of Burgundy. Louis of Gruuthuse owned 190 hand-illustrated manuscripts — more than twice the size of the English Royal library at the time. Each manuscript cost the equivalent of hundreds of years of a craftsman's wages. He also sheltered the exiled English King Edward IV at the Gruuthuse Palace — an act of diplomacy and hospitality that helped restore Edward to the English throne and changed the course of English history.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">👑</span>
+        <div class="person-name">Mary of Burgundy</div>
+        <div class="person-dates">1457 – 1482</div>
+        <p class="person-bio">The last Duchess of Burgundy and one of the most powerful women in 15th-century Europe. When her father Charles the Bold died in battle in 1477, Mary — aged just 19 — alone inherited the vast territories of Burgundy and Flanders. She married Maximilian of Habsburg to gain military protection, inadvertently handing Bruges to the Austrian Empire. She died aged 25 after falling from her horse, leaving behind a toddler son. Her tomb is inside the Church of Our Lady and is one of the finest examples of medieval funerary art in Belgium.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">✝️</span>
+        <div class="person-name">Saint Rochus</div>
+        <div class="person-dates">c. 1295 – 1327</div>
+        <p class="person-bio">Born in Montpellier to a wealthy family, Rochus gave away his entire inheritance and devoted his life to caring for victims of the Black Plague across Europe. When he caught the plague himself, he retreated into the woods alone to avoid infecting others, where a stray dog visited him daily with bread. He survived, returned home, was arrested and imprisoned, and died in his cell — still tending to the sick around him. His relics were brought to Venice in 1485, and he has been venerated ever since as the patron saint of the sick and imprisoned.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">🩸</span>
+        <div class="person-name">Thierry of Alsace</div>
+        <div class="person-dates">c. 1099 – 1168</div>
+        <p class="person-bio">Count of Flanders and one of the defining figures in Bruges' history. After fighting in the Second Crusade, Thierry returned from Jerusalem in 1150 carrying a vial said to contain drops of Christ's blood, given to him by the patriarch of Jerusalem as thanks for his military service. He donated the relic to Bruges, instantly transforming the city into one of the most important pilgrimage destinations in Northern Europe. The annual Procession of the Holy Blood that he established has been held every year since — for over 870 years without interruption.</p>
+      </div>
+
+      <div class="person" data-anim>
+        <span class="person-icon">🎶</span>
+        <div class="person-name">The Carillonneurs of the Belfry</div>
+        <div class="person-dates">1300s – present</div>
+        <p class="person-bio">Not one person but a centuries-long lineage of musicians who have played the 47-bell carillon in the Belfry tower. Every 15 minutes the bells chime automatically through a giant mechanical barrel — like a player piano built into the sky. For concerts, a live carillonneur sits at a keyboard and plays with fists and feet, since the force required to ring the bells is far too great for fingers alone. Free concerts are played in the inner courtyard of the Belfry on a schedule posted at the entrance gate. The tradition of live carillon performance in Bruges has continued without interruption since the medieval era.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider-green"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Things That Make You Go Hmmmm… Bruges</strong></p>
+  <p>An interactive family guide to one of Europe's most extraordinary medieval cities.</p>
+  <p style="margin-top:0.75rem">All content drawn from <strong>VoiceMap's "The Magic of Bruges"</strong> audio tour and <strong>Rick Steves' Belgium</strong>. <em>No facts invented.</em></p>
+</footer>
+
+<script>
+// Accordion: toggle open/close
+function expandFact(hd) {
+  const box = hd.closest('.fact');
+  box.classList.toggle('open');
+}
+
+// Photo: toggle expand
+function expandImg(wrap) {
+  wrap.classList.toggle('expanded');
+}
+
+// Scroll-triggered fade-in
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) {
+      setTimeout(function() { e.target.classList.add('visible'); }, i * 55);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('[data-anim]').forEach(function(el) { io.observe(el); });
+</script>
+</body>
+</html>

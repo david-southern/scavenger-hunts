@@ -3,186 +3,1042 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>
-  // Force a fresh load on first visit by redirecting to a cache-busted URL.
-  // Subsequent reloads keep the same ?v= so the back button etc. behave normally.
-  if (!new URLSearchParams(location.search).has('v')) {
-    location.replace(location.pathname + '?v=' + Date.now() + location.hash);
-  }
-</script>
 <title>Dresden Old Town Scavenger Hunt</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=IM+Fell+English:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c8973a;
-    --gold-light: #e8b84b;
-    --dark: #1a1209;
-    --cream: #faf3e0;
-    --sand: #ede0c2;
-    --rust: #8b3a1a;
-    --ink: #2c1f0e;
-    --muted: #7a6a52;
-    --green: #2d4a2a;
-    --green-light: #e8f2e8;
-    --red: #8b1a1a;
-    --red-light: #fdf0f0;
+    --gold:       #b8862a;
+    --gold-light: #d4a843;
+    --gold-pale:  #f0d88a;
+    --parchment:  #f5e9c8;
+    --parch-mid:  #eedcb0;
+    --ink:        #1a0e04;
+    --ink-mid:    #2e1a08;
+    --brown:      #6b3d1a;
+    --brown-light:#8b5c2a;
+    --crimson:    #7a1a1a;
+    --crimson-l:  #fff5f5;
+    --forest:     #1a4a2a;
+    --forest-l:   #f0faf4;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
-  /* HEADER */
-  .header { background: var(--dark); padding: 48px 24px 36px; text-align: center; position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,151,58,0.04) 40px, rgba(200,151,58,0.04) 80px); }
-  .header-badge { display: inline-block; border: 1px solid var(--gold); color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 3px; padding: 5px 16px; margin-bottom: 20px; text-transform: uppercase; }
-  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px, 8vw, 72px); color: var(--cream); line-height: 1; margin-bottom: 8px; }
-  .header h1 span { color: var(--gold); font-style: italic; }
-  .header-sub { color: var(--muted); font-size: 14px; letter-spacing: 1px; margin-top: 16px; }
-  .header-meta { display: flex; justify-content: center; gap: 32px; margin-top: 28px; flex-wrap: wrap; }
-  .header-meta span { color: var(--sand); font-size: 13px; }
+  body {
+    background-color: #1e1005;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(180,120,30,0.1) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(140,80,10,0.08) 0%, transparent 55%);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
 
-  /* INTRO */
-  .intro { max-width: 720px; margin: 0 auto; padding: 40px 24px 16px; text-align: center; }
-  .intro p { color: var(--muted); line-height: 1.7; font-size: 15px; }
-  .intro strong { color: var(--ink); }
+  /* ═══════════════════════════════════
+     STICKY SCORE BAR
+  ═══════════════════════════════════ */
+  .score-anchor {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, #120900 0%, #1e1005 100%);
+    border-bottom: 2px solid var(--gold-light);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+  }
 
-  /* SCORING BAR */
-  .scoring-bar { background: var(--dark); margin: 24px auto; border-radius: 4px; padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; max-width: 900px; }
-  .score-label { font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
-  .score-display { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--cream); }
-  .score-display span { color: var(--gold); }
-  .progress-wrap { flex: 1; min-width: 200px; }
-  .progress-track { background: rgba(255,255,255,0.1); height: 6px; border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 99px; transition: width 0.5s ease; width: 0%; }
-  .progress-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .score-anchor::after {
+    content: '';
+    position: absolute;
+    inset: 3px 3px 0 3px;
+    border-top: 1px solid rgba(184,134,42,0.25);
+    pointer-events: none;
+  }
 
-  /* STOPS */
-  .stops-container { max-width: 900px; margin: 0 auto; padding: 16px 20px 60px; }
-  .stop-card { background: white; border: 1px solid rgba(0,0,0,0.08); margin-bottom: 20px; border-radius: 4px; overflow: hidden; transition: box-shadow 0.2s; }
-  .stop-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
-  .stop-card.completed { border-left: 4px solid var(--gold); }
-  .stop-header { display: flex; align-items: stretch; cursor: pointer; user-select: none; }
-  .stop-number { background: var(--dark); color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 22px; padding: 20px 22px; display: flex; align-items: center; justify-content: center; min-width: 64px; }
-  .stop-card.completed .stop-number { background: var(--gold); color: var(--dark); }
-  .stop-title-wrap { flex: 1; padding: 18px 20px; display: flex; flex-direction: column; justify-content: center; }
-  .stop-location { font-size: 10px; font-family: 'Oswald', sans-serif; letter-spacing: 2.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
-  .stop-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); line-height: 1.2; }
-  .stop-points { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .stop-toggle { padding: 20px; display: flex; align-items: center; color: var(--muted); font-size: 20px; transition: transform 0.3s; }
+  .score-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px 24px 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .score-gem { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+
+  .score-gem-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #f0d88a;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  .score-gem-value {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 32px;
+    color: #ffe680;
+    line-height: 1;
+    text-shadow: 0 0 18px rgba(255,220,80,0.7), 0 1px 3px rgba(0,0,0,0.6);
+    font-weight: 700;
+  }
+
+  .score-progress-wrap { flex: 1; min-width: 160px; }
+
+  .score-progress-label {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: #d4b060;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .score-track {
+    height: 9px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(184,134,42,0.3);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--crimson) 0%, var(--gold) 60%, var(--gold-pale) 100%);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 0 10px rgba(212,168,67,0.5);
+  }
+
+  .score-rank { display: flex; flex-direction: column; align-items: center; min-width: 100px; }
+
+  /* ═══════════════════════════════════
+     HEADER
+  ═══════════════════════════════════ */
+  .header {
+    background: linear-gradient(180deg, #080402 0%, #140a02 35%, #1e1005 75%, #140a02 100%);
+    padding: 0 20px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Stone block texture */
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 56px, rgba(0,0,0,0.18) 56px, rgba(0,0,0,0.18) 58px),
+      repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(0,0,0,0.1) 80px, rgba(0,0,0,0.1) 82px);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Scalloped pennant strip at bottom */
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 22px;
+    background: repeating-linear-gradient(
+      90deg,
+      #8a1818 0px, #8a1818 44px,
+      #1a3a8a 44px, #1a3a8a 88px,
+      #1a5a2a 88px, #1a5a2a 132px,
+      #5a1a8a 132px, #5a1a8a 176px,
+      #8a6200 176px, #8a6200 220px
+    );
+    clip-path: polygon(
+      0% 0%, 4% 100%, 8% 0%, 12% 100%, 16% 0%, 20% 100%,
+      24% 0%, 28% 100%, 32% 0%, 36% 100%, 40% 0%, 44% 100%,
+      48% 0%, 52% 100%, 56% 0%, 60% 100%, 64% 0%, 68% 100%,
+      72% 0%, 76% 100%, 80% 0%, 84% 100%, 88% 0%, 92% 100%,
+      96% 0%, 100% 100%, 100% 0%
+    );
+  }
+
+  .header-crest {
+    font-size: 64px;
+    line-height: 1;
+    padding-top: 40px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 0 20px rgba(212,168,67,0.55));
+    position: relative;
+  }
+
+  .header-rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    max-width: 480px;
+    margin: 10px auto 18px;
+  }
+  .header-rule::before, .header-rule::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+  .header-rule span { color: var(--gold-pale); font-size: 20px; }
+
+  .header-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #f0d070;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    text-shadow: 0 0 20px rgba(220,170,40,0.5);
+  }
+
+  .header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(32px, 8vw, 68px);
+    color: var(--parchment);
+    line-height: 1.05;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.7), 0 0 48px rgba(180,130,40,0.25);
+    margin-bottom: 6px;
+  }
+
+  .header h1 .subtitle {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: clamp(14px, 3.5vw, 26px);
+    color: var(--gold-light);
+    letter-spacing: 7px;
+    font-weight: 600;
+    margin-top: 6px;
+    text-shadow: 0 0 24px rgba(200,150,40,0.4);
+  }
+
+  .header-tagline {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: rgba(240,220,160,0.75);
+    margin: 18px 0 22px;
+  }
+
+  .header-meta { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 0; }
+
+  .header-meta-pill {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--ink);
+    background: var(--gold-light);
+    padding: 5px 16px;
+    clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════
+     INTRO SCROLL
+  ═══════════════════════════════════ */
+  .intro-scroll { max-width: 760px; margin: 28px auto 0; padding: 0 18px; }
+
+  .scroll-body {
+    background: var(--parchment);
+    background-image:
+      radial-gradient(ellipse at 10% 10%, rgba(180,120,30,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, rgba(100,50,10,0.06) 0%, transparent 50%);
+    border: 2px solid var(--gold-light);
+    box-shadow: inset 0 0 40px rgba(180,120,30,0.06), 0 10px 36px rgba(0,0,0,0.55);
+    padding: 28px 32px 26px;
+    position: relative;
+  }
+
+  .scroll-body::before { content: '⚔'; position: absolute; top: 10px; left: 14px; font-size: 16px; color: var(--crimson); opacity: 0.55; }
+  .scroll-body::after  { content: '🛡'; position: absolute; top: 9px; right: 13px; font-size: 15px; opacity: 0.45; }
+
+  .scroll-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--brown);
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .scroll-body p {
+    font-family: 'IM Fell English', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ink-mid);
+    text-align: center;
+  }
+
+  .scroll-body p strong { color: var(--crimson); font-style: italic; }
+
+  /* ═══════════════════════════════════
+     CONTENT WRAPPER
+  ═══════════════════════════════════ */
+  .content-wrap { max-width: 900px; margin: 0 auto; padding: 28px 14px 60px; }
+
+  /* ═══════════════════════════════════
+     STOP CARDS
+  ═══════════════════════════════════ */
+  .stop-card {
+    background: var(--parchment);
+    background-image: radial-gradient(ellipse at 4% 6%, rgba(200,130,10,0.06) 0%, transparent 40%);
+    border: 2px solid var(--gold-light);
+    margin-bottom: 0;
+    position: relative;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.55), inset 0 0 30px rgba(180,120,30,0.03);
+  }
+
+  .stop-card::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(184,134,42,0.18);
+    pointer-events: none;
+  }
+
+  .stop-header { display: flex; align-items: stretch; cursor: pointer; user-select: none; border-bottom: 1px solid rgba(184,134,42,0.2); }
+
+  .stop-number {
+    width: 68px;
+    min-width: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--crimson);
+    background-image: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 60%);
+    color: var(--parchment);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    position: relative;
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.35);
+  }
+
+  .stop-number::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .stop-card.completed .stop-number {
+    background: var(--gold);
+    background-image: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 60%);
+    color: var(--ink);
+  }
+
+  .stop-title-wrap { flex: 1; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
+
+  .stop-location {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--brown-light);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .stop-title {
+    font-family: 'Cinzel', serif;
+    font-size: 21px;
+    color: var(--ink);
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .stop-points {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--brown-light);
+    margin-top: 3px;
+  }
+
+  .stop-toggle { padding: 0 20px; display: flex; align-items: center; color: var(--gold); font-size: 20px; transition: transform 0.3s; }
   .stop-card.open .stop-toggle { transform: rotate(180deg); }
-  .stop-body { display: none; border-top: 1px solid rgba(0,0,0,0.07); }
+  .stop-body { display: none; }
   .stop-card.open .stop-body { display: block; }
 
-  .stop-content { padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  /* ═══════════════════════════════════
+     MISSION & FACT BOXES
+  ═══════════════════════════════════ */
+  .stop-content {
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    border-bottom: 1px solid rgba(184,134,42,0.2);
+  }
   @media (max-width: 600px) { .stop-content { grid-template-columns: 1fr; } }
 
-  .clue-box { background: var(--sand); border-left: 3px solid var(--gold); padding: 18px 20px; border-radius: 0 4px 4px 0; }
-  .fact-box { background: #f0f4f0; border-left: 3px solid var(--green); padding: 18px 20px; border-radius: 0 4px 4px 0; }
-  .box-label { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--rust); text-transform: uppercase; margin-bottom: 8px; }
-  .clue-box p, .fact-box p { font-size: 14px; line-height: 1.65; color: var(--ink); }
+  .clue-box {
+    background: rgba(180,120,30,0.07);
+    border: 1px solid rgba(184,134,42,0.3);
+    border-left: 5px solid var(--gold);
+    padding: 16px 18px;
+  }
 
-  /* CHALLENGES */
-  .challenge-section { padding: 0 28px 28px; }
-  .section-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.1); }
-  .challenges-list { display: flex; flex-direction: column; gap: 12px; }
+  .fact-box {
+    background: rgba(26,74,42,0.07);
+    border: 1px solid rgba(26,74,42,0.22);
+    border-left: 5px solid var(--forest);
+    padding: 16px 18px;
+  }
+
+  .box-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--brown);
+    text-transform: uppercase;
+    margin-bottom: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .box-label .audio-btn {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 13px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  /* KEY LEGIBILITY FIX: larger, darker, more readable body text */
+  .clue-box p, .fact-box p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* Bold text inside boxes */
+  .clue-box p strong, .fact-box p strong {
+    color: var(--crimson);
+    font-weight: 700;
+  }
+
+  /* ═══════════════════════════════════
+     CHALLENGES
+  ═══════════════════════════════════ */
+  .challenge-section { padding: 18px 22px 24px; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--brown-light);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(184,134,42,0.45), transparent);
+  }
+
+  .challenges-list { display: flex; flex-direction: column; gap: 10px; }
 
   /* MC CARD */
-  .challenge-card { background: var(--cream); border: 1.5px solid transparent; border-radius: 6px; overflow: hidden; transition: border-color 0.2s, background 0.2s; }
-  .challenge-card.correct { border-color: var(--green); background: var(--green-light); }
-  .challenge-card.incorrect { border-color: var(--red); background: var(--red-light); }
-
-  /* Photo/action card */
-  .challenge-card.photo-type { cursor: pointer; }
-  .challenge-card.photo-type:hover { background: var(--sand); }
-  .challenge-card.photo-type.done { border-color: var(--gold); background: rgba(200,151,58,0.06); }
-
-  .challenge-top { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px 10px; }
-  .challenge-check { width: 22px; height: 22px; border: 2px solid var(--gold); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: transparent; transition: all 0.15s; margin-top: 2px; }
-  .challenge-card.photo-type.done .challenge-check { background: var(--gold); color: var(--dark); }
-  .challenge-body { flex: 1; }
-  .challenge-text { font-size: 13px; line-height: 1.5; color: var(--ink); font-weight: 500; }
-  .challenge-pts { font-weight: 600; color: var(--rust); font-size: 12px; white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
-
-  .challenge-type-tag { display: inline-block; font-size: 10px; font-family: 'Oswald', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; margin-top: 5px; }
-  .tag-mc     { background: rgba(26,18,9,0.08);  color: var(--ink); }
-  .tag-photo  { background: rgba(139,58,26,0.1); color: var(--rust); }
-  .tag-action { background: rgba(200,151,58,0.15); color: #7a5a10; }
-
-  /* MULTIPLE CHOICE OPTIONS */
-  .mc-options { padding: 0 16px 14px 16px; display: flex; flex-direction: column; gap: 6px; }
-  .mc-btn {
-    display: flex; align-items: center; gap: 10px;
-    background: white; border: 1.5px solid rgba(0,0,0,0.12);
-    border-radius: 4px; padding: 10px 14px; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--ink);
-    text-align: left; transition: all 0.15s; line-height: 1.45;
+  .challenge-card {
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(184,134,42,0.28);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s;
   }
-  .mc-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--sand); }
+
+  .challenge-card.correct  { border-color: var(--forest); background: var(--forest-l); }
+  .challenge-card.incorrect { border-color: var(--crimson); background: var(--crimson-l); }
+  .challenge-card.photo-type { cursor: pointer; }
+  .challenge-card.photo-type:hover { background: rgba(180,120,30,0.09); }
+  .challenge-card.photo-type.done { border-color: var(--gold); background: rgba(184,134,42,0.09); }
+
+  .challenge-top { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px 9px; }
+
+  .challenge-check {
+    width: 22px; height: 22px;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: transparent; transition: all 0.15s; margin-top: 1px;
+    background: rgba(184,134,42,0.06);
+  }
+  .challenge-card.photo-type.done .challenge-check { background: var(--gold); color: var(--ink); }
+
+  .challenge-body { flex: 1; }
+
+  /* KEY LEGIBILITY FIX: challenge questions in clean sans-serif */
+  .challenge-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .challenge-pts {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--crimson);
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+
+  .challenge-type-tag {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    margin-top: 5px;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+  .tag-mc     { border-color: rgba(184,134,42,0.4);  color: var(--brown-light); background: rgba(184,134,42,0.07); }
+  .tag-photo  { border-color: rgba(122,26,26,0.35);  color: var(--crimson);     background: rgba(122,26,26,0.06); }
+  .tag-action { border-color: rgba(26,74,42,0.35);   color: var(--forest);      background: rgba(26,74,42,0.06); }
+
+  /* MC OPTIONS */
+  .mc-options { padding: 0 16px 14px 50px; display: flex; flex-direction: column; gap: 7px; }
+
+  .mc-btn {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: rgba(245,233,200,0.75);
+    border: 1px solid rgba(184,134,42,0.28);
+    border-radius: 4px;
+    padding: 10px 14px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--ink);
+    text-align: left; transition: all 0.15s;
+    line-height: 1.5; width: 100%;
+    font-weight: 400;
+  }
+
+  .mc-btn:hover:not(:disabled) {
+    background: rgba(184,134,42,0.18);
+    border-color: var(--gold);
+    color: var(--ink);
+    transform: translateX(2px);
+  }
   .mc-btn:disabled { cursor: default; }
-  .mc-btn .opt-letter { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--muted); flex-shrink: 0; min-width: 18px; }
-  .mc-btn.chosen-correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
-  .mc-btn.chosen-correct .opt-letter { color: var(--green); }
-  .mc-btn.chosen-wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
-  .mc-btn.chosen-wrong .opt-letter { color: var(--red); }
-  .mc-btn.reveal-correct { border-color: var(--green); background: var(--green-light); color: var(--green); opacity: 0.75; }
 
-  .mc-feedback { font-size: 12px; margin: 4px 16px 12px; padding: 8px 12px; border-radius: 4px; line-height: 1.5; display: none; }
+  .opt-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+    min-width: 16px;
+    padding-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  .mc-btn.chosen-correct { border-color: var(--forest); background: var(--forest-l); color: #0d3a1e; font-weight: 600; }
+  .mc-btn.chosen-correct .opt-letter { color: var(--forest); }
+  .mc-btn.chosen-wrong   { border-color: var(--crimson); background: var(--crimson-l); color: #5a1010; }
+  .mc-btn.chosen-wrong .opt-letter { color: var(--crimson); }
+  .mc-btn.reveal-correct { border-color: var(--forest); background: var(--forest-l); color: #0d3a1e; opacity: 0.8; }
+
+  /* KEY LEGIBILITY FIX: feedback in clear sans-serif */
+  .mc-feedback {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    margin: 2px 16px 12px 50px;
+    padding: 10px 13px;
+    line-height: 1.6;
+    display: none;
+    border-left: 4px solid;
+    border-radius: 0 4px 4px 0;
+  }
   .mc-feedback.show { display: block; }
-  .mc-feedback.fb-correct { background: var(--green-light); color: var(--green); border-left: 3px solid var(--green); }
-  .mc-feedback.fb-wrong { background: var(--red-light); color: var(--red); border-left: 3px solid var(--red); }
+  .mc-feedback.fb-correct { background: var(--forest-l); color: #0d3a1e; border-color: var(--forest); }
+  .mc-feedback.fb-wrong   { background: var(--crimson-l); color: #5a1010; border-color: var(--crimson); }
 
-  /* CONNECTOR */
-  .connector { width: 2px; height: 24px; background: linear-gradient(to bottom, var(--gold), transparent); margin: 0 auto 0 31px; opacity: 0.4; }
+  /* ═══════════════════════════════════
+     CONNECTOR
+  ═══════════════════════════════════ */
+  .connector {
+    text-align: center;
+    font-size: 22px;
+    color: var(--gold-light);
+    opacity: 0.6;
+    line-height: 1;
+    padding: 3px 0;
+    letter-spacing: 4px;
+  }
 
-  /* FINALE */
-  .finale-card { background: var(--dark); color: var(--cream); max-width: 900px; margin: 0 auto 60px; padding: 40px; text-align: center; border-radius: 4px; border: 1px solid rgba(200,151,58,0.3); display: none; }
+  /* ═══════════════════════════════════
+     FINALE
+  ═══════════════════════════════════ */
+  .finale-card {
+    background: var(--parchment);
+    background-image: radial-gradient(ellipse at 20% 20%, rgba(180,120,30,0.1) 0%, transparent 60%);
+    border: 3px solid var(--gold-light);
+    box-shadow: 0 10px 44px rgba(0,0,0,0.55), inset 0 0 60px rgba(180,120,30,0.05);
+    padding: 44px 32px;
+    text-align: center;
+    display: none;
+    position: relative;
+    margin-bottom: 40px;
+  }
+  .finale-card::before { content: '✦'; position: absolute; top: 12px; left: 16px; font-size: 22px; color: var(--gold); opacity: 0.45; }
+  .finale-card::after  { content: '✦'; position: absolute; bottom: 12px; right: 16px; font-size: 22px; color: var(--gold); opacity: 0.45; }
   .finale-card.show { display: block; }
-  .finale-card h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); margin-bottom: 8px; }
-  .finale-score { font-family: 'Playfair Display', serif; font-size: 64px; color: var(--gold-light); margin: 20px 0; }
-  .tier-badge { display: inline-block; background: var(--gold); color: var(--dark); font-family: 'Oswald', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 8px 24px; text-transform: uppercase; }
-  .finale-msg { color: var(--muted); line-height: 1.7; max-width: 560px; margin: 16px auto 0; font-size: 14px; }
-  .finale-reward { margin: 28px auto 0; max-width: 560px; background: rgba(200,151,58,0.12); border: 1px solid rgba(200,151,58,0.35); border-radius: 6px; padding: 20px 24px; text-align: left; }
-  .finale-reward .reward-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-  .finale-reward p { color: var(--sand); font-size: 14px; line-height: 1.7; }
-  .finale-reward strong { color: var(--gold-light); }
 
-  @media print { .stop-body { display: block !important; } .stop-toggle, .scoring-bar, .finale-card { display: none; } }
+  .finale-card h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(22px, 5vw, 36px);
+    color: var(--gold);
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(184,134,42,0.3);
+  }
+
+  .finale-score {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 60px;
+    color: var(--crimson);
+    margin: 16px 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .tier-badge {
+    display: inline-block;
+    background: var(--crimson);
+    color: var(--parchment);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 8px 28px;
+    text-transform: uppercase;
+    border: 1px solid rgba(240,200,150,0.3);
+    border-radius: 2px;
+  }
+
+  .finale-msg {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    max-width: 540px;
+    margin: 18px auto 0;
+    font-size: 16px;
+  }
+
+  .finale-reward {
+    margin: 26px auto 0;
+    max-width: 560px;
+    background: rgba(180,120,30,0.07);
+    border: 1px solid rgba(184,134,42,0.4);
+    border-left: 5px solid var(--gold);
+    padding: 20px 24px;
+    text-align: left;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .reward-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+
+  .finale-reward p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.78;
+    color: var(--ink-mid);
+  }
+
+  .finale-reward strong { color: var(--crimson); font-weight: 700; }
+
+  /* ═══════════════════════════════════
+     PHOTO CHALLENGE SECTION
+  ═══════════════════════════════════ */
+  .photo-section {
+    background: var(--parchment);
+    background-image: radial-gradient(ellipse at 10% 10%, rgba(180,120,30,0.08) 0%, transparent 50%),
+                      radial-gradient(ellipse at 90% 90%, rgba(100,50,10,0.06) 0%, transparent 50%);
+    border: 2px solid var(--gold-light);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.55), inset 0 0 30px rgba(180,120,30,0.03);
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  .photo-section::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(184,134,42,0.18);
+    pointer-events: none;
+  }
+
+  .photo-section-header {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid rgba(184,134,42,0.2);
+  }
+
+  .photo-section-icon {
+    width: 68px;
+    min-width: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2a4a6a;
+    background-image: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 60%);
+    color: var(--parchment);
+    font-size: 26px;
+    box-shadow: inset 0 0 18px rgba(0,0,0,0.35);
+    position: relative;
+  }
+
+  .photo-section-icon::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .photo-section-title-wrap { flex: 1; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; }
+
+  .photo-section-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--brown-light);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .photo-section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 21px;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .photo-section-pts {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--brown-light);
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .photo-section-toggle {
+    width: 46px;
+    min-width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--gold-light);
+    border-left: 1px solid rgba(184,134,42,0.2);
+  }
+
+  .photo-section-body { display: none; padding: 22px 20px 26px; }
+  .photo-section.open .photo-section-body { display: block; }
+  .photo-section.open .photo-section-toggle { transform: rotate(180deg); }
+
+  .photo-section-intro {
+    font-family: 'IM Fell English', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink-mid);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: rgba(180,120,30,0.05);
+    border-left: 3px solid var(--gold);
+  }
+
+  .photo-category-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .photo-category {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(180,120,30,0.04);
+    border: 1px solid rgba(184,134,42,0.25);
+    border-radius: 2px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .photo-category:hover { background: rgba(180,120,30,0.09); }
+
+  .photo-category.done {
+    border-color: var(--gold);
+    background: rgba(184,134,42,0.09);
+  }
+
+  .photo-cat-check {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    border: 2px solid var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: transparent;
+    background: rgba(180,120,30,0.05);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .photo-category.done .photo-cat-check {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  .photo-cat-body { flex: 1; }
+
+  .photo-cat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .photo-cat-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink-mid);
+    line-height: 1.55;
+  }
+
+  .photo-cat-pts {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--brown-light);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    margin-top: 3px;
+  }
+
+  /* ═══ AUDIO BUTTON ═══ */
+  .audio-btn {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold-light);
+    background: rgba(180,120,30,0.1);
+    color: var(--gold);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    margin-right: 4px;
+    margin-left: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .audio-btn:hover { background: rgba(180,120,30,0.22); }
+  .audio-btn.playing { background: var(--gold); color: var(--ink); animation: pulse-audio 1.2s infinite; }
+  @keyframes pulse-audio {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(184,134,42,0.5); }
+    50%       { box-shadow: 0 0 0 7px rgba(184,134,42,0); }
+  }
+
+  @media print {
+    .stop-body { display: block !important; }
+    .stop-toggle, .score-anchor, .finale-card, .knight-stage { display: none; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ─── STICKY SCORE BAR ─── -->
+<div class="score-anchor">
+  <div class="score-inner">
+    <div class="score-gem">
+      <div class="score-gem-label">⚔ Score</div>
+      <div class="score-gem-value"><span id="scoreDisplay">0</span></div>
+    </div>
+    <div class="score-progress-wrap">
+      <div class="score-progress-label" id="progressLabel">0 of 470 points · 0 challenges done</div>
+      <div class="score-track"><div class="score-fill" id="progressFill"></div></div>
+    </div>
+    <div class="score-rank">
+      <div class="score-gem-label">⚜ Rank</div>
+      <div class="score-gem-value" id="rankDisplay" style="font-size:18px;letter-spacing:0.5px;font-weight:700">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HEADER ─── -->
 <div class="header">
-  <div class="header-badge">Family Scavenger Hunt</div>
-  <h1>Dresden<br><span>Old Town</span></h1>
-  <div class="header-sub">An adventure through 700 years of Saxon history</div>
+  <div class="header-crest">🏰</div>
+  <div class="header-rule"><span>✦</span></div>
+  <div class="header-eyebrow">Royal Scavenger Hunt · House of Wettin</div>
+  <h1>
+    Dresden
+    <span class="subtitle">Old Town</span>
+  </h1>
+  <p class="header-tagline">An adventure through seven centuries of Saxon history</p>
   <div class="header-meta">
-    <span>🗺 11 stops · ~1.8 km</span>
-    <span>⏱ 3–4 hours</span>
-    <span>⭐ Up to 445 points</span>
+    <div class="header-meta-pill">🗺 11 Stops · ~1.8 km</div>
+    <div class="header-meta-pill">⏱ 3–4 Hours</div>
+    <div class="header-meta-pill">⭐ Up to 470 Points</div>
   </div>
 </div>
 
-<div class="intro">
-  <p><strong>How to play:</strong> Work through the stops in order. At each location, read the clue, then complete the challenges. <strong>Multiple choice questions</strong> — pick the right answer to earn points. <strong>Photo &amp; action challenges</strong> can be tapped to mark them done. The family with the sharpest eyes and quickest wits wins — and earns a delicious reward at the finish!</p>
-</div>
-
-<div class="scoring-bar">
-  <div>
-    <div class="score-label">Your Score</div>
-    <div class="score-display"><span id="scoreDisplay">0</span> pts</div>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">0 of 445 points · 0 challenges done</div>
-  </div>
-  <div>
-    <div class="score-label">Rank</div>
-    <div class="score-display"><span id="rankDisplay">—</span></div>
+<!-- ─── INTRO SCROLL ─── -->
+<div class="intro-scroll">
+  <div class="scroll-body">
+    <div class="scroll-title">⚜ Royal Decree ⚜</div>
+    <p>Hear ye, brave adventurers! This hunt has two parts: <strong>Location Questions</strong> at each of the 11 stops, and a <strong>Photo Challenge</strong> — a set of artistic categories to capture throughout your journey. Work through each stop in order, answer the questions, and keep your eyes open for great shots. <strong>Choose wisely</strong> — only one answer is correct for each question, and points are awarded on the spot! The sharpest eyes and keenest minds shall claim the greatest glory — and a most delicious reward at journey's end.</p>
   </div>
 </div>
 
-<div class="stops-container">
+<!-- ─── STOPS ─── -->
+<div class="content-wrap">
+
+<!-- ══════════════ PHOTO CHALLENGE ══════════════ -->
+<div class="photo-section" id="photo-section">
+  <div class="photo-section-header" onclick="togglePhotoSection()">
+    <div class="photo-section-icon">📷</div>
+    <div class="photo-section-title-wrap">
+      <div class="photo-section-eyebrow">Throughout Your Journey</div>
+      <div class="photo-section-title">Photo Challenge</div>
+      <div class="photo-section-pts">Up to 100 points · 10 categories</div>
+    </div>
+    <div class="photo-section-toggle">▼</div>
+  </div>
+  <div class="photo-section-body">
+    <div class="photo-section-intro">
+      As you walk the 11 stops, keep your camera ready. These are not location-specific — capture them anywhere along the route. Tap a category when you've got the shot. Each is worth 10 points.
+    </div>
+    <div class="photo-category-list">
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Reflection in Water</div>
+          <div class="photo-cat-desc">A building, statue, or skyline mirrored in the Elbe, a fountain pool, or a puddle.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Symmetry or Golden Ratio</div>
+          <div class="photo-cat-desc">A composition that feels perfectly balanced — a centered façade, a mirrored courtyard, or a naturally harmonious arrangement.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Clear Contrast</div>
+          <div class="photo-cat-desc">Old next to new, ornate next to plain, ruin next to restoration — two worlds sharing the same frame.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Animal in the City</div>
+          <div class="photo-cat-desc">A bird, dog, cat, or any creature going about its day among the stones and spires.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Unique Angle or Position</div>
+          <div class="photo-cat-desc">Shot from the ground, from above, through a gap, or from a viewpoint most people walk right past.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Interesting Quote or Number</div>
+          <div class="photo-cat-desc">A date carved in stone, an inscription above a doorway, a plaque with words worth reading.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Layers: Foreground · Middle · Background</div>
+          <div class="photo-cat-desc">Three distinct planes of depth — something close, something mid-distance, something far — all in one shot.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Frame Within a Frame</div>
+          <div class="photo-cat-desc">A gate arch, a window, a colonnade, or a gap in the trees that frames your subject naturally.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Storytelling Photo</div>
+          <div class="photo-cat-desc">A single image that makes you ask "what happened here?" — a moment, a gesture, a scene with a beginning and an end.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+      <div class="photo-category" onclick="togglePhotoCategory(this)" data-pts="10">
+        <div class="photo-cat-check">✓</div>
+        <div class="photo-cat-body">
+          <div class="photo-cat-name">Unusual or Surprising Object</div>
+          <div class="photo-cat-desc">Something that doesn't belong — or something familiar seen in a completely unexpected context.</div>
+          <div class="photo-cat-pts">10 pts</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 1 ══════════════ -->
 <div class="stop-card" id="stop-1">
@@ -192,13 +1048,12 @@
       <div class="stop-location">📍 Theaterplatz</div>
       <div class="stop-title">The King on Horseback</div>
       <div class="stop-points">Up to 35 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-1" onclick="playStopAudio(1, this)" title="Listen to this stop">🔊</div></div>
         <p>You're standing in Theaterplatz — the grand square where Dresden's most famous landmarks cluster together. Find the equestrian statue in the middle of the square. This is King John, a mid-19th-century ruler who recognized and preserved Saxon culture and paid for the opera house behind the statue. Now face the Semperoper and look at the two figures flanking its entrance — these are the two greatest figures in German literary culture, welcoming all who enter. To your far left is a smaller Neoclassical building called the <strong>Schinkelwache</strong>. It was designed in a Prussian Classicist style by the architect Karl Friedrich Schinkel — which is why it looks out of place among the Baroque buildings around it. Today it serves as a popular café and the opera's box office.</p>
       </div>
       <div class="fact-box">
@@ -248,15 +1103,6 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The Schinkelwache looks out of place because it was designed by Karl Friedrich Schinkel in a Prussian Classicist style, unlike the Baroque buildings around it.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Get a family shot with King John's equestrian statue behind you</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="5" data-answered="false">
@@ -282,7 +1128,7 @@
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 2 ══════════════ -->
 <div class="stop-card" id="stop-2">
@@ -292,13 +1138,12 @@
       <div class="stop-location">📍 Between the Semperoper &amp; Zwinger</div>
       <div class="stop-title">The Composer Who Bookended History</div>
       <div class="stop-points">Up to 35 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-2" onclick="playStopAudio(2, this)" title="Listen to this stop">🔊</div></div>
         <p>Head to the gap between the Semperoper and the Zwinger. Standing in front of the Alte Meister Café you'll find a bronze statue of a composer named <strong>Carl Maria von Weber</strong>. His opera <em>Der Freischütz</em> holds a remarkable distinction: it was the very last opera performed in the Semperoper before the building was destroyed in 1945 — and the very first opera performed when the rebuilt Semperoper reopened in 1985. From here, go up the stairs and turn left up the ramp. As you climb what was once a <strong>rampart</strong>, notice the faint echo of the <strong>moat</strong> to your right. The opera house is named the Semperoper after its architect <strong>Gottfried Semper</strong> — the same man who later added one of the wings of the Zwinger you're about to enter.</p>
       </div>
       <div class="fact-box">
@@ -329,15 +1174,6 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. <em>Der Freischütz</em> was the last opera performed before the Semperoper was destroyed in 1945 — and the very first performed when it reopened in 1985.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Recreate Weber's pose — lean against something nearby with a faraway, artistic expression</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="10" data-answered="false">
@@ -359,30 +1195,11 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says it was once a rampart — part of the city's defensive fortifications — and you can notice the faint echo of the moat to your right.</div>
         </div>
 
-        <div class="challenge-card" data-pts="5" data-answered="false">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">Bonus: The Semperoper is named after its architect. That same architect later added a wing to the Zwinger. Which wing?</div>
-              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
-            </div>
-            <div class="challenge-pts">5 pts</div>
-          </div>
-          <div class="mc-options">
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> The Crown Gate (Kronentor)</button>
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> The Glockenspiel Pavilion</button>
-            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> The Semper Gallery — added about 100 years after the rest</button>
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> The Rampart Pavilion (Wallpavillon)</button>
-          </div>
-          <div class="mc-feedback fb-correct">✓ Correct! Gottfried Semper added the Semper Gallery — the stern wing that now houses the Old Masters Gallery — about 100 years after the Zwinger's original construction.</div>
-          <div class="mc-feedback fb-wrong">✗ Not quite. Gottfried Semper added the Semper Gallery to the Zwinger — the wing that houses the Old Masters Gallery — about 100 years after the rest was built.</div>
-        </div>
-
       </div>
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 3 ══════════════ -->
 <div class="stop-card" id="stop-3">
@@ -392,13 +1209,12 @@
       <div class="stop-location">📍 The Zwinger</div>
       <div class="stop-title">The Party Palace &amp; Its Museums</div>
       <div class="stop-points">Up to 60 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-3" onclick="playStopAudio(3, this)" title="Listen to this stop">🔊</div></div>
         <p>From the balcony, descend the small stairs to the <strong>Nymphs' Bath</strong> — a fountain grotto where 18th-century aristocrats relaxed among cascading waterfalls. Cross through the orangery into the middle of the courtyard. You can see all four wings: To your right, the <strong>Rampart Pavilion</strong> (Wallpavillon), topped by a figure of Hercules hoisting the earth — with the features of Augustus the Strong himself, making him the ultimate symbol of royal strength. To its left, the <strong>Crown Gate</strong> (Kronentor), topped by four golden eagles supporting a crown — symbolizing Polish royalty, since Augustus was also King of Poland. Next, the <strong>Glockenspiel Pavilion</strong>, with 40 bells made of Meissen porcelain near the top (they chime every 15 minutes and play a 3-minute melody at 10:15, 14:15, and 18:15). And finally, the stern <strong>Semper Gallery</strong> — added 100 years after the rest by Gottfried Semper.</p>
       </div>
       <div class="fact-box">
@@ -467,15 +1283,6 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The mission text says the bells are made of Meissen porcelain — an unusual material that makes them sound far sweeter than regular metal bells.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="5" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Strike your best "18th-century royal at a party" pose in the Zwinger courtyard</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">5 pts</div>
-          </div>
         </div>
 
       </div>
@@ -544,7 +1351,7 @@
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 4 ══════════════ -->
 <div class="stop-card" id="stop-4">
@@ -554,13 +1361,12 @@
       <div class="stop-location">📍 Taschenberg &amp; Sky Bridge</div>
       <div class="stop-title">The Mistress's Mansion</div>
       <div class="stop-points">Up to 30 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-4" onclick="playStopAudio(4, this)" title="Listen to this stop">🔊</div></div>
         <p>Exit the Zwinger through the Glockenspiel Pavilion. Cross the street and the tram tracks, turn left, then curve right onto the street called <strong>Taschenberg</strong>. The bright yellow building on your right is the <strong>Taschenberg Palace</strong> — built for Augustus the Strong's mistress, and later home to the crown prince. It was ruined until 1990, when it was restored and became a five-star hotel. Look ahead for a yellow-windowed <strong>sky bridge</strong> — it connects the Taschenberg to the Royal Palace, so royalty could walk between them without having to deal with the public below. Walk under it. Ahead and to the right is a blocky modern building with a large exterior mural — the <strong>Palace of Culture</strong> (Kulturpalast), built by the communist government in 1969.</p>
       </div>
       <div class="fact-box">
@@ -610,22 +1416,13 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. Re-read the Did You Know section. Marx and Engels are not listed — the mural depicts workers, strong women, elders, teachers and students, the red star, and the East German seal.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Strike a royal pose under the sky bridge — you're walking between palaces without having to deal with the public below</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
       </div>
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 5 ══════════════ -->
 <div class="stop-card" id="stop-5">
@@ -635,14 +1432,13 @@
       <div class="stop-location">📍 Royal Palace (Residenzschloss)</div>
       <div class="stop-title">The Green Vault Treasuries</div>
       <div class="stop-points">Up to 40 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
-        <p>Walk along Schlossstrasse with the Royal Palace on your left. The gate on your left is one of the palace entrances, with the <strong>Watchman's Tower</strong> above it. Inside you'll find the <strong>Green Vault</strong> (Grünes Gewölbe) treasuries — Augustus the Strong's legendary collection. The palace also has a <strong>clock tower</strong>. Pause here and appreciate something: the car-free city center and the tram system mean you can walk and look around without dodging traffic.</p>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-5" onclick="playStopAudio(5, this)" title="Listen to this stop">🔊</div></div>
+        <p>Walk along Schlossstrasse with the Royal Palace on your left. The gate on your left is one of the palace entrances, with the <strong>Watchman's Tower</strong> above it. Inside you'll find the <strong>Green Vault</strong> (Grünes Gewölbe) treasuries — Augustus the Strong's legendary collection. The palace also has a <strong>clock tower</strong>.</p>
       </div>
       <div class="fact-box">
         <div class="box-label">💡 Did You Know?</div>
@@ -691,41 +1487,13 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The Did You Know section explains that the prince-elector of Saxony was one of a small group of nobles who elected the Holy Roman Emperor.</div>
         </div>
 
-        <div class="challenge-card" data-pts="10" data-answered="false">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">If you visit the Green Vault: Which best describes what you saw inside?</div>
-              <span class="challenge-type-tag tag-mc">● Multiple Choice</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
-          <div class="mc-options">
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">A</span> A collection of paintings by German Romantic artists</button>
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">B</span> Rooms dedicated to Saxon military history and weapons</button>
-            <button class="mc-btn" onclick="answer(this, true)"><span class="opt-letter">C</span> Augustus the Strong's legendary treasury — gold, ivory, jewels, and extraordinary objects</button>
-            <button class="mc-btn" onclick="answer(this, false)"><span class="opt-letter">D</span> A museum of Saxon folk costumes and traditional crafts</button>
-          </div>
-          <div class="mc-feedback fb-correct">✓ Correct! The Green Vault is Augustus the Strong's extraordinary treasure collection — one of Europe's greatest, crammed with gold, ivory, jewels, and objects of staggering craftsmanship.</div>
-          <div class="mc-feedback fb-wrong">✗ Not quite. The Green Vault is Augustus the Strong's legendary treasure collection — gold, ivory, jewels, and extraordinary decorative objects.</div>
-        </div>
-
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Strike your best "Prince-Elector of Saxony" pose at the palace entrance gate</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
       </div>
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 6 ══════════════ -->
 <div class="stop-card" id="stop-6">
@@ -735,13 +1503,12 @@
       <div class="stop-location">📍 Katholische Hofkirche</div>
       <div class="stop-title">The Catholic Cathedral in a Protestant City</div>
       <div class="stop-points">Up to 30 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-6" onclick="playStopAudio(6, this)" title="Listen to this stop">🔊</div></div>
         <p>Continue to Palace Square. To your left is the <strong>Katholische Hofkirche</strong> with its distinctive <strong>green-copper, onion-domed steeple</strong>. Look for the elevated passage connecting the Hofkirche directly to the Royal Palace — designed so royalty could attend church without the hassle of dealing with the public. Augustus the Strong pragmatically converted from Saxon Protestantism to Catholicism in order to become King of Poland. The result: a Catholic church, built for a converted Protestant ruler, in a predominantly Protestant city. You'll notice the city center features both the Protestant <strong>Frauenkirche</strong> (ahead) and this large Catholic <strong>Hofkirche</strong> — because Augustus was "finessing it both ways," keeping both his Saxon Protestant subjects and his Polish Catholic subjects content.</p>
       </div>
       <div class="fact-box">
@@ -814,7 +1581,7 @@
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 7 ══════════════ -->
 <div class="stop-card" id="stop-7">
@@ -824,13 +1591,12 @@
       <div class="stop-location">📍 Augustusstraße</div>
       <div class="stop-title">The World's Longest Porcelain Mural</div>
       <div class="stop-points">Up to 50 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-7" onclick="playStopAudio(7, this)" title="Listen to this stop">🔊</div></div>
         <p>Turn around to face the palace gate you came through and look left. You'll see the long mural called the <strong>Parade of Princes</strong> (Fürstenzug) — painted on 24,000 tiles of Meissen porcelain and longer than a football field. Walk from the end nearest the Hofkirche. The very last figure in the procession (the first you'll see from this direction) is the artist himself, <strong>Wilhelm Walther</strong>. In front of him come commoners — miners, farmers, carpenters, teachers, students, artists — and then the royals. Find <strong>Augustus the Strong</strong> (look for the year 1694 marked above him): his horse stomps on a rose, the symbol of Martin Luther and the Protestant movement — representing the faith he gave up to gain the Polish crown. At the very front of the parade: an announcer, a band, and 12th-century cheerleaders, heralding the arrival of the wondrous procession.</p>
       </div>
       <div class="fact-box">
@@ -899,15 +1665,6 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The mission text describes the order from this end as: the artist (Wilhelm Walther), then commoners, then the royals.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: Line the whole family up in a row and march in front of the mural — you're in the procession!</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="10" data-answered="false">
@@ -933,7 +1690,7 @@
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 8 ══════════════ -->
 <div class="stop-card" id="stop-8">
@@ -943,13 +1700,12 @@
       <div class="stop-location">📍 The Tournament Yard &amp; Neumarkt</div>
       <div class="stop-title">Where Knights Jousted &amp; a Reformer Stands</div>
       <div class="stop-points">Up to 25 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-8" onclick="playStopAudio(8, this)" title="Listen to this stop">🔊</div></div>
         <p>Just past the mural, take a detour sharply right into a long, narrow courtyard. Many of those featured in the mural may have put on their ceremonial armor and jousted right here. Look at the long white colonnade — imagine wooden stands filling it, packed with cheering spectators. Look left for the pool where the horses cooled down before being stabled. Continue through into the big square where a statue of <strong>Martin Luther</strong> stands. He is holding the Bible in German — which he personally translated from Hebrew and ancient Greek so that regular people could wrestle with the Word of God directly. When translating, Luther used colloquial, everyday German, forming the basis for what is now considered "High German." So besides being the Great Reformer, Luther is considered the father of the modern German language. The statue was toppled in 1945 but has been cleaned up and is back on his feet again.</p>
       </div>
       <div class="fact-box">
@@ -961,15 +1717,6 @@
       <div class="section-label">Challenges</div>
       <div class="challenges-list">
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Photo: One family member pretends to joust in the tournament yard — any improvised lance welcomed!</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="10" data-answered="false">
@@ -1014,7 +1761,7 @@
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 9 ══════════════ -->
 <div class="stop-card" id="stop-9">
@@ -1024,13 +1771,12 @@
       <div class="stop-location">📍 Neumarkt &amp; Frauenkirche</div>
       <div class="stop-title">The Church That Rose from the Rubble</div>
       <div class="stop-points">Up to 50 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-9" onclick="playStopAudio(9, this)" title="Listen to this stop">🔊</div></div>
         <p>The <strong>Frauenkirche</strong> is the symbol and soul of Dresden. When completed in 1743, it was Germany's tallest Protestant church at 310 feet. Its unique central-stone-cupola design gave it the nickname <strong>"the stone bell."</strong> On the night of February 13, 1945, firebombs fell. The church smoldered for two days before finally collapsing. It was left as a rubble pile and turned into a deliberate <strong>peace monument</strong> — a reminder of the destruction of war — for decades. Only after German reunification was the decision made to rebuild it completely, and it <strong>reopened in 2005</strong>. Circle around to the river side of the church (near door E) to find a preserved piece of the original bombed rubble, mounted with a small metal relief showing exactly where that piece came from. Look closely at the church exterior — you can spot the <strong>darker, fire-scorched original stones</strong> among the paler new sandstone. Builders matched them back to their original positions using old photographs.</p>
       </div>
       <div class="fact-box">
@@ -1042,15 +1788,6 @@
       <div class="section-label">Challenges</div>
       <div class="challenges-list">
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">Find the original bombed rubble chunk near door E on the river side of the church — touch it. You're touching a piece of 1945. ✋ Tap to confirm</div>
-              <span class="challenge-type-tag tag-action">👆 Action</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="10" data-answered="false">
@@ -1129,11 +1866,22 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. According to the Did You Know section, the "lemon juicer" dome caps the exhibition hall of the Academy of Fine Arts.</div>
         </div>
 
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find the original bombed rubble chunk near door E on the river side of the church — touch it. You're touching a piece of 1945. ✋ Tap to confirm</div>
+              <span class="challenge-type-tag tag-photo">✋ Action</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 10 ══════════════ -->
 <div class="stop-card" id="stop-10">
@@ -1143,13 +1891,12 @@
       <div class="stop-location">📍 Brühlsche Terrasse</div>
       <div class="stop-title">The Balcony of Europe</div>
       <div class="stop-points">Up to 35 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-10" onclick="playStopAudio(10, this)" title="Listen to this stop">🔊</div></div>
         <p>Walk back toward the Hofkirche and Royal Palace to reach the <strong>Brühlsche Terrasse</strong> — a promenade that was once a defensive rampart. Look along the side of the terrace facing the Elbe River to see the openings where cannons once pointed. It was given as a reward to a Saxon minister named <strong>Brühl</strong>, who distinguished himself as a <strong>tax collector</strong> for Frederick Augustus II. In the early 1800s it became a public park with a leafy canopy of <strong>linden trees</strong>, earning the nickname <strong>"The Balcony of Europe."</strong> Look out at the Elbe. To the left in the distance, the hills are home to vineyards producing some of Germany's northernmost wine — mostly white, consumed almost entirely by locals because only a small amount of land is suitable for growing.</p>
       </div>
       <div class="fact-box">
@@ -1161,15 +1908,6 @@
       <div class="section-label">Challenges</div>
       <div class="challenges-list">
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">Find the cannon openings on the Elbe-facing side of the terrace wall. ✋ Tap to confirm you found them</div>
-              <span class="challenge-type-tag tag-action">👆 Action</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
         <div class="challenge-card" data-pts="10" data-answered="false">
@@ -1229,11 +1967,22 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The mission text explains that only a small amount of land is suitable for grape growing, so the limited, respected wine is consumed almost entirely by locals.</div>
         </div>
 
+        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
+          <div class="challenge-top">
+            <div class="challenge-check">✓</div>
+            <div class="challenge-body">
+              <div class="challenge-text">Find the cannon openings on the Elbe-facing side of the terrace wall. ✋ Tap to confirm you found them</div>
+              <span class="challenge-type-tag tag-photo">✋ Action</span>
+            </div>
+            <div class="challenge-pts">10 pts</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
-<div class="connector"></div>
+<div class="connector">⚜</div>
 
 <!-- ══════════════ STOP 11 ══════════════ -->
 <div class="stop-card" id="stop-11">
@@ -1243,13 +1992,12 @@
       <div class="stop-location">📍 Augustusbrücke &amp; The Golden Rider</div>
       <div class="stop-title">The Grand Finale</div>
       <div class="stop-points">Up to 30 points</div>
-    </div>
-    <div class="stop-toggle">▼</div>
+    </div>    <div class="stop-toggle">▼</div>
   </div>
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission</div>
+        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-11" onclick="playStopAudio(11, this)" title="Listen to this stop">🔊</div></div>
         <p>At the far end of the Brühlsche Terrasse, stop at the grove of linden trees with a fountain at the center and look out at the <strong>Augustus Bridge</strong> (Augustusbrücke). It has connected Dresden's old and new towns since <strong>1319</strong>, when it was the first stone bridge over the Elbe here. Walk across it. At the far end you'll find a gleaming golden equestrian statue — a symbol of the entire city. This is <strong>Augustus the Strong</strong>, nicknamed the <strong>"Golden Rider"</strong> (Goldene Reiter). Beyond him rises the spire of the Three Kings Church. Turn around and look back at the Old Town skyline — you've now visited the history behind everything you can see.</p>
       </div>
       <div class="fact-box">
@@ -1299,15 +2047,6 @@
           <div class="mc-feedback fb-wrong">✗ Not quite. The mission text and Did You Know section both state the bridge has stood since 1319, when it was the first stone bridge over the Elbe at this location.</div>
         </div>
 
-        <div class="challenge-card photo-type" data-pts="10" onclick="togglePhoto(this)">
-          <div class="challenge-top">
-            <div class="challenge-check">✓</div>
-            <div class="challenge-body">
-              <div class="challenge-text">📸 Artistic Photo: Turn and face the Old Town skyline from the bridge. You're looking at the Frauenkirche dome, the Hofkirche steeple, the Royal Palace tower — everything you explored today. Take the most beautiful photo you can. Try a reflection in the river, silhouettes against the sky, or frame a dome between the bridge railings. Make it a keeper.</div>
-              <span class="challenge-type-tag tag-photo">📷 Photo</span>
-            </div>
-            <div class="challenge-pts">10 pts</div>
-          </div>
         </div>
 
 
@@ -1317,9 +2056,10 @@
   </div>
 </div>
 
-</div><!-- end stops-container -->
+</div><!-- end content-wrap -->
 
-<!-- ══════════════ FINALE ══════════════ -->
+<!-- ─── FINALE ─── -->
+<div class="content-wrap">
 <div class="finale-card" id="finaleCard">
   <h2>🏆 Hunt Complete!</h2>
   <div class="finale-score" id="finalScore">0</div>
@@ -1330,14 +2070,25 @@
     <p>Besides bragging rights, completing this hunt earns you <strong>dessert at Grand Café Coselpalais</strong> — a Dresden institution just steps from the Frauenkirche, across from its G entry. It is a longtime favorite for anyone who appreciates fine cake and beautiful interiors. Step inside and take in the <strong>frilly Rococo interior</strong>, then find the three large <strong>Canaletto paintings</strong> — copies of paintings by Bernardo "Canaletto" Bellotto showing Dresden as it looked in <strong>1750</strong>. Compare what you see in those paintings to everything you've explored today. Then order the classic Dresden cheesecake: the <strong>Eierschecke</strong>. You have absolutely earned it.</p>
   </div>
 </div>
+</div><!-- end finale content-wrap -->
 
 <script>
   let totalScore = 0;
-  const MAX_SCORE = 445;
+  const MAX_SCORE = 470;
   let completedChallenges = 0;
 
   function toggleStop(n) {
     document.getElementById('stop-' + n).classList.toggle('open');
+  }
+
+  // Photo category tap-to-complete
+  function togglePhotoCategory(card) {
+    if (card.classList.contains('done')) return;
+    card.classList.add('done');
+    const pts = parseInt(card.dataset.pts);
+    totalScore += pts;
+    completedChallenges++;
+    updateUI();
   }
 
   // Photo/action tap-to-complete
@@ -1363,6 +2114,10 @@
 
     // Disable all buttons and strip onclick so they can't be clicked again
     allBtns.forEach(b => { b.disabled = true; });
+
+    // Always show check mark once answered
+    const checkEl = card.querySelector('.challenge-check');
+    if (checkEl) { checkEl.style.background = isCorrect ? 'var(--gold)' : 'var(--crimson)'; checkEl.style.color = 'var(--ink)'; }
 
     if (isCorrect) {
       btn.classList.add('chosen-correct');
@@ -1428,6 +2183,147 @@
     }
   }
 
+
+  // ═══════════════════════════════════════════════
+  // AUDIO GUIDE — pause/resume via word-position tracking
+  // ═══════════════════════════════════════════════
+
+  let currentBtn = null;
+  let audioState = 'stopped'; // 'stopped' | 'playing' | 'paused'
+  let allWords = [];
+  let resumeFromWord = 0;
+  let activeVoice = null;
+  let activeStopNum = null;
+
+  function resetBtn(btn) {
+    if (btn) { btn.classList.remove('playing'); btn.textContent = '🔊'; }
+  }
+
+  function getStopText(stopNum) {
+    const card = document.getElementById('stop-' + stopNum);
+    if (!card) return '';
+    const mission = card.querySelector('.clue-box p');
+    const fact    = card.querySelector('.fact-box p');
+    return [mission, fact].filter(Boolean).map(el => el.innerText.trim()).join(' ');
+  }
+
+  function speakFrom(wordIndex, btn) {
+    const ss = window.speechSynthesis;
+    ss.cancel();
+
+    // Chunk from wordIndex in ~150-word pieces (iOS fix)
+    const remaining = allWords.slice(wordIndex);
+    const chunks = [];
+    for (let i = 0; i < remaining.length; i += 150)
+      chunks.push(remaining.slice(i, i + 150).join(' '));
+
+    let chunkIdx = 0;
+    let wordsSpokenInSession = wordIndex;
+
+    function next() {
+      if (audioState !== 'playing' || chunkIdx >= chunks.length) {
+        if (chunkIdx >= chunks.length) {
+          audioState = 'stopped';
+          resumeFromWord = 0;
+          resetBtn(btn);
+          currentBtn = null;
+        }
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(chunks[chunkIdx]);
+      u.rate = 0.87; u.pitch = 0.92; u.volume = 1.0;
+      if (activeVoice) u.voice = activeVoice;
+
+      // Track word position via boundary events
+      u.onboundary = (e) => {
+        if (e.name === 'word') {
+          // count words spoken so far across all chunks
+          const wordsInPriorChunks = chunkIdx * 150;
+          const wordsSoFar = Math.round(e.charIndex / 5); // rough word estimate from charIndex
+          resumeFromWord = wordIndex + wordsInPriorChunks + wordsSoFar;
+        }
+      };
+
+      u.onend = () => { chunkIdx++; wordsSpokenInSession += chunks[chunkIdx-1]?.split(' ').length || 0; next(); };
+      u.onerror = (e) => {
+        if (e.error === 'interrupted') return; // expected on pause
+        audioState = 'stopped';
+        resetBtn(btn);
+        currentBtn = null;
+      };
+      ss.speak(u);
+    }
+    next();
+  }
+
+  function playStopAudio(stopNum, btn) {
+    const ss = window.speechSynthesis;
+
+    // Same button: toggle pause / resume
+    if (currentBtn === btn && audioState !== 'stopped') {
+      if (audioState === 'playing') {
+        audioState = 'paused';
+        ss.cancel(); // cancel current utterance but keep resumeFromWord
+        btn.textContent = '▶';
+      } else {
+        // Resume from saved word position
+        audioState = 'playing';
+        btn.textContent = '⏹';
+        speakFrom(Math.max(0, resumeFromWord - 7), btn);
+      }
+      return;
+    }
+
+    // New stop: cancel everything and start fresh
+    ss.cancel();
+    resetBtn(currentBtn);
+    audioState = 'stopped';
+
+    const text = getStopText(stopNum);
+    if (!text) return;
+
+    allWords = text.split(/\s+/);
+    resumeFromWord = 0;
+    activeStopNum = stopNum;
+
+    function start(voice) {
+      activeVoice = voice;
+      audioState = 'playing';
+      currentBtn = btn;
+      btn.classList.add('playing');
+      btn.textContent = '⏹';
+      speakFrom(0, btn);
+    }
+
+    function pickVoice() {
+      const voices = ss.getVoices();
+      const priority = [
+        'Google US English',
+        'Microsoft Guy Online (Natural) - English (United States)',
+        'Microsoft Davis Online (Natural) - English (United States)',
+        'Microsoft Ryan Online (Natural) - English (United Kingdom)',
+        'Alex', 'Daniel', 'Fred'
+      ];
+      let voice = null;
+      for (const name of priority) { voice = voices.find(v => v.name === name); if (voice) break; }
+      if (!voice) voice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+      start(voice);
+    }
+
+    ss.getVoices().length > 0 ? pickVoice() : (ss.onvoiceschanged = pickVoice);
+  }
+
+  window.addEventListener('beforeunload', () => window.speechSynthesis && window.speechSynthesis.cancel());
+
+  function togglePhotoSection() {
+    const sec = document.getElementById('photo-section');
+    const arrow = sec.querySelector('.photo-section-toggle');
+    sec.classList.toggle('open');
+    arrow.style.transform = sec.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+
+  document.getElementById('photo-section').classList.add('open');
+  document.querySelector('#photo-section .photo-section-toggle').style.transform = 'rotate(180deg)';
   toggleStop(1);
 </script>
 </body>

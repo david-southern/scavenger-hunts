@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Hague — Family Adventure Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --green:#007C5A;
+  --green-mid:#005c43;
+  --green-dark:#003d2c;
+  --green-light:#e8f5ef;
+  --yellow:#FCCC00;
+  --yellow-pale:#fffbe6;
+  --yellow-dark:#c9a200;
+  --cream:#f9f7f0;
+  --white:#ffffff;
+  --text:#1a1f18;
+  --muted:#4a5248;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;font-size:16px}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--green-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-deco svg{position:absolute;opacity:0.06;animation:floatDeco 20s ease-in-out infinite}
+.hero-deco svg:nth-child(1){top:6%;left:3%;width:130px;animation-delay:0s}
+.hero-deco svg:nth-child(2){top:10%;right:5%;width:100px;animation-delay:5s}
+.hero-deco svg:nth-child(3){bottom:10%;left:8%;width:120px;animation-delay:10s}
+.hero-deco svg:nth-child(4){bottom:14%;right:3%;width:150px;animation-delay:15s}
+@keyframes floatDeco{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+.hero-icon{width:60px;height:60px;margin-bottom:1.5rem;animation:iconGlow 4s ease-in-out infinite alternate;flex-shrink:0}
+@keyframes iconGlow{from{filter:drop-shadow(0 0 8px rgba(252,204,0,0.4))}to{filter:drop-shadow(0 0 22px rgba(252,204,0,0.9))}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,10vw,7rem);font-weight:900;color:#fff;line-height:1;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:var(--yellow)}
+.hero-tagline{margin-top:1.1rem;font-size:clamp(0.88rem,3vw,1.05rem);color:rgba(255,255,255,0.58);font-weight:300;max-width:480px;line-height:1.75}
+.hero-chips{display:flex;flex-wrap:wrap;gap:0.45rem;justify-content:center;margin-top:1.6rem}
+.chip{background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.16);color:rgba(255,255,255,0.8);padding:0.3rem 0.8rem;border-radius:50px;font-size:0.7rem;font-weight:500;letter-spacing:0.02em}
+.hero-scroll{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:rgba(255,255,255,0.32);font-size:0.63rem;letter-spacing:0.15em;text-transform:uppercase;animation:fadeIn 2s 1.5s both;white-space:nowrap}
+.hero-scroll-arrow{width:13px;height:13px;border-right:2px solid rgba(255,255,255,0.28);border-bottom:2px solid rgba(255,255,255,0.28);transform:rotate(45deg);animation:arrowBounce 1.4s infinite}
+@keyframes arrowBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:var(--green-dark);display:flex;overflow-x:auto;scrollbar-width:none;box-shadow:0 3px 20px rgba(0,0,0,0.35)}
+nav::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:0.85rem 1rem;color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.7rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent;transition:color 0.2s,border-color 0.2s}
+nav a:hover,nav a:focus{color:#fff;border-bottom-color:var(--yellow)}
+
+/* ── INTRO BANNER — yellow ── */
+.intro-banner{background:var(--yellow);padding:2.8rem 1.4rem 3.2rem}
+.intro-banner-inner{max-width:820px;margin:0 auto}
+.intro-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--green-dark);opacity:0.65;margin-bottom:0.5rem}
+.intro-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.7rem);font-weight:700;color:var(--green-dark);line-height:1.15;margin-bottom:1rem}
+.intro-text{font-size:0.95rem;color:rgba(0,40,28,0.72);max-width:640px;line-height:1.85}
+
+/* ── CARDS BACKGROUND ── */
+.cards-bg{background:var(--yellow-pale);padding:1.8rem 1.1rem 2.5rem}
+.sites-grid{display:grid;grid-template-columns:1fr;gap:1.3rem;max-width:820px;margin:0 auto}
+@media(min-width:680px){.sites-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── SITE CARD ── */
+.site-card{background:#fff;border-radius:14px;overflow:hidden;border:2px solid var(--green);box-shadow:0 2px 10px rgba(0,61,44,0.08);transition:transform 0.28s ease,box-shadow 0.28s}
+.site-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,61,44,0.14)}
+.card-icon-wrap{height:185px;position:relative;overflow:hidden;background:#c8ddd6;cursor:pointer;transition:height 0.45s ease}
+.card-icon-wrap.expanded{height:290px}
+.card-icon-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+.site-card:hover .card-icon-wrap img{transform:scale(1.04)}
+.card-icon-wrap.expanded img{transform:scale(1)!important}
+.card-tag{position:absolute;top:10px;left:10px;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.65rem;border-radius:50px;background:rgba(255,255,255,0.93);color:var(--green-dark);z-index:2}
+.expand-hint{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.42);color:#fff;font-size:0.6rem;padding:0.15rem 0.45rem;border-radius:50px;pointer-events:none;transition:opacity 0.3s}
+.card-icon-wrap.expanded .expand-hint{opacity:0}
+.card-body{padding:1.15rem 1.15rem 1.35rem}
+.card-title{font-family:'Playfair Display',serif;font-size:1.32rem;font-weight:700;color:var(--green-dark);margin-bottom:0.22rem;line-height:1.2}
+.card-subtitle{font-size:0.78rem;color:var(--green);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.55rem}
+.card-text{font-size:0.92rem;color:var(--muted);line-height:1.75}
+.family-tip{margin-top:0.8rem;background:var(--yellow-pale);border-left:3px solid var(--yellow);padding:0.6rem 0.8rem;border-radius:0 7px 7px 0;font-size:0.85rem;color:var(--text);line-height:1.6}
+.family-tip strong{color:var(--yellow-dark);font-weight:600}
+
+/* ── ACCORDION ── */
+.hmm-boxes{display:flex;flex-direction:column;gap:6px;margin-top:0.8rem}
+.hmm-box{background:rgba(0,124,90,0.05);border:1px solid rgba(0,124,90,0.18);border-left:3px solid var(--green);border-radius:4px;padding:10px 12px;cursor:pointer;transition:background 0.2s}
+.hmm-box:hover,.hmm-box.open{background:rgba(0,124,90,0.09)}
+.hmm-header{display:flex;align-items:center;gap:7px;font-size:0.85rem;font-weight:600;color:var(--green-dark);user-select:none}
+.hmm-arrow{margin-left:auto;font-size:0.7rem;transition:transform 0.3s;color:var(--green);flex-shrink:0}
+.hmm-box.open .hmm-arrow{transform:rotate(180deg)}
+.hmm-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.88rem;line-height:1.75;color:var(--muted)}
+.hmm-box.open .hmm-body{max-height:500px;padding-top:8px}
+
+/* ── ROOM DROPDOWNS (Mauritshuis) ── */
+.tour-label{font-size:0.66rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--green);margin:0.9rem 0 0.4rem;display:block}
+.tour-room{background:rgba(252,204,0,0.07);border:1px solid rgba(201,162,0,0.28);border-left:3px solid var(--yellow-dark);border-radius:4px;padding:10px 12px;cursor:pointer;transition:background 0.2s;margin-bottom:5px}
+.tour-room:hover,.tour-room.open{background:rgba(252,204,0,0.14)}
+.tour-room-header{display:flex;align-items:center;gap:7px;font-size:0.85rem;font-weight:600;color:var(--green-dark);user-select:none}
+.room-badge{background:var(--yellow);color:var(--green-dark);font-size:0.68rem;font-weight:700;padding:0.13rem 0.5rem;border-radius:50px;flex-shrink:0;white-space:nowrap;line-height:1.4}
+.tour-room.open .room-badge{background:var(--yellow-dark);color:#fff}
+.tour-arrow{margin-left:auto;font-size:0.7rem;transition:transform 0.3s;color:var(--yellow-dark);flex-shrink:0}
+.tour-room.open .tour-arrow{transform:rotate(180deg)}
+.tour-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:0.87rem;line-height:1.75;color:var(--muted)}
+.tour-room.open .tour-body{max-height:600px;padding-top:8px}
+
+/* ── ESCHER DARK SECTION ── */
+.dark-section{background:var(--green-dark);position:relative}
+.dark-section::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--yellow)}
+.dark-inner{max-width:820px;margin:0 auto;padding:3.2rem 1.2rem}
+.dark-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.5rem}
+.dark-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:700;color:#fff;line-height:1.18;margin-bottom:0.85rem}
+.dark-intro{font-size:0.93rem;color:rgba(255,255,255,0.62);line-height:1.82;margin-bottom:0.5rem}
+.escher-photo-grid{display:grid;grid-template-columns:1fr;gap:1.6rem;margin-top:1rem;align-items:start}
+@media(min-width:540px){.escher-photo-grid{grid-template-columns:180px 1fr}}
+.escher-photo img{width:100%;max-width:180px;border-radius:10px;display:block;box-shadow:0 6px 22px rgba(0,0,0,0.45)}
+.escher-photo figcaption{font-size:0.7rem;color:rgba(255,255,255,0.38);margin-top:0.45rem;line-height:1.4}
+.escher-bio-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);margin-bottom:0.65rem}
+.escher-bio p{font-size:0.92rem;color:rgba(255,255,255,0.62);line-height:1.82;margin-bottom:0.82rem}
+.escher-bio p:last-child{margin-bottom:0}
+
+/* ── DID YOU KNOW ── */
+.fun-section{background:var(--green-light);padding:3.2rem 1.1rem}
+.fun-inner{max-width:820px;margin:0 auto}
+.fun-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--green);margin-bottom:0.5rem}
+.fun-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.5rem);font-weight:700;color:var(--green-dark);line-height:1.15;margin-bottom:0.85rem}
+.fun-intro{font-size:0.94rem;color:var(--muted);max-width:620px;line-height:1.82;margin-bottom:1.8rem}
+.fun-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:580px){.fun-grid{grid-template-columns:repeat(2,1fr)}}
+.fun-card{border-radius:13px;padding:1.25rem;border:2px solid var(--green);background:#fff;position:relative;overflow:hidden}
+.fun-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--green-dark),var(--green),var(--yellow))}
+.fun-emoji{font-size:1.75rem;margin-bottom:0.6rem;display:block}
+.fun-q{font-family:'Playfair Display',serif;font-size:0.98rem;font-weight:700;color:var(--green-dark);margin-bottom:0.35rem;line-height:1.4}
+.fun-a{font-size:0.87rem;color:var(--muted);line-height:1.72;display:none;margin-top:0.35rem}
+.fun-a.open{display:block}
+.fun-toggle{font-size:0.74rem;font-weight:600;letter-spacing:0.06em;color:var(--green);cursor:pointer;margin-top:0.5rem;display:inline-block;text-transform:uppercase;background:none;border:none;padding:0;font-family:inherit}
+.fun-toggle:hover{color:var(--green-dark)}
+
+/* ── STRIPE + FOOTER ── */
+.stripe-divider{height:5px;background:linear-gradient(90deg,var(--green-dark) 0%,var(--green-dark) 33%,var(--yellow) 33%,var(--yellow) 66%,var(--green) 66%,var(--green) 100%)}
+footer{background:var(--green-dark);padding:2rem 1.4rem;text-align:center;color:rgba(255,255,255,0.38);font-size:0.76rem;line-height:1.8}
+footer em{color:var(--yellow);font-style:normal}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:400px){
+  .hero h1{font-size:2.6rem}
+  .card-icon-wrap{height:160px}
+  nav a{padding:0.8rem 0.8rem;font-size:0.66rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-deco">
+    <svg viewBox="0 0 100 120"><rect x="15" y="70" width="70" height="50" fill="none" stroke="#fff" stroke-width="2"/><rect x="15" y="67" width="70" height="10" rx="2" fill="#fff" opacity="0.5"/><rect x="20" y="75" width="10" height="45" fill="#fff" opacity="0.4"/><rect x="38" y="75" width="10" height="45" fill="#fff" opacity="0.4"/><rect x="56" y="75" width="10" height="45" fill="#fff" opacity="0.4"/><rect x="72" y="75" width="10" height="45" fill="#fff" opacity="0.4"/></svg>
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-width="2"/><line x1="50" y1="12" x2="50" y2="88" stroke="#fff" stroke-width="1.5"/><line x1="12" y1="50" x2="88" y2="50" stroke="#fff" stroke-width="1.5"/></svg>
+    <svg viewBox="0 0 80 110"><path d="M40 8 L55 48 L80 48 L60 70 L68 108 L40 86 L12 108 L20 70 L0 48 L25 48 Z" fill="none" stroke="#fff" stroke-width="2"/></svg>
+    <svg viewBox="0 0 100 100"><polygon points="50,5 95,35 95,65 50,95 5,65 5,35" fill="none" stroke="#fff" stroke-width="2"/></svg>
+  </div>
+  <svg class="hero-icon" viewBox="0 0 72 72" fill="none">
+    <circle cx="36" cy="36" r="33" stroke="#FCCC00" stroke-width="2" fill="none" opacity="0.55"/>
+    <path d="M36 7 L42 25 L62 25 L46 37 L52 55 L36 43 L20 55 L26 37 L10 25 L30 25 Z" fill="#FCCC00" opacity="0.82"/>
+  </svg>
+  <h1>The <em>Hague</em></h1>
+  <p class="hero-tagline">Where Dutch golden age masterpieces, world-changing courts, and mind-bending illusions meet — packed with adventures for the whole family</p>
+  <div class="hero-chips">
+    <span class="chip">🏛️ Seat of Government since 1588</span>
+    <span class="chip">🖼️ Girl with a Pearl Earring</span>
+    <span class="chip">⚖️ World Court</span>
+    <span class="chip">♾️ Escher's Impossible Worlds</span>
+    <span class="chip">🌊 Scheveningen Beach</span>
+  </div>
+  <div class="hero-scroll">Scroll to explore <div class="hero-scroll-arrow"></div></div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#mauritshuis">Mauritshuis</a>
+  <a href="#binnenhof">Binnenhof</a>
+  <a href="#escher">Escher</a>
+  <a href="#peace">Peace Palace</a>
+  <a href="#scheveningen">Scheveningen</a>
+  <a href="#didyouknow">Did You Know?</a>
+</nav>
+
+<!-- ═══ INTRO BANNER — yellow ═══ -->
+<div id="overview">
+<div class="intro-banner">
+  <div class="intro-banner-inner reveal">
+    <p class="intro-eyebrow">Welcome to Den Haag</p>
+    <h2 class="intro-title">More than just a capital</h2>
+    <p class="intro-text">The Dutch constitution may identify Amsterdam as the official "capital," but The Hague has been the Netherlands' seat of government since 1588. It's home to the country's parliament and to the International Court of Justice — where nations try to settle their disputes without bloodshed. It's also packed with extraordinary art, mind-bending museums, and a beloved beach that generations of Dutch families return to every summer.</p>
+  </div>
+</div>
+
+<!-- ═══ LOCATION CARDS ═══ -->
+<div class="cards-bg">
+<div class="sites-grid">
+
+  <!-- MAURITSHUIS -->
+  <div class="site-card reveal" id="mauritshuis">
+    <div class="card-icon-wrap" onclick="togglePhoto(this)">
+      <img src="Mauritshuis.jpg" alt="Mauritshuis museum building, The Hague" loading="lazy"/>
+      <span class="card-tag">Art Museum</span>
+      <span class="expand-hint">tap to expand</span>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Mauritshuis</h3>
+      <p class="card-subtitle">Dutch Golden Age Masterpieces</p>
+      <p class="card-text">One of the Netherlands' best art museums, the Mauritshuis features Dutch golden age art by Vermeer, Rembrandt, Rubens, and many others. This so-called "mini-Rijksmuseum" is more intimate and less overwhelming than its bigger cousin in Amsterdam — and well worth a visit.</p>
+      <div class="family-tip"><strong>💡 Family Tip:</strong> Grab the free audio guide and let everyone pick their own favourite painting. Meet at the café to compare — you'll be surprised who ends up loving what.</div>
+
+      <div class="hmm-boxes">
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🧭</span> How do I navigate the museum? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The entrance to the permanent collection is to the left as you enter the main door. Climb two flights of stairs. Floor 1 has a few highlights — skip it if you're short on time. Floor 2 (actually the fourth floor) is packed with masterpieces and is the one you don't want to miss.</div>
+        </div>
+      </div>
+
+      <span class="tour-label">🖼️ Room-by-Room Highlights — tap to open</span>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 2–3</span><span>Rubens: Old Woman &amp; a Boy with Candles</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Begin in Room 2 with portraits of wealthy patrons by Peter Paul Rubens and his protégé Anthony van Dyck. In Room 3, Rubens' touching scene (c. 1616–17) features an elderly woman passing her light to a boy — encouraging him to enjoy life in a way she perhaps hasn't. Her serene smile suggests hope that he won't have the same regrets she does. Rubens was an early Dutch adopter of the ultrarealism practiced by the Italian painter Caravaggio.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 4–8</span><span>Holbein: Portrait of Robert Cheseman</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Work through Rooms 4, 5, 6, and 7 to find Hans Holbein the Younger's <em>Portrait of Robert Cheseman</em> (1533) — the chief falconer of England's King Henry VIII. Complete your circuit in Room 8, then head up the stairs to Floor 2.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 9</span><span>Rembrandt: The Anatomy Lesson</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body"><em>The Anatomy Lesson of Dr. Nicolaes Tulp</em> (1632) made Rembrandt a star in Amsterdam. This physician really did dissect a human cadaver once each year to better understand anatomy — for example, how muscles and tendons allow a hand to open and close. Surgeons huddled close to learn, and the public was also invited. Notice Rembrandt's uniquely engaging version of a group portrait: inquisitive faces lean in, hanging on the doctor's every word, with each surgeon's face carrying a different expression. The cadaver resembles a notorious criminal of the day.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 10</span><span>Rembrandt: Self-Portrait &amp; Two African Men</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body"><em>Two African Men</em> (1661) features a pair who may have been brothers — or possibly neighbors of the artist, who lived near a small community of free Black people in Amsterdam. The <em>Rembrandt Self-Portrait</em> (1669) is the last of more than 80 he painted throughout his life. The clothes are painted lightly, but the face is built up layer by layer. We see a man beaten down by life: bankrupt, having lost both great loves of his life and his only child. Rembrandt would be dead within a year. This room also features three portraits by Frans Hals, whose subjects look resplendent in lace and ruffs.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 12</span><span>Paulus Potter: The Bull</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Paulus Potter's <em>The Bull</em> (1647) was once one of the Mauritshuis' most beloved works. It elevates livestock to high art — celebrating this bull as if he's a ruff-collared aristocrat. Big, dreamy, brown eyes; mouth open as if to speak knowledgeably; legs spread in a dynamic stance. The cow, goat, sheep, and even the farmer are an afterthought to the painting's star. There's even a perfectly formed patty of manure in the foreground. Remember this pose — craning his neck slightly and glancing over his shoulder. You'll see a similar one very soon.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 14</span><span>Fabritius: The Goldfinch &amp; Girl Eating Oysters</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Carel Fabritius' <em>The Goldfinch</em> (c. 1654) — made famous by Donna Tartt's 2013 novel of the same title — shows a pet goldfinch perched on its feeder, shackled by a slender chain. Fabritius was Rembrandt's pupil and Vermeer's teacher. Get close to see how the artist rendered the wing by painting bold yellow strokes over black and then scratching the paint off with the back of his brush. Jan Steen's <em>Girl Eating Oysters</em> (c. 1658–1660) is loaded with 17th-century innuendo: oysters were considered a powerful aphrodisiac, and a bed peeks through the curtains behind the grinning subject.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 15</span><span>Vermeer: Girl with a Pearl Earring</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Sometimes called "the Dutch Mona Lisa," Vermeer's <em>Girl with a Pearl Earring</em> (c. 1665) is a "tronie" — a type of picture in which the painter's goal is not to depict an individual person but to capture a mood or character. We don't even know who this mysterious girl is. Wearing a blue turban and with a gigantic pearl dangling from her earlobe, she glances over her shoulder and catches the viewer's gaze. Look closely: the famous pearl is essentially formed by two simple brushstrokes. Does the pose seem familiar? It's Potter's bull. On the opposite wall, Vermeer's <em>View of Delft</em> (c. 1660–1661) uses a cloudy-to-sunny contrast to draw your eye deep into the canvas.</div>
+      </div>
+
+      <div class="tour-room" onclick="toggleRoom(this)">
+        <div class="tour-room-header"><span class="room-badge">Rm 16</span><span>Frans Hals: Laughing Boy</span><span class="tour-arrow">▾</span></div>
+        <div class="tour-body">Look near the windows for Frans Hals' lovable <em>Laughing Boy</em> (c. 1625) — an exuberant scamp grinning widely despite his decaying teeth and rat's-nest hair. Like <em>Girl with a Pearl Earring</em>, this is another tronie — less about the subject than about what he's doing: laughing spontaneously. A perfect final note for your tour.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BINNENHOF -->
+  <div class="site-card reveal" id="binnenhof">
+    <div class="card-icon-wrap" onclick="togglePhoto(this)">
+      <img src="Binnenhof__The_Hague.jpg" alt="Binnenhof inner courtyard, The Hague" loading="lazy"/>
+      <span class="card-tag">Parliament</span>
+      <span class="expand-hint">tap to expand</span>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Binnenhof</h3>
+      <p class="card-subtitle">Seat of Dutch Political Power</p>
+      <p class="card-text">The castle-like Binnenhof complex, overlooking Hofvijver lake right in the center of The Hague, is the seat of Dutch political power. The prime minister's office is here, and it's also the meeting place of the two-house parliament, the <em>Staten-Generaal.</em> The complex is undergoing an ambitious, multi-year renovation — check ahead for open sections.</p>
+      <div class="family-tip"><strong>💡 Family Tip:</strong> If you can reach the inner courtyard, look for the golden fountain depicting Queen Beatrix — a reminder that Dutch parliamentarians govern with the monarch's symbolic approval. The stroll along Hofvijver lake is always open and worth a look.</div>
+      <div class="hmm-boxes">
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🏰</span> What is the Knights' Hall? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">Dominating the middle of the complex is the historic Knights' Hall (Ridderzaal), where the two houses of parliament meet jointly on special occasions — including the annual opening of parliament by the monarch.</div>
+        </div>
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🗳️</span> How does Dutch parliament work? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The power resides in the directly elected Second Chamber — like a House of Representatives. The mostly figurehead First Chamber is more like the UK's House of Lords and meets once weekly. Both chambers meet jointly in the Knights' Hall on special occasions.</div>
+        </div>
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🌊</span> What is Hofvijver lake? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The Hofvijver lake sits right alongside the Binnenhof and the Mauritshuis. If you have time and nice weather, it's enjoyable to stroll the manicured, tree-lined trail all the way around — passing various other museums along the way.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCHER -->
+  <div class="site-card reveal" id="escher">
+    <div class="card-icon-wrap" onclick="togglePhoto(this)">
+      <img src="Escher_Museum.jpg" alt="Escher in the Palace museum building, The Hague" loading="lazy"/>
+      <span class="card-tag">Interactive Museum</span>
+      <span class="expand-hint">tap to expand</span>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Escher in the Palace</h3>
+      <p class="card-subtitle">Mind-Bending Optical Art</p>
+      <p class="card-text">Celebrating Dutch optical illusionist M.C. Escher (1898–1972), this thoughtful exhibit is crowd-pleasing, supremely engaging, and deeper than you might expect — much like the artist's works. The building itself — the former winter palace of Queen Mother Emma, with far-out chandeliers by Dutch artist Hans van Bentem — is also worth a look. Entry: €12.50. Open Tuesday–Sunday, 11:00–17:00.</p>
+      <div class="family-tip"><strong>💡 Family Tip:</strong> The top floor features displays that let you step right into an Escher engraving. A free digital audio guide is available for your phone. The mandatory bag check in the basement is free.</div>
+      <div class="hmm-boxes">
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🎨</span> What will I see at the exhibit? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The exhibit traces both the artist's life and his artistic evolution — covering perspective, reflections, metamorphoses, impossible architecture, and tessellations (infinitely repeating patterns of tiles, which he became obsessed with after visiting the Alhambra in Granada). One of his "metamorphosis" works is mounted in a giant circle, allowing you to walk around it and see how it truly is an infinite loop that works in both directions. You can also watch a 20-minute film about the artist.</div>
+        </div>
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🔢</span> Why did mathematicians love Escher before art critics did? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">Escher may not be considered a "serious artist" by art-world elites, but the exhibit does an admirable job of challenging that assumption. His work was embraced by scientists and mathematicians who appreciated the precise logic behind his impossible worlds — years before a wider audience caught on.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEACE PALACE -->
+  <div class="site-card reveal" id="peace">
+    <div class="card-icon-wrap" onclick="togglePhoto(this)">
+      <img src="Den_Haag_Peace_Palace.jpg" alt="Peace Palace, The Hague" loading="lazy"/>
+      <span class="card-tag">World Heritage</span>
+      <span class="expand-hint">tap to expand</span>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Peace Palace</h3>
+      <p class="card-subtitle">International Court of Justice</p>
+      <p class="card-text">The palace houses the International Court of Justice and the Permanent Court of Arbitration. These two courts attempt to reach amicable settlements for international disagreements, such as border disputes. While the judicial process is interesting, the building itself is the big draw. A free visitors center offers multimedia exhibits about the building and the courts.</p>
+      <div class="family-tip"><strong>💡 Family Tip:</strong> The visitors center has a persuasive video about the history of the Peace Palace and the role of international law — a great conversation starter about how nations try to resolve disputes without going to war.</div>
+      <div class="hmm-boxes">
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🏛️</span> Who built the Peace Palace — and why? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The Peace Palace is a gift from American industrialist Andrew Carnegie. It's filled with opulent decorations donated by grateful nations who found diplomatic peace here — from exquisite Japanese tapestries, to a Hungarian tile fountain, to French inlay floors.</div>
+        </div>
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>⚖️</span> What do the two courts actually do? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">The International Court of Justice and the Permanent Court of Arbitration both work to settle disputes between nations without bloodshed. You'll learn how modern nations attempt to resolve their differences here instead of on the battlefield — a powerful idea to explore with your family.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEVENINGEN -->
+  <div class="site-card reveal" id="scheveningen">
+    <div class="card-icon-wrap" onclick="togglePhoto(this)">
+      <img src="Scheveningen.jpg" alt="Scheveningen beach, The Hague" loading="lazy"/>
+      <span class="card-tag">Beach Town</span>
+      <span class="expand-hint">tap to expand</span>
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">Scheveningen</h3>
+      <p class="card-subtitle">The Dutch Coney Island</p>
+      <p class="card-text">This Dutch Coney Island, with its broad sandy beach, is at its liveliest on sunny summer afternoons — but its biggest appeal is watching urbanites from all over South Holland enjoy a day at the seashore. Dominating the scene is the long double-decker pleasure pier: shops down below, a boardwalk up top, and a bungee-jumping pavilion at the far end. A café-lined promenade stretches along the sand.</p>
+      <div class="family-tip"><strong>💡 Family Tip:</strong> Try pronouncing "Scheveningen" (roughly SKHEH-veh-ning-ehn). In WWII, Dutch soldiers used it to detect German spies — the guttural "sch" sound is nearly impossible for non-Dutch speakers. See who in your family can nail it!</div>
+      <div class="hmm-boxes">
+        <div class="hmm-box" onclick="toggleHmm(this)">
+          <div class="hmm-header"><span>🕵️</span> How did a beach town name catch WWII spies? <span class="hmm-arrow">▾</span></div>
+          <div class="hmm-body">Dutch soldiers would quiz suspicious-looking visitors on how to pronounce "Scheveningen" to determine who was Dutch-born and ferret out potential German spies. This is the textbook example of an insider passphrase, known as a "shibboleth" — a word used to identify outsiders who cannot pronounce it correctly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end sites-grid -->
+</div><!-- end cards-bg -->
+</div><!-- end overview -->
+
+<!-- ═══ ESCHER DEEP DIVE ═══ -->
+<div id="escher-detail">
+<div class="dark-section">
+<div class="dark-inner">
+  <div class="reveal">
+    <p class="dark-eyebrow">Escher in the Palace — A Closer Look</p>
+    <h2 class="dark-title">M.C. Escher: The Man Behind the Impossible Worlds</h2>
+    <p class="dark-intro">The exhibit traces both Escher's life and his artistic evolution. As a young man, Escher fell in love with Italy, and his perspective-driven works built a foundation that served him well later in life. His art eventually shifted from landscapes of his beloved Italy to what have been termed "mindscapes" — fantastical, impossible worlds.</p>
+  </div>
+  <div class="escher-photo-grid reveal">
+    <figure class="escher-photo">
+      <img src="Maurits_Cornelis_Escher.jpg" alt="Portrait of M.C. Escher"/>
+      <figcaption>M.C. Escher, 1898–1972</figcaption>
+    </figure>
+    <div>
+      <p class="escher-bio-eyebrow">His Life &amp; Journey</p>
+      <div class="escher-bio">
+        <p>Maurits Cornelis Escher was born on June 17, 1898 in Leeuwarden, the Netherlands. His father was a civil engineer — one of eight Dutch engineers invited by the Japanese Emperor to modernize Japan's water infrastructure. Though his parents hoped he'd become an architect, a teacher at art school in Haarlem recognized his graphic talent and redirected him toward printmaking.</p>
+        <p>As a young man Escher fell deeply in love with Italy, and his perspective-driven works — of everything from jagged coastlines to St. Peter's Basilica — built a visual foundation that served him throughout his life. During travels to Spain in 1922 and again in 1936, he visited the Alhambra in Granada and became obsessed with the Moorish tile patterns: infinitely repeating shapes that locked together without gaps.</p>
+        <p>The rise of Mussolini's fascism led to Escher's departure from Italy with his family, and an itinerant period as he moved from place to place before finally settling in the Dutch town of Baarn. Here Escher synthesized his various artistic obsessions: perspective, reflections, metamorphoses, impossible architecture, and tessellations. His art shifted from the real landscapes of Italy to "mindscapes" — fantastical, impossible worlds.</p>
+        <p>He became internationally famous in the 1950s after his work gained wider attention. In 1955 he received a knighthood in the Order of Orange-Nassau. He completed his last woodcut, <em style="color:rgba(255,255,255,0.85)">Snakes</em>, in 1969 and passed away on March 27, 1972.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══ DID YOU KNOW ═══ -->
+<div id="didyouknow">
+<div class="fun-section">
+  <div class="fun-inner">
+    <div class="reveal">
+      <p class="fun-eyebrow">Trivia &amp; Surprises</p>
+      <h2 class="fun-title">Did You Know?</h2>
+      <p class="fun-intro">Extra stories from The Hague — things that deserve a closer look. Tap to reveal each answer.</p>
+    </div>
+    <div class="fun-grid">
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">🐟</span>
+        <div class="fun-q">Why did 17th-century Dutch painters turn everyday subjects — bulls, goldfinches, oysters — into serious art?</div>
+        <div class="fun-a">The Dutch golden age was driven by a prosperous merchant class rather than royal or church patrons. These new patrons wanted paintings of their world — ships, food, animals, their own faces. This created a revolutionary naturalism in art: the idea that the everyday world was worthy of beauty and serious artistic attention. You can see this spirit in nearly every room of the Mauritshuis.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">👁️</span>
+        <div class="fun-q">What is a "tronie" — and why does it matter for understanding the Mauritshuis?</div>
+        <div class="fun-a">A tronie is a type of Dutch golden age painting where the goal is not to depict a specific person, but to capture a mood, expression, or character type. Several of the Mauritshuis' most famous works are tronies — including Vermeer's <em>Girl with a Pearl Earring</em> and Frans Hals' <em>Laughing Boy</em>. This is why we don't know who the girl in the pearl earring painting actually is — she may never have been intended as a portrait of a real individual at all.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">🎓</span>
+        <div class="fun-q">Carel Fabritius painted <em>The Goldfinch</em>. What connects him to both Rembrandt and Vermeer?</div>
+        <div class="fun-a">Fabritius was Rembrandt's pupil and Vermeer's teacher — making him the artistic bridge between two of the greatest Dutch masters. <em>The Goldfinch</em> shows traces of both: Rembrandt's rich layering and Vermeer's luminous simplicity. Tragically, Fabritius died young in the Delft gunpowder explosion of 1654, the same year he painted <em>The Goldfinch</em>, and very little of his work survives.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">🕊️</span>
+        <div class="fun-q">The Peace Palace was completed in 1913. What happened just one year later that tested everything it stood for?</div>
+        <div class="fun-a">World War I broke out in 1914 — just one year after the Peace Palace opened its doors. The war was a sobering reminder of how hard peace is to keep. The palace survived the war and has gone on to house the International Court of Justice, which continues to work toward peaceful resolution of international disputes today.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">🐂</span>
+        <div class="fun-q">Vermeer's <em>Girl with a Pearl Earring</em> shares a secret pose with a painting of a bull. What connects them?</div>
+        <div class="fun-a">In Room 12, Paulus Potter's bull cranes his neck and glances back over one shoulder — the same pose as Vermeer's girl in Room 15. Both paintings are tronies — not about recording a specific subject, but capturing a fleeting expression and character. Even a bull gets treated as if he were a dignified aristocrat worthy of a formal portrait.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+      <div class="fun-card reveal">
+        <span class="fun-emoji">🏛️</span>
+        <div class="fun-q">Amsterdam is the official capital of the Netherlands — so why is The Hague the real center of power?</div>
+        <div class="fun-a">The Dutch constitution names Amsterdam as the capital, but The Hague has been the seat of government since 1588 — over 400 years. Parliament, the prime minister's office, and the International Court of Justice are all here. Amsterdam is the cultural and commercial capital; The Hague is where the governing actually happens.</div>
+        <button class="fun-toggle" onclick="toggleFact(this)">Reveal Answer ▾</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="stripe-divider"></div>
+
+<footer>
+  <p>Content based on Rick Steves' <em>Netherlands</em> travel guide and <em>escherinhetpaleis.nl</em></p>
+  <p style="margin-top:0.4rem">The Hague · Den Haag · Netherlands · Family Travel Guide</p>
+</footer>
+
+<script>
+function togglePhoto(el){ el.classList.toggle('expanded'); }
+
+const revealEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'), i*50);
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.07});
+revealEls.forEach(el=>obs.observe(el));
+
+function toggleHmm(el){ el.classList.toggle('open'); }
+function toggleRoom(el){ el.classList.toggle('open'); }
+function toggleFact(btn){
+  const card = btn.closest('.fun-card');
+  const ans = card.querySelector('.fun-a');
+  const open = ans.classList.toggle('open');
+  btn.textContent = open ? 'Hide Answer ▴' : 'Reveal Answer ▾';
+}
+</script>
+</body>
+</html>
