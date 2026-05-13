@@ -3,578 +3,396 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4efe5">
+<meta name="theme-color" content="#F8F4E3">
 <script>
   if (!new URLSearchParams(location.search).has('v')) {
     location.replace(location.pathname + '?v=' + Date.now() + location.hash);
   }
 </script>
-<title>The Southern Family European Extravaganza</title>
+<title>The Southerns — European Extravaganza 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Press+Start+2P&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Merriweather:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
+  /* ════════════════════════════════════
+     TINTIN / LIGNE CLAIRE THEME
+  ════════════════════════════════════ */
   :root {
-    --bg: #f4efe5;
-    --text: #1c1610;
-    --muted: #7a6e62;
-    --gold: #a06c0a;
-    --rule: rgba(28, 22, 16, 0.1);
+    --paper: #F8F4E3;
+    --ink:   #1A1008;
+    --red:   #D63327;
+    --blue:  #1564C0;
+    --gold:  #F5C842;
+    --green: #2B7A36;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { min-height: 100%; }
+
   body {
-    background-color: var(--bg);
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    background-color: var(--paper);
+    /* subtle halftone dot texture */
+    background-image: radial-gradient(circle, rgba(26,16,8,0.055) 1px, transparent 1px);
+    background-size: 9px 9px;
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: clamp(36px, 7vw, 64px) 20px clamp(48px, 9vw, 80px);
+    padding: 28px 18px 60px;
     min-height: 100vh;
   }
 
-  .reveal { opacity: 0; transform: translateY(10px); animation: reveal 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-  .d1{animation-delay:.08s} .d2{animation-delay:.20s} .d3{animation-delay:.36s}
-  .d4{animation-delay:.50s} .d5{animation-delay:.66s} .d6{animation-delay:.80s}
-  @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+  /* ── Reveal animation ── */
+  .reveal { opacity: 0; transform: translateY(8px); animation: reveal 0.5s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+  .d1{animation-delay:.05s} .d2{animation-delay:.18s} .d3{animation-delay:.32s}
+  .d4{animation-delay:.44s} .d5{animation-delay:.58s} .d6{animation-delay:.72s}
+  @keyframes reveal { to { opacity:1; transform:translateY(0); } }
 
-  /* ── Header ── */
-  header { text-align: center; margin-bottom: clamp(48px, 8vw, 80px); max-width: 680px; }
-  .eyebrow {
-    font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 18px;
-    display: inline-flex; align-items: center; gap: 14px;
+  /* ════════════════════════════════════
+     HERO PANEL
+  ════════════════════════════════════ */
+  .hero-panel {
+    width: 100%;
+    max-width: 820px;
+    border: 4px solid var(--ink);
+    border-radius: 4px;
+    box-shadow: 7px 7px 0 var(--ink);
+    overflow: hidden;
+    margin-bottom: 30px;
   }
-  .eyebrow::before, .eyebrow::after { content: ''; width: 32px; height: 1px; background: var(--rule); }
-  h1 {
-    font-family: 'Playfair Display', serif; font-weight: 900;
-    font-size: clamp(38px, 8vw, 68px); line-height: 1.02;
-    margin-bottom: 14px; letter-spacing: -0.018em; color: var(--text);
-  }
-  h1 em { color: var(--gold); font-style: italic; }
-  header p { color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 440px; margin: 0 auto; }
 
-  /* ── Section labels ── */
+  .hero-flag {
+    background: var(--red);
+    color: #fff;
+    text-align: center;
+    padding: 9px 20px 7px;
+    border-bottom: 3px solid var(--ink);
+    font-family: 'Bangers', cursive;
+    font-size: clamp(13px, 3vw, 19px);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+
+  .hero-panel img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-caption {
+    background: var(--gold);
+    color: var(--ink);
+    text-align: center;
+    padding: 9px 20px 8px;
+    border-top: 3px solid var(--ink);
+    font-size: clamp(12px, 2vw, 15px);
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  /* ════════════════════════════════════
+     SECTION LABELS
+  ════════════════════════════════════ */
   .section-label {
-    width: 100%; max-width: 940px;
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 18px;
-    font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted);
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    align-items: center;
+    margin: 22px 0 10px;
   }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
 
-  /* ── Grids ── */
-  .card-grid { display: grid; grid-template-columns: 1fr; gap: 14px; width: 100%; max-width: 940px; }
-  .quest-grid { margin-bottom: clamp(44px, 7vw, 68px); }
-  .guide-grid { margin-bottom: clamp(32px, 6vw, 52px); }
+  .section-label-text {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Bangers', cursive;
+    font-size: 19px;
+    letter-spacing: 3px;
+    padding: 5px 18px 3px;
+    white-space: nowrap;
+  }
+
+  .section-label-line {
+    flex: 1;
+    height: 3px;
+    background: var(--ink);
+  }
+
+  /* ════════════════════════════════════
+     CARD GRIDS
+  ════════════════════════════════════ */
+  .card-grid {
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
   @media (min-width: 560px) {
-    .quest-grid { grid-template-columns: repeat(2, 1fr); }
-    .guide-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col   { display: grid; grid-template-columns: 1fr 1fr; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); }
   }
-  @media (min-width: 800px) { .guide-grid { grid-template-columns: repeat(3, 1fr); } }
 
-  /* ── Shared card ── */
+  /* ════════════════════════════════════
+     SHARED CARD — compact horizontal strip
+  ════════════════════════════════════ */
   .card {
-    position: relative; text-decoration: none; color: inherit;
-    border-radius: 12px; padding: 24px 22px 20px;
-    overflow: hidden; display: flex; flex-direction: column;
-    justify-content: space-between; min-height: 178px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 3px;
+    box-shadow: 4px 4px 0 var(--ink);
+    min-height: 62px;
+    padding: 10px 14px 10px 0;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.13), 0 1px 3px rgba(0,0,0,0.07);
   }
-  .card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.1); }
-  .card:active { transform: translateY(-2px); transition-duration: 0.1s; }
-  .card:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
-  /* accent stripe */
-  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
-  /* graphic slot */
-  .g {
-    position: absolute; bottom: 14px; right: 14px;
-    pointer-events: none; opacity: 0.28;
-    transition: opacity 0.25s ease;
-  }
-  .card:hover .g { opacity: 0.48; }
+  .card:hover  { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .card:active { transform: translate(1px,  1px);  box-shadow: 2px 2px 0 var(--ink); }
+  .card:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-  .card-region { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.75; }
-  .card-title  { font-size: 24px; line-height: 1.15; margin-bottom: 6px; }
-  .card-desc   { font-size: 12px; line-height: 1.55; margin-bottom: 18px; opacity: 0.72; }
-  .card-cta {
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 6px;
-    opacity: 0.65; transition: gap 0.2s ease, opacity 0.2s ease;
+  /* left accent stripe */
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 7px;
+    flex-shrink: 0;
   }
-  .card:hover .card-cta { gap: 10px; opacity: 1; }
+
+  .card-info   { flex: 1; padding-left: 16px; }
+  .card-region { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; line-height: 1; margin-bottom: 3px; }
+  .card-title  { font-family: 'Bangers', cursive; font-size: 28px; letter-spacing: 1px; line-height: 1; }
+  .card-cta    { font-family: 'Bangers', cursive; font-size: 22px; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; opacity: 0.7; transition: opacity 0.15s, transform 0.15s; }
+  .card:hover .card-cta { opacity: 1; transform: translateX(3px); }
 
   /* ════════════════════════════════════
-     QUEST: BRUSSELS  —  Stardew Valley
+     QUEST: BRUSSELS  —  Belgian red
   ════════════════════════════════════ */
-  .brussels {
-    background: linear-gradient(155deg, #2e5e2e 0%, #1e4420 100%);
-    border: 1px solid rgba(240,192,64,0.45);
-  }
-  .brussels:hover { border-color: rgba(240,192,64,0.75); box-shadow: 0 16px 48px rgba(0,0,0,0.25), 0 0 24px rgba(240,192,64,0.1); }
-  /* rainbow pixel stripe */
-  .brussels::before { background: repeating-linear-gradient(90deg, #d04040 0px, #d04040 8px, #e07820 8px, #e07820 16px, #f0c040 16px, #f0c040 24px, #50c050 24px, #50c050 32px, #5080d0 32px, #5080d0 40px, #9060c0 40px, #9060c0 48px); height: 4px; }
-  .brussels .card-region { color: #50c050; font-family: 'Press Start 2P', monospace; font-size: 7px; letter-spacing: 1px; opacity: 1; }
-  .brussels .card-title  { font-family: 'Press Start 2P', monospace; font-size: 16px; color: #f0c040; text-shadow: 2px 2px 0 rgba(0,0,0,0.5), 0 0 14px rgba(240,192,64,0.4); }
-  .brussels .card-desc   { color: #c8b878; }
-  .brussels .card-cta    { color: #f0c040; font-family: 'Press Start 2P', monospace; font-size: 8px; }
+  .brussels { background: #FFF0EE; }
+  .brussels::before { background: var(--red); }
+  .brussels .card-title  { color: var(--red); }
+  .brussels .card-cta    { color: var(--red); }
 
   /* ════════════════════════════════════
-     QUEST: DRESDEN  —  Baroque parchment
+     QUEST: DRESDEN  —  Amber gold
   ════════════════════════════════════ */
-  .dresden-q {
-    background: radial-gradient(circle at 110% 110%, rgba(184,134,42,0.25) 0%, transparent 52%),
-                linear-gradient(155deg, #5c3818 0%, #3a2210 100%);
-    border: 1px solid rgba(184,134,42,0.45);
-  }
-  .dresden-q:hover { border-color: rgba(184,134,42,0.75); }
-  .dresden-q::before { background: linear-gradient(90deg, #8b5a0a, #d4a843, #8b5a0a); }
-  .drc { position: absolute; width: 18px; height: 18px; border-color: rgba(200,151,58,0.45); border-style: solid; pointer-events: none; }
-  .drc.tl { top:10px; left:10px; border-width:1px 0 0 1px; }
-  .drc.tr { top:10px; right:10px; border-width:1px 1px 0 0; }
-  .drc.bl { bottom:10px; left:10px; border-width:0 0 1px 1px; }
-  .drc.br { bottom:10px; right:10px; border-width:0 1px 1px 0; }
-  .dresden-q .card-region { color: #c8973a; }
-  .dresden-q .card-title  { font-family: 'Playfair Display', serif; font-style: italic; color: #f0d88a; font-size: 28px; }
-  .dresden-q .card-title em { color: #ffe680; }
-  .dresden-q .card-desc  { color: #b8a070; }
-  .dresden-q .card-cta   { color: #d4a843; }
+  .dresden-q { background: #FFFAED; }
+  .dresden-q::before { background: #C8860A; }
+  .dresden-q .card-title { color: #7A5006; }
+  .dresden-q .card-cta  { color: #C8860A; }
 
   /* ════════════════════════════════════
-     DELFT  —  Delft blue
+     DELFT  —  Dutch blue
   ════════════════════════════════════ */
-  .delft {
-    background: radial-gradient(circle at 50% -15%, rgba(30,60,138,0.3) 0%, transparent 55%),
-                linear-gradient(148deg, #1e3e7a 0%, #0e2250 100%);
-    border: 1px solid rgba(30,60,138,0.45);
-  }
-  .delft:hover { border-color: rgba(45,95,191,0.75); }
-  .delft::before { background: linear-gradient(90deg, #162347, #2d5fbf, #162347); }
-  .delft .card-region { color: #7098d8; }
-  .delft .card-title  { color: #e8f0fa; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; font-style: italic; }
-  .delft .card-cta    { color: #c8881a; }
+  .delft { background: #EBF2FE; }
+  .delft::before { background: var(--blue); }
+  .delft .card-title { color: var(--blue); }
+  .delft .card-cta  { color: var(--blue); }
 
   /* ════════════════════════════════════
-     HAARLEM  —  Crimson + gold
+     HAARLEM  —  Crimson
   ════════════════════════════════════ */
-  .haarlem {
-    background: radial-gradient(circle at 50% -10%, rgba(155,26,26,0.3) 0%, transparent 55%),
-                linear-gradient(148deg, #7a1414 0%, #560e0e 100%);
-    border: 1px solid rgba(155,26,26,0.45);
-  }
-  .haarlem:hover { border-color: rgba(196,154,34,0.65); }
-  .haarlem::before { background: linear-gradient(90deg, #7a1212, #9b1a1a, #c49a22, #9b1a1a, #7a1212); }
-  .haarlem .card-region { color: #e8c355; }
-  .haarlem .card-title  { color: #fdf6e0; font-family: 'Playfair Display', serif; font-weight: 700; }
-  .haarlem .card-desc   { color: #c8a888; }
-  .haarlem .card-cta    { color: #e8c355; }
+  .haarlem { background: #FFF0EE; }
+  .haarlem::before { background: #9B1414; }
+  .haarlem .card-title { color: #9B1414; }
+  .haarlem .card-cta  { color: #9B1414; }
 
   /* ════════════════════════════════════
-     THE HAGUE  —  Deep green + yellow
+     THE HAGUE  —  Forest green
   ════════════════════════════════════ */
-  .hague {
-    background: radial-gradient(circle at 50% 110%, rgba(0,124,90,0.2) 0%, transparent 50%),
-                linear-gradient(148deg, #005440 0%, #002e24 100%);
-    border: 1px solid rgba(0,124,90,0.4);
-  }
-  .hague:hover { border-color: rgba(252,204,0,0.55); box-shadow: 0 16px 48px rgba(0,0,0,0.25), 0 0 20px rgba(252,204,0,0.08); }
-  .hague::before { background: linear-gradient(90deg, #003d2c, #007C5A, #FCCC00, #007C5A, #003d2c); }
-  .hague .card-region { color: #00c87a; }
-  .hague .card-title  { color: #f9f7f0; font-family: 'Playfair Display', serif; font-weight: 700; }
-  .hague .card-desc   { color: #80c8a8; }
-  .hague .card-cta    { color: #FCCC00; }
+  .hague { background: #EDF7F0; }
+  .hague::before { background: var(--green); }
+  .hague .card-title { color: var(--green); }
+  .hague .card-cta  { color: var(--green); }
 
   /* ════════════════════════════════════
-     GHENT  —  Forest green + marigold
+     GHENT  —  Marigold orange
   ════════════════════════════════════ */
-  .ghent {
-    background: radial-gradient(circle at 50% 110%, rgba(232,147,10,0.14) 0%, transparent 50%),
-                linear-gradient(148deg, #2e5828 0%, #1e3c1a 100%);
-    border: 1px solid rgba(61,94,56,0.45);
-  }
-  .ghent:hover { border-color: rgba(232,147,10,0.55); }
-  .ghent::before { background: linear-gradient(90deg, #243621, #3d5e38, #e8930a, #3d5e38, #243621); }
-  .ghent .card-region { color: #7fa876; }
-  .ghent .card-title  { color: #f5f9f4; font-family: 'Playfair Display', serif; font-weight: 700; }
-  .ghent .card-desc   { color: #90b888; }
-  .ghent .card-cta    { color: #e8930a; }
+  .ghent { background: #FFF6EA; }
+  .ghent::before { background: #C87810; }
+  .ghent .card-title { color: #7A4C06; }
+  .ghent .card-cta  { color: #C87810; }
 
   /* ════════════════════════════════════
-     BRUGES  —  Belgian red + parchment + gold
+     BRUGES  —  Deep burgundy
   ════════════════════════════════════ */
-  .bruges {
-    background: radial-gradient(circle at 50% -10%, rgba(192,57,43,0.3) 0%, transparent 55%),
-                linear-gradient(148deg, #8c1c16 0%, #640e0a 100%);
-    border: 1px solid rgba(192,57,43,0.42);
-  }
-  .bruges:hover { border-color: rgba(192,57,43,0.75); }
-  .bruges::before { background: linear-gradient(90deg, #9B2D23, #C0392B, #C8941A, #C0392B, #9B2D23); }
-  .bruges .card-region { color: #F0C96A; }
-  .bruges .card-title  { color: #F2EAD8; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; }
-  .bruges .card-desc   { color: #d4b898; }
-  .bruges .card-cta    { color: #F0C96A; }
+  .bruges { background: #FDECEA; }
+  .bruges::before { background: #8C1C16; }
+  .bruges .card-title { color: #8C1C16; }
+  .bruges .card-cta  { color: #8C1C16; }
 
   /* ════════════════════════════════════
-     WITTENBERG  —  Deep forest + copper
+     WITTENBERG  —  Forest copper
   ════════════════════════════════════ */
-  .wittenberg {
-    background: radial-gradient(circle at 50% 110%, rgba(181,100,42,0.14) 0%, transparent 50%),
-                linear-gradient(148deg, #1e3a18 0%, #142812 100%);
-    border: 1px solid rgba(61,107,46,0.48);
-  }
-  .wittenberg:hover { border-color: rgba(181,100,42,0.6); }
-  .wittenberg::before { background: linear-gradient(90deg, #1a2e14, #2d5020, #3d6b2e, #2d5020, #1a2e14); }
-  .wittenberg .card-region { color: #b5642a; }
-  .wittenberg .card-title  { color: #f5eedc; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; }
-  .wittenberg .card-desc   { color: #8aaa78; }
-  .wittenberg .card-cta    { color: #d4854e; }
+  .wittenberg { background: #EDF7F0; }
+  .wittenberg::before { background: #B5642A; }
+  .wittenberg .card-title { color: #4A2C10; }
+  .wittenberg .card-cta  { color: #B5642A; }
 
   /* ════════════════════════════════════
-     DRESDEN GUIDE  —  Saxon dark + crimson + gold
+     DRESDEN GUIDE  —  Saxon gold
   ════════════════════════════════════ */
-  .dresden-g {
-    background: radial-gradient(circle at 100% 0%, rgba(156,28,32,0.2) 0%, transparent 45%),
-                radial-gradient(circle at 0% 100%, rgba(184,130,10,0.16) 0%, transparent 45%),
-                linear-gradient(148deg, #3a2608 0%, #22180a 100%);
-    border: 1px solid rgba(184,130,10,0.38);
-  }
-  .dresden-g:hover { border-color: rgba(240,200,74,0.6); }
-  .dresden-g::before { background: linear-gradient(90deg, #9c1c20, #b8820a, #f0c84a, #b8820a, #9c1c20); }
-  .dresden-g .card-region { color: #d09c1a; }
-  .dresden-g .card-title  { color: #faf6ec; font-family: 'Playfair Display', serif; font-style: italic; }
-  .dresden-g .card-cta    { color: #f0c84a; }
+  .dresden-g { background: #FFFAED; }
+  .dresden-g::before { background: var(--gold); }
+  .dresden-g .card-title { color: #6A4206; }
+  .dresden-g .card-cta  { color: #B8820A; }
 
   /* ════════════════════════════════════
-     BERLIN  —  Prussian blue + gold
+     BERLIN  —  Prussian blue
   ════════════════════════════════════ */
-  .berlin {
-    background: radial-gradient(circle at 50% -20%, rgba(21,101,192,0.22) 0%, transparent 60%),
-                linear-gradient(148deg, #003e7a 0%, #002255 100%);
-    border: 1px solid rgba(21,101,192,0.38);
-  }
-  .berlin:hover { border-color: rgba(21,101,192,0.7); }
-  .berlin::before { background: linear-gradient(90deg, #003153, #1565c0, #003153); }
-  .berlin .card-region { color: #6aabcd; }
-  .berlin .card-title  { color: #e3ecf7; font-family: 'Playfair Display', serif; font-weight: 700; }
-  .berlin .card-cta    { color: #c8881a; }
+  .berlin { background: #EAF0F8; }
+  .berlin::before { background: #1A3A5C; }
+  .berlin .card-title { color: #1A3A5C; }
+  .berlin .card-cta  { color: #1565C0; }
 
   /* ════════════════════════════════════
-     RISE & FALL  —  Deep navy + crimson
+     HISTORY  —  Navy + crimson
   ════════════════════════════════════ */
-  .history {
-    background: radial-gradient(circle at 50% -10%, rgba(26,58,92,0.4) 0%, transparent 55%),
-                linear-gradient(148deg, #0e2650 0%, #081838 100%);
-    border: 1px solid rgba(26,58,92,0.5);
-  }
-  .history:hover { border-color: rgba(192,57,43,0.6); }
-  .history::before { background: linear-gradient(90deg, #1a3a5c, #1a3a5c, #c0392b, #1a3a5c, #1a3a5c); }
-  .history .card-region { color: #c0392b; }
-  .history .card-title  { color: #e8eef8; font-size: 18px; line-height: 1.3; font-family: 'Merriweather', Georgia, serif; font-weight: 700; }
-  .history .card-desc   { color: #8090b0; }
-  .history .card-cta    { color: #c0392b; }
+  .history { background: #EFEEFC; }
+  .history::before { background: #C0392B; }
+  .history .card-title { color: #1A1A3C; font-size: 20px; }
+  .history .card-cta  { color: #C0392B; }
 
+  /* ════════════════════════════════════
+     FOOTER
+  ════════════════════════════════════ */
   footer {
-    margin-top: clamp(12px, 3vw, 24px);
-    color: var(--muted); font-size: 11px; letter-spacing: 3px;
-    text-transform: uppercase; text-align: center;
+    margin-top: 28px;
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    opacity: 0.4;
+    text-align: center;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .reveal { animation: none !important; opacity:1 !important; transform:none !important; }
     .card { transition: none; }
-    .card:hover { transform: none; box-shadow: 0 2px 12px rgba(0,0,0,0.13); }
+    .card:hover { transform: none; box-shadow: 4px 4px 0 var(--ink); }
   }
 </style>
 </head>
 <body>
 
-  <header>
-    <div class="eyebrow reveal d1">The Southern Family</div>
-    <h1 class="reveal d2">European <em>Extravaganza</em></h1>
-    <p class="reveal d3">Scavenger hunts and travel guides for the whole family.</p>
-  </header>
+  <!-- HERO PANEL -->
+  <div class="hero-panel reveal d1">
+    <div class="hero-flag">The Southern Family Presents</div>
+    <img src="the_southerns.png" alt="The Southerns — European Extravaganza 2026">
+    <div class="hero-caption">Scavenger hunts &amp; travel guides for the whole family &bull; 2026</div>
+  </div>
 
-  <div class="section-label reveal d4">Scavenger Hunts</div>
+  <!-- ── SCAVENGER HUNTS ── -->
+  <div class="section-label reveal d2">
+    <span class="section-label-text">Scavenger Hunts</span>
+    <div class="section-label-line"></div>
+  </div>
 
-  <div class="card-grid quest-grid">
+  <div class="card-grid two-col reveal d3">
 
-    <!-- BRUSSELS: Stardew Valley green + gold -->
-    <a class="card brussels reveal d4" href="scavenger_hunts/brussels-scavenger-hunt%20with%20sound.html">
-      <div class="g" aria-hidden="true">
-        <!-- Pixel art waffle -->
-        <svg viewBox="0 0 40 40" width="54" height="54">
-          <rect width="40" height="40" rx="3" fill="#f0c040"/>
-          <rect x="0" y="13" width="40" height="3" fill="#b88a10"/>
-          <rect x="0" y="24" width="40" height="3" fill="#b88a10"/>
-          <rect x="13" y="0" width="3" height="40" fill="#b88a10"/>
-          <rect x="24" y="0" width="3" height="40" fill="#b88a10"/>
-          <rect x="1" y="1" width="11" height="11" fill="#e0b020"/>
-          <rect x="16" y="1" width="7" height="11" fill="#e0b020"/>
-          <rect x="27" y="1" width="12" height="11" fill="#e0b020"/>
-          <rect x="1" y="16" width="11" height="7" fill="#e0b020"/>
-          <rect x="16" y="16" width="7" height="7" fill="#e0b020"/>
-          <rect x="27" y="16" width="12" height="7" fill="#e0b020"/>
-          <rect x="1" y="27" width="11" height="12" fill="#e0b020"/>
-          <rect x="16" y="27" width="7" height="12" fill="#e0b020"/>
-          <rect x="27" y="27" width="12" height="12" fill="#e0b020"/>
-          <rect x="2" y="2" width="3" height="3" fill="#fff8a0"/>
-          <rect x="17" y="2" width="3" height="3" fill="#fff8a0"/>
-          <rect x="29" y="2" width="3" height="3" fill="#fff8a0"/>
-        </svg>
+    <a class="card brussels" href="scavenger_hunts/brussels-scavenger-hunt%20with%20sound.html">
+      <div class="card-info">
+        <div class="card-region">Belgium</div>
+        <div class="card-title">Brussels</div>
       </div>
-      <div>
-        <div class="card-region">&gt; LOAD CITY_01</div>
-        <div class="card-title">BRUSSELS</div>
-        <div class="card-desc">Pixel RPG quest through the Belgian capital.</div>
-      </div>
-      <span class="card-cta">START &rarr;</span>
+      <span class="card-cta">GO →</span>
     </a>
 
-    <!-- DRESDEN QUEST: baroque parchment + gold -->
-    <a class="card dresden-q reveal d5" href="scavenger_hunts/dresden-scavenger-hunt%20with%20sound.html">
-      <span class="drc tl"></span><span class="drc tr"></span>
-      <span class="drc bl"></span><span class="drc br"></span>
-      <div class="g" aria-hidden="true">
-        <!-- Baroque flourish -->
-        <svg viewBox="0 0 82 22" width="90" height="24">
-          <path d="M 4,11 C 10,3 17,19 24,11 C 31,3 38,19 45,11 C 52,3 59,19 66,11 C 73,4 79,11 82,11"
-                fill="none" stroke="#d4a843" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="4"  cy="11" r="3"   fill="#d4a843"/>
-          <circle cx="82" cy="11" r="3"   fill="#d4a843"/>
-          <circle cx="24" cy="11" r="1.8" fill="#d4a843"/>
-          <circle cx="45" cy="11" r="1.8" fill="#d4a843"/>
-          <circle cx="66" cy="11" r="1.8" fill="#d4a843"/>
-        </svg>
+    <a class="card dresden-q" href="scavenger_hunts/dresden-scavenger-hunt%20with%20sound.html">
+      <div class="card-info">
+        <div class="card-region">Germany · Saxony</div>
+        <div class="card-title">Dresden</div>
       </div>
-      <div>
-        <div class="card-region">Old Town &middot; Saxony</div>
-        <div class="card-title">Dresden <em>Altstadt</em></div>
-        <div class="card-desc">A walking hunt through Dresden's baroque heart.</div>
-      </div>
-      <span class="card-cta">Begin the hunt &rarr;</span>
+      <span class="card-cta">GO →</span>
     </a>
 
   </div>
 
-  <div class="section-label reveal d5">Travel Guides</div>
+  <!-- ── TRAVEL GUIDES ── -->
+  <div class="section-label reveal d4">
+    <span class="section-label-text">Travel Guides</span>
+    <div class="section-label-line"></div>
+  </div>
 
-  <div class="card-grid guide-grid">
+  <div class="card-grid three-col reveal d5">
 
-    <!-- DELFT: Delft blue + windmill -->
-    <a class="card delft reveal d5" href="travel_guides/delft/delft-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Windmill -->
-        <svg viewBox="0 0 44 52" width="38" height="46" fill="#4a80d0">
-          <polygon points="17,52 27,52 23,28 21,28"/>
-          <ellipse cx="22" cy="27" rx="10" ry="5"/>
-          <polygon points="20,27 24,27 22,5"/>
-          <polygon points="22,25 22,29 43,27"/>
-          <polygon points="20,27 24,27 22,49" opacity="0.7"/>
-          <polygon points="22,25 22,29 1,27"/>
-          <circle cx="22" cy="27" r="3" fill="#8ab8f0"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card delft" href="travel_guides/delft/delft-guide.html">
+      <div class="card-info">
         <div class="card-region">Netherlands</div>
         <div class="card-title">Delft</div>
-        <div class="card-desc">Vermeer's hometown, famous for blue and white pottery.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- HAARLEM: crimson + Sint Bavo church -->
-    <a class="card haarlem reveal d5" href="travel_guides/haarlem/haarlem-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Sint Bavo church silhouette -->
-        <svg viewBox="0 0 50 56" width="44" height="50" fill="#e8c355">
-          <rect x="4" y="28" width="42" height="28"/>
-          <rect x="0" y="20" width="50" height="20"/>
-          <rect x="18" y="10" width="14" height="22"/>
-          <rect x="20" y="4" width="10" height="8"/>
-          <polygon points="25,0 20,4 30,4"/>
-          <rect x="8"  y="32" width="6" height="10" fill="rgba(0,0,0,0.2)" rx="3"/>
-          <rect x="36" y="32" width="6" height="10" fill="rgba(0,0,0,0.2)" rx="3"/>
-          <rect x="22" y="14" width="6" height="8"  fill="rgba(0,0,0,0.2)" rx="3"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card haarlem" href="travel_guides/haarlem/haarlem-guide.html">
+      <div class="card-info">
         <div class="card-region">Netherlands</div>
         <div class="card-title">Haarlem</div>
-        <div class="card-desc">Golden Age charm a short train ride from Amsterdam.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- THE HAGUE: deep green + Peace Palace + yellow -->
-    <a class="card hague reveal d5" href="travel_guides/the%20hague/hague-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Peace Palace dome -->
-        <svg viewBox="0 0 58 46" width="52" height="40" fill="#FCCC00">
-          <rect x="0"  y="30" width="58" height="16"/>
-          <rect x="0"  y="24" width="16" height="22"/>
-          <rect x="42" y="24" width="16" height="22"/>
-          <rect x="14" y="20" width="30" height="26"/>
-          <ellipse cx="29" cy="20" rx="15" ry="10"/>
-          <rect x="25" y="8"  width="8"  height="10"/>
-          <polygon points="29,2 25,8 33,8"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card hague" href="travel_guides/the%20hague/hague-guide.html">
+      <div class="card-info">
         <div class="card-region">Netherlands</div>
         <div class="card-title">The Hague</div>
-        <div class="card-desc">Home of the Peace Palace, Mauritshuis, and the sea.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- GHENT: forest green + Gravensteen castle -->
-    <a class="card ghent reveal d6" href="travel_guides/ghent/ghent-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Gravensteen castle -->
-        <svg viewBox="0 0 64 52" width="60" height="48" fill="#e8930a">
-          <rect x="0" y="18" width="13" height="34"/>
-          <ellipse cx="6.5" cy="18" rx="6.5" ry="5"/>
-          <rect x="0"  y="11" width="3" height="7"/>
-          <rect x="5"  y="11" width="3" height="7"/>
-          <rect x="10" y="11" width="3" height="7"/>
-          <rect x="51" y="18" width="13" height="34"/>
-          <ellipse cx="57.5" cy="18" rx="6.5" ry="5"/>
-          <rect x="51" y="11" width="3" height="7"/>
-          <rect x="56" y="11" width="3" height="7"/>
-          <rect x="61" y="11" width="3" height="7"/>
-          <rect x="12" y="24" width="40" height="28"/>
-          <rect x="12" y="17" width="5" height="8"/>
-          <rect x="21" y="17" width="5" height="8"/>
-          <rect x="30" y="17" width="5" height="8"/>
-          <rect x="39" y="17" width="5" height="8"/>
-          <rect x="47" y="17" width="5" height="8"/>
-          <rect x="26" y="36" width="12" height="16" fill="rgba(0,0,0,0.3)"/>
-          <path d="M 26,36 Q 32,29 38,36" fill="rgba(0,0,0,0.3)"/>
-          <rect x="16" y="29" width="5" height="6" rx="2.5" fill="rgba(0,0,0,0.25)"/>
-          <rect x="43" y="29" width="5" height="6" rx="2.5" fill="rgba(0,0,0,0.25)"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card ghent" href="travel_guides/ghent/ghent-guide.html">
+      <div class="card-info">
         <div class="card-region">Belgium</div>
         <div class="card-title">Ghent</div>
-        <div class="card-desc">A lively medieval city where art and history meet the canals.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- BRUGES: Belgian red + swan -->
-    <a class="card bruges reveal d6" href="travel_guides/bruges/bruges-hmm.html">
-      <div class="g" aria-hidden="true">
-        <!-- Swan -->
-        <svg viewBox="0 0 62 46" width="60" height="44" fill="#F2EAD8">
-          <ellipse cx="38" cy="32" rx="22" ry="12"/>
-          <path d="M 22,32 C 20,22 14,16 18,9 C 21,4 28,5 26,13 C 24,20 28,27 32,30" fill="#F2EAD8"/>
-          <circle cx="18" cy="9" r="5"/>
-          <path d="M 14,9 L 9,10 L 14,12" fill="#C8941A"/>
-          <path d="M 22,26 C 34,20 54,25 58,32" fill="none" stroke="#e0d0b8" stroke-width="1.8"/>
-          <path d="M 58,32 C 62,28 64,34 60,36" fill="#F2EAD8"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card bruges" href="travel_guides/bruges/bruges-hmm.html">
+      <div class="card-info">
         <div class="card-region">Belgium</div>
         <div class="card-title">Bruges</div>
-        <div class="card-desc">Medieval canals and cobbled streets of the North.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- WITTENBERG: forest green + Schlosskirche -->
-    <a class="card wittenberg reveal d6" href="travel_guides/wittenberg/wittenberg-family-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Schlosskirche facade -->
-        <svg viewBox="0 0 38 54" width="30" height="46" fill="#d4854e">
-          <rect x="2" y="18" width="34" height="36"/>
-          <path d="M 2,18 Q 19,2 36,18" fill="#d4854e"/>
-          <rect x="14" y="38" width="10" height="16" fill="rgba(0,0,0,0.28)"/>
-          <path d="M 14,38 Q 19,32 24,38" fill="rgba(0,0,0,0.28)"/>
-          <rect x="16" y="0" width="6" height="20" fill="#d4854e"/>
-          <rect x="18" y="1" width="2" height="8"  fill="#f5eedc"/>
-          <rect x="15" y="4" width="8" height="2"  fill="#f5eedc"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card wittenberg" href="travel_guides/wittenberg/wittenberg-family-guide.html">
+      <div class="card-info">
         <div class="card-region">Germany</div>
         <div class="card-title">Wittenberg</div>
-        <div class="card-desc">Birthplace of the Reformation and Luther's city.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- DRESDEN GUIDE: Saxon dark + Frauenkirche + crimson/gold -->
-    <a class="card dresden-g reveal d6" href="travel_guides/dresden/dresden-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Frauenkirche -->
-        <svg viewBox="0 0 46 54" width="38" height="46" fill="#f0c84a">
-          <rect x="0"  y="46" width="46" height="8"/>
-          <rect x="5"  y="28" width="36" height="20"/>
-          <rect x="13" y="19" width="20" height="11"/>
-          <ellipse cx="23" cy="19" rx="14" ry="9"/>
-          <rect x="19" y="7"  width="8"  height="10"/>
-          <rect x="21" y="1"  width="4"  height="8"/>
-          <rect x="22" y="0"  width="2"  height="9" fill="#ffd96a"/>
-        </svg>
-      </div>
-      <div>
-        <div class="card-region">Germany &middot; Saxony</div>
+    <a class="card dresden-g" href="travel_guides/dresden/dresden-guide.html">
+      <div class="card-info">
+        <div class="card-region">Germany · Saxony</div>
         <div class="card-title">Dresden</div>
-        <div class="card-desc">Baroque splendour rebuilt from the ashes of wartime.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- BERLIN: prussian blue + Brandenburg Gate -->
-    <a class="card berlin reveal d6" href="travel_guides/berlin/berlin-guide.html">
-      <div class="g" aria-hidden="true">
-        <!-- Brandenburg Gate -->
-        <svg viewBox="0 0 54 38" width="58" height="40" fill="#4a90d0">
-          <rect x="2"  y="12" width="6" height="26"/>
-          <rect x="14" y="15" width="5" height="23"/>
-          <rect x="35" y="15" width="5" height="23"/>
-          <rect x="46" y="12" width="6" height="26"/>
-          <rect x="0"  y="7"  width="54" height="6"/>
-          <rect x="8"  y="2"  width="38" height="6"/>
-          <rect x="18" y="0"  width="18" height="4"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card berlin" href="travel_guides/berlin/berlin-guide.html">
+      <div class="card-info">
         <div class="card-region">Germany</div>
         <div class="card-title">Berlin</div>
-        <div class="card-desc">History, landmarks, and hidden gems in the capital.</div>
       </div>
-      <span class="card-cta">Open guide &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
-    <!-- RISE & FALL: navy + crimson + open book -->
-    <a class="card history reveal d6" href="travel_guides/Rise_and_fall_of_nazi_Germany.html">
-      <div class="g" aria-hidden="true">
-        <!-- Open book -->
-        <svg viewBox="0 0 54 42" width="52" height="40" fill="#c0392b">
-          <path d="M 27,7 C 22,7 5,11 3,39 L 27,39 Z"/>
-          <path d="M 27,7 C 32,7 49,11 51,39 L 27,39 Z"/>
-          <rect x="25" y="5" width="4" height="36"/>
-          <line x1="9"  y1="21" x2="22" y2="21" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-          <line x1="9"  y1="27" x2="22" y2="27" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-          <line x1="9"  y1="33" x2="22" y2="33" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-          <line x1="32" y1="21" x2="45" y2="21" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-          <line x1="32" y1="27" x2="45" y2="27" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-          <line x1="32" y1="33" x2="45" y2="33" stroke="rgba(232,238,248,0.35)" stroke-width="1.5"/>
-        </svg>
-      </div>
-      <div>
+    <a class="card history" href="travel_guides/Rise_and_fall_of_nazi_Germany.html">
+      <div class="card-info">
         <div class="card-region">History</div>
         <div class="card-title">Rise &amp; Fall of Nazi Germany</div>
-        <div class="card-desc">An expanded account of the Nazi regime.</div>
       </div>
-      <span class="card-cta">Read history &rarr;</span>
+      <span class="card-cta">→</span>
     </a>
 
   </div>
