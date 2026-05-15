@@ -67,22 +67,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .btn-sdv.full{width:100%;text-align:center;}
 
 
-/* EXPANDABLE IMAGE */
-.stop-img-wrap { position:relative; overflow:hidden; cursor:pointer; }
-.stop-img {
-  width:100%; max-height:200px; object-fit:cover; object-position:center 30%;
-  display:block; border-bottom:3px solid var(--sdv-border);
-  image-rendering:pixelated; margin-top:4px;
-  transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1), object-fit 0.1s;
-}
-.stop-img.expanded { max-height:600px; object-fit:contain; object-position:center center; background:#1a1a1a; }
-.img-tap-hint {
-  position:absolute; bottom:6px; right:8px;
-  font-family:'Press Start 2P',monospace; font-size:6px;
-  color:#fff; background:rgba(0,0,0,0.55);
-  padding:3px 7px; border-radius:3px; pointer-events:none;
-  opacity:0.85; letter-spacing:0.5px;
-}
 
 
 /* JUNIMO ICON */
@@ -98,6 +82,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
 .stop-card{background:var(--sdv-panel);border:4px solid var(--sdv-border);border-bottom:7px solid var(--sdv-border2);border-right:7px solid var(--sdv-border2);border-radius:4px;margin-bottom:14px;overflow:hidden;box-shadow:5px 5px 0 rgba(0,0,0,0.35);position:relative;}
 .stop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--sdv-red) 0px,var(--sdv-red) 8px,var(--sdv-orange) 8px,var(--sdv-orange) 16px,var(--sdv-gold) 16px,var(--sdv-gold) 24px,var(--sdv-green) 24px,var(--sdv-green) 32px,var(--sdv-blue) 32px,var(--sdv-blue) 40px,var(--sdv-purple) 40px,var(--sdv-purple) 48px);z-index:1;}
+.stop-img{width:100%;max-height:200px;object-fit:cover;object-position:center 30%;display:block;border-bottom:3px solid var(--sdv-border);image-rendering:pixelated;margin-top:4px;}
 .stop-card.active-stop{border-color:var(--sdv-gold);border-bottom-color:var(--sdv-gold2);border-right-color:var(--sdv-gold2);box-shadow:5px 5px 0 rgba(0,0,0,0.35),0 0 20px rgba(240,192,64,0.3);}
 .stop-card.completed-stop{border-color:var(--sdv-green);border-bottom-color:#2a7020;border-right-color:#2a7020;}
 /* .stop-img now defined in expandable section */
@@ -124,26 +109,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .info-text{font-size:15px;line-height:1.85;color:var(--sdv-text);}
 .info-text strong{color:#5a3a18;}
 .info-text em{color:#7a5a30;font-style:normal;font-weight:800;}
-
-/* AUDIO BUTTON */
-.audio-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.audio-btn{
-  display:flex;align-items:center;gap:6px;
-  font-family:'Press Start 2P',monospace;font-size:7px;
-  padding:6px 12px;min-height:34px;
-  background:var(--sdv-border2);color:var(--sdv-gold);
-  border:2px solid var(--sdv-border);border-radius:4px;
-  cursor:pointer;white-space:nowrap;
-  box-shadow:2px 2px 0 rgba(0,0,0,0.35);
-  transition:all 0.1s;user-select:none;
-}
-.audio-btn:active{transform:translate(1px,1px);box-shadow:none;}
-.audio-btn.playing{background:#3a6020;color:#d0f0a0;border-color:#2a4010;}
-.audio-btn.paused{background:#7a5010;color:#ffe0a0;border-color:#5a3a00;}
-.audio-icon{font-size:14px;line-height:1;}
-.audio-pulse{display:none;width:8px;height:8px;border-radius:50%;background:var(--sdv-gold);animation:audioPulse 0.7s ease-in-out infinite alternate;}
-.audio-btn.playing .audio-pulse{display:block;}
-@keyframes audioPulse{0%{opacity:0.3;transform:scale(0.7);}100%{opacity:1;transform:scale(1.2);}}
 
 .quests-section{margin-bottom:10px;}
 .quests-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--sdv-border2);margin-bottom:10px;letter-spacing:1px;}
@@ -418,192 +383,6 @@ let totalScore=0, answered={}, photosDone={}, stopsCompleted={};
 const TOTAL=stops.length;
 
 
-/* ── AUDIO ENGINE ── */
-const audioState = {}; // keyed by stop index
-
-function htmlToPlainText(html) {
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html;
-  // Replace <br> with space
-  tmp.querySelectorAll('br').forEach(br => br.replaceWith(' '));
-  // Replace block elements with space
-  tmp.querySelectorAll('p,div,h1,h2,h3,h4,li').forEach(el => {
-    el.insertAdjacentText('afterend', ' ');
-  });
-  let text = tmp.textContent || tmp.innerText || '';
-  // Clean up extra whitespace
-  return text.replace(/\s+/g, ' ').trim();
-}
-
-function wordsUpToIndex(words, charIndex) {
-  // Count how many characters the first N words take
-  let count = 0;
-  for (let i = 0; i < words.length; i++) {
-    count += words[i].length + 1; // +1 for space
-    if (count > charIndex) return i;
-  }
-  return words.length;
-}
-
-function toggleAudio(stopIdx) {
-  const btn   = document.getElementById('audio-btn-' + stopIdx);
-  const label = document.getElementById('audio-label-' + stopIdx);
-  const icon  = document.getElementById('audio-icon-' + stopIdx);
-  const state = audioState[stopIdx] || { status:'stopped', wordOffset:0 };
-
-  // Stop any other playing audio
-  Object.keys(audioState).forEach(k => {
-    if (parseInt(k) !== stopIdx && audioState[k].status === 'playing') {
-      stopAudio(parseInt(k));
-    }
-  });
-
-  if (state.status === 'playing') {
-    // PAUSE
-    window.speechSynthesis.cancel();
-    state.status = 'paused';
-    audioState[stopIdx] = state;
-    btn.className = 'audio-btn paused';
-    label.textContent = 'RESUME';
-    icon.textContent = '⏸';
-  } else if (state.status === 'paused') {
-    // RESUME from 7 words back
-    resumeAudio(stopIdx, state);
-  } else {
-    // START fresh
-    state.wordOffset = 0;
-    state.status = 'playing';
-    audioState[stopIdx] = state;
-    startSpeaking(stopIdx, state);
-  }
-}
-
-function stopAudio(stopIdx) {
-  window.speechSynthesis.cancel();
-  const state = audioState[stopIdx];
-  if (state) { state.status = 'stopped'; state.wordOffset = 0; }
-  const btn   = document.getElementById('audio-btn-' + stopIdx);
-  const label = document.getElementById('audio-label-' + stopIdx);
-  const icon  = document.getElementById('audio-icon-' + stopIdx);
-  if (btn) { btn.className = 'audio-btn'; label.textContent = 'LISTEN'; icon.textContent = '🔊'; }
-}
-
-function resumeAudio(stopIdx, state) {
-  const infoEl = document.getElementById('info-text-' + stopIdx);
-  if (!infoEl) return;
-  const fullText = htmlToPlainText(infoEl.innerHTML);
-  const words = fullText.split(/\s+/).filter(w => w.length > 0);
-
-  // Go back 7 words from where we paused
-  const resumeWord = Math.max(0, (state.wordOffset || 0) - 7);
-  state.wordOffset = resumeWord;
-  state.status = 'playing';
-  audioState[stopIdx] = state;
-  startSpeaking(stopIdx, state);
-}
-
-function startSpeaking(stopIdx, state) {
-  const btn   = document.getElementById('audio-btn-' + stopIdx);
-  const label = document.getElementById('audio-label-' + stopIdx);
-  const icon  = document.getElementById('audio-icon-' + stopIdx);
-  const infoEl = document.getElementById('info-text-' + stopIdx);
-  if (!infoEl) return;
-
-  const fullText = htmlToPlainText(infoEl.innerHTML);
-  const words = fullText.split(/\s+/).filter(w => w.length > 0);
-  const speakWords = words.slice(state.wordOffset || 0);
-  const speakText = speakWords.join(' ');
-
-  btn.className = 'audio-btn playing';
-  label.textContent = 'PAUSE';
-  icon.textContent = '▶';
-
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(speakText);
-
-  // Voice selection — warm, clear, authoritative male voice (Rick Steves style)
-  function pickVoice() {
-    const voices = window.speechSynthesis.getVoices();
-    // Preference order: Daniel (UK), Alex (US), Google UK English Male, then any English male
-    const preferred = ['Daniel','Alex','Google UK English Male','Microsoft David','Microsoft Mark','Fred'];
-    for (const name of preferred) {
-      const v = voices.find(v => v.name === name);
-      if (v) return v;
-    }
-    // Fallback: any English voice
-    return voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
-  }
-
-  const setVoiceAndSpeak = () => {
-    const voice = pickVoice();
-    if (voice) utter.voice = voice;
-    utter.rate  = 0.92;   // slightly slower — measured, like Rick Steves
-    utter.pitch = 0.95;   // slightly lower — warm, authoritative
-    utter.volume = 1.0;
-
-    utter.onboundary = (e) => {
-      if (e.name === 'word') {
-        // Track which word we're on
-        const spokenChars = e.charIndex;
-        const spokenWordsCount = speakText.slice(0, spokenChars).split(/\s+/).filter(w=>w.length>0).length;
-        state.wordOffset = (state.wordOffset || 0) + spokenWordsCount;
-      }
-    };
-
-    utter.onend = () => {
-      state.status = 'stopped';
-      state.wordOffset = 0;
-      audioState[stopIdx] = state;
-      btn.className = 'audio-btn';
-      label.textContent = 'LISTEN';
-      icon.textContent = '🔊';
-    };
-
-    utter.onerror = () => {
-      state.status = 'stopped';
-      audioState[stopIdx] = state;
-      btn.className = 'audio-btn';
-      label.textContent = 'LISTEN';
-      icon.textContent = '🔊';
-    };
-
-    window.speechSynthesis.speak(utter);
-  };
-
-  // Voices may not be loaded yet
-  if (window.speechSynthesis.getVoices().length > 0) {
-    setVoiceAndSpeak();
-  } else {
-    window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
-  }
-
-  // Store utterance for potential cancel
-  state.utter = utter;
-  audioState[stopIdx] = state;
-}
-
-// Stop audio when a stop is closed
-function stopAllAudio() {
-  window.speechSynthesis.cancel();
-  Object.keys(audioState).forEach(k => {
-    if (audioState[k]) { audioState[k].status = 'stopped'; audioState[k].wordOffset = 0; }
-    const btn = document.getElementById('audio-btn-' + k);
-    const label = document.getElementById('audio-label-' + k);
-    const icon  = document.getElementById('audio-icon-' + k);
-    if (btn) { btn.className = 'audio-btn'; }
-    if (label) label.textContent = 'LISTEN';
-    if (icon)  icon.textContent = '🔊';
-  });
-}
-
-function toggleImg(wrap){
-  const img = wrap.querySelector('.stop-img');
-  const hint = wrap.querySelector('.img-tap-hint');
-  const isExp = img.classList.contains('expanded');
-  img.classList.toggle('expanded');
-  hint.textContent = isExp ? 'TAP TO EXPAND ↕' : 'TAP TO COLLAPSE ↕';
-}
-
 function startGame(){
   document.getElementById('intro-screen').style.display='none';
   document.getElementById('progress-section').style.display='block';
@@ -627,10 +406,7 @@ function buildStops(){
     const card=document.createElement('div');
     card.className='stop-card'; card.id=`stop-card-${i}`;
     const maxPts=s.isChocolate ? 15 : (s.questions.reduce((a,q)=>a+q.pts,0)+15);
-    const imgTag=s.img ? `<div class="stop-img-wrap" onclick="toggleImg(this)" id="imgwrap-${i}">
-        <img class="stop-img" src="${s.img}" alt="${s.name}">
-        <div class="img-tap-hint" id="imghint-${i}">TAP TO EXPAND ↕</div>
-      </div>` : '';
+    const imgTag=s.img ? `<img class="stop-img" src="${s.img}" alt="${s.name}">` : '';
     card.innerHTML=`
       ${imgTag}
       <div class="stop-header" onclick="toggleStop(${i})">
@@ -647,14 +423,6 @@ function buildStops(){
       <div class="stop-body" id="stop-body-${i}">
         <div class="stop-emoji-banner">${s.emoji}</div>
         <div class="info-box" id="info-box-${i}">
-          <div class="audio-row">
-            <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--sdv-border2);letter-spacing:1px;">📍 YOUR MISSION &amp; 💡 DID YOU KNOW</span>
-            <button class="audio-btn" id="audio-btn-${i}" onclick="toggleAudio(${i})" title="Listen to this section">
-              <span class="audio-icon" id="audio-icon-${i}">🔊</span>
-              <span id="audio-label-${i}">LISTEN</span>
-              <span class="audio-pulse" id="audio-pulse-${i}"></span>
-            </button>
-          </div>
           <div class="info-text" id="info-text-${i}">${s.info}</div>
         </div>
         <div class="sdv-divider"><span class="sdv-divider-icon">🌾</span></div>
@@ -725,8 +493,6 @@ function toggleStop(i){
   const chev=document.getElementById(`chevron-${i}`);
   const card=document.getElementById(`stop-card-${i}`);
   const isOpen=body.classList.contains('open');
-  // Stop any playing audio when closing
-  if (isOpen) stopAllAudio();
   document.querySelectorAll('.stop-body').forEach(b=>b.classList.remove('open'));
   document.querySelectorAll('.stop-chevron').forEach(c=>{c.textContent='▼';});
   if(!isOpen){
