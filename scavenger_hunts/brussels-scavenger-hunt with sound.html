@@ -125,39 +125,25 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .info-text strong{color:#5a3a18;}
 .info-text em{color:#7a5a30;font-style:normal;font-weight:800;}
 
-/* AUDIO BUTTON — Dresden style */
-.audio-btn {
-  width: 32px; min-width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--sdv-border);
-  background: rgba(90,58,24,0.15);
-  color: var(--sdv-gold);
-  font-size: 16px;
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: background 0.15s;
-  flex-shrink: 0;
-  margin-left: 8px;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  vertical-align: middle;
+/* AUDIO BUTTON */
+.audio-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.audio-btn{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Press Start 2P',monospace;font-size:7px;
+  padding:6px 12px;min-height:34px;
+  background:var(--sdv-border2);color:var(--sdv-gold);
+  border:2px solid var(--sdv-border);border-radius:4px;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:2px 2px 0 rgba(0,0,0,0.35);
+  transition:all 0.1s;user-select:none;
 }
-.audio-btn:hover { background: rgba(90,58,24,0.35); }
-.audio-btn.playing { background: var(--sdv-gold); color: var(--sdv-text); animation: pulse-audio 1.2s infinite; }
-@keyframes pulse-audio {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(240,192,64,0.5); }
-  50%       { box-shadow: 0 0 0 7px rgba(240,192,64,0); }
-}
-
-/* Mission label row */
-.mission-audio-row {
-  display: flex; align-items: center;
-  margin-bottom: 10px; gap: 4px;
-}
-.mission-audio-label {
-  font-family: 'Press Start 2P', monospace; font-size: 7px;
-  color: var(--sdv-border2); letter-spacing: 1px; flex: 1;
-}
+.audio-btn:active{transform:translate(1px,1px);box-shadow:none;}
+.audio-btn.playing{background:#3a6020;color:#d0f0a0;border-color:#2a4010;}
+.audio-btn.paused{background:#7a5010;color:#ffe0a0;border-color:#5a3a00;}
+.audio-icon{font-size:14px;line-height:1;}
+.audio-pulse{display:none;width:8px;height:8px;border-radius:50%;background:var(--sdv-gold);animation:audioPulse 0.7s ease-in-out infinite alternate;}
+.audio-btn.playing .audio-pulse{display:block;}
+@keyframes audioPulse{0%{opacity:0.3;transform:scale(0.7);}100%{opacity:1;transform:scale(1.2);}}
 
 .quests-section{margin-bottom:10px;}
 .quests-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--sdv-border2);margin-bottom:10px;letter-spacing:1px;}
@@ -432,154 +418,183 @@ let totalScore=0, answered={}, photosDone={}, stopsCompleted={};
 const TOTAL=stops.length;
 
 
-/* ── AUDIO ENGINE — Dresden method ── */
+/* ── AUDIO ENGINE ── */
+const audioState = {}; // keyed by stop index
 
-let currentBtn   = null;
-let audioState   = 'stopped'; // 'stopped' | 'playing' | 'paused'
-let allWords     = [];
-let resumeFromWord = 0;
-let activeVoice  = null;
-
-function resetAudioBtn(btn) {
-  if (btn) { btn.classList.remove('playing'); btn.textContent = '🔊'; }
-}
-
-function getStopText(stopIdx) {
-  const infoEl = document.getElementById('info-text-' + stopIdx);
-  if (!infoEl) return '';
-  // Get plain text, strip HTML tags and emoji
+function htmlToPlainText(html) {
   const tmp = document.createElement('div');
-  tmp.innerHTML = infoEl.innerHTML;
-  tmp.querySelectorAll('br').forEach(b => b.replaceWith('. '));
-  let text = (tmp.textContent || tmp.innerText || '');
-  // Strip emoji and non-ASCII
-  text = text.replace(/[\u0080-\uFFFF]/g, ' ');
+  tmp.innerHTML = html;
+  // Replace <br> with space
+  tmp.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+  // Replace block elements with space
+  tmp.querySelectorAll('p,div,h1,h2,h3,h4,li').forEach(el => {
+    el.insertAdjacentText('afterend', ' ');
+  });
+  let text = tmp.textContent || tmp.innerText || '';
+  // Clean up extra whitespace
   return text.replace(/\s+/g, ' ').trim();
 }
 
-function speakFrom(wordIndex, btn) {
-  const ss = window.speechSynthesis;
-  ss.cancel();
-
-  // Chunk into ~150-word pieces (iOS/Safari fix)
-  const remaining = allWords.slice(wordIndex);
-  const chunks = [];
-  for (let i = 0; i < remaining.length; i += 150)
-    chunks.push(remaining.slice(i, i + 150).join(' '));
-
-  let chunkIdx = 0;
-
-  function next() {
-    if (audioState !== 'playing' || chunkIdx >= chunks.length) {
-      if (chunkIdx >= chunks.length) {
-        audioState = 'stopped';
-        resumeFromWord = 0;
-        resetAudioBtn(btn);
-        currentBtn = null;
-      }
-      return;
-    }
-    const u = new SpeechSynthesisUtterance(chunks[chunkIdx]);
-    u.rate = 0.87; u.pitch = 0.92; u.volume = 1.0;
-    if (activeVoice) u.voice = activeVoice;
-
-    // Track word position by counting actual words up to charIndex
-    u.onboundary = (e) => {
-      if (e.name === 'word') {
-        const wordsInPriorChunks = chunkIdx * 150;
-        const textSoFar = chunks[chunkIdx].slice(0, e.charIndex);
-        const wordsSoFar = textSoFar.trim().split(/\s+/).filter(Boolean).length;
-        resumeFromWord = wordIndex + wordsInPriorChunks + wordsSoFar;
-      }
-    };
-
-    u.onend = () => { chunkIdx++; next(); };
-    u.onerror = (e) => {
-      if (e.error === 'interrupted' || e.error === 'canceled' || e.error === 'cancelled') return;
-      audioState = 'stopped';
-      resetAudioBtn(btn);
-      currentBtn = null;
-    };
-    ss.speak(u);
+function wordsUpToIndex(words, charIndex) {
+  // Count how many characters the first N words take
+  let count = 0;
+  for (let i = 0; i < words.length; i++) {
+    count += words[i].length + 1; // +1 for space
+    if (count > charIndex) return i;
   }
-  next();
+  return words.length;
 }
 
-function playStopAudio(stopIdx, btn) {
-  const ss = window.speechSynthesis;
+function toggleAudio(stopIdx) {
+  const btn   = document.getElementById('audio-btn-' + stopIdx);
+  const label = document.getElementById('audio-label-' + stopIdx);
+  const icon  = document.getElementById('audio-icon-' + stopIdx);
+  const state = audioState[stopIdx] || { status:'stopped', wordOffset:0 };
 
-  // Same button toggled: pause ↔ resume
-  if (currentBtn === btn && audioState !== 'stopped') {
-    if (audioState === 'playing') {
-      audioState = 'paused';
-      ss.cancel();
-      btn.classList.remove('playing');
-      btn.textContent = '▶';
-    } else {
-      // Resume — rewind 7 words
-      audioState = 'playing';
-      btn.classList.add('playing');
-      btn.textContent = '⏹';
-      speakFrom(Math.max(0, resumeFromWord - 6), btn);
+  // Stop any other playing audio
+  Object.keys(audioState).forEach(k => {
+    if (parseInt(k) !== stopIdx && audioState[k].status === 'playing') {
+      stopAudio(parseInt(k));
     }
-    return;
+  });
+
+  if (state.status === 'playing') {
+    // PAUSE
+    window.speechSynthesis.cancel();
+    state.status = 'paused';
+    audioState[stopIdx] = state;
+    btn.className = 'audio-btn paused';
+    label.textContent = 'RESUME';
+    icon.textContent = '⏸';
+  } else if (state.status === 'paused') {
+    // RESUME from 7 words back
+    resumeAudio(stopIdx, state);
+  } else {
+    // START fresh
+    state.wordOffset = 0;
+    state.status = 'playing';
+    audioState[stopIdx] = state;
+    startSpeaking(stopIdx, state);
   }
+}
 
-  // Different stop or fresh start
-  ss.cancel();
-  resetAudioBtn(currentBtn);
-  audioState = 'stopped';
+function stopAudio(stopIdx) {
+  window.speechSynthesis.cancel();
+  const state = audioState[stopIdx];
+  if (state) { state.status = 'stopped'; state.wordOffset = 0; }
+  const btn   = document.getElementById('audio-btn-' + stopIdx);
+  const label = document.getElementById('audio-label-' + stopIdx);
+  const icon  = document.getElementById('audio-icon-' + stopIdx);
+  if (btn) { btn.className = 'audio-btn'; label.textContent = 'LISTEN'; icon.textContent = '🔊'; }
+}
 
-  const text = getStopText(stopIdx);
-  if (!text) return;
+function resumeAudio(stopIdx, state) {
+  const infoEl = document.getElementById('info-text-' + stopIdx);
+  if (!infoEl) return;
+  const fullText = htmlToPlainText(infoEl.innerHTML);
+  const words = fullText.split(/\s+/).filter(w => w.length > 0);
 
-  allWords       = text.split(/\s+/).filter(Boolean);
-  resumeFromWord = 0;
+  // Go back 7 words from where we paused
+  const resumeWord = Math.max(0, (state.wordOffset || 0) - 7);
+  state.wordOffset = resumeWord;
+  state.status = 'playing';
+  audioState[stopIdx] = state;
+  startSpeaking(stopIdx, state);
+}
 
-  function start(voice) {
-    activeVoice = voice;
-    audioState  = 'playing';
-    currentBtn  = btn;
-    btn.classList.add('playing');
-    btn.textContent = '⏹';
-    speakFrom(0, btn);
-  }
+function startSpeaking(stopIdx, state) {
+  const btn   = document.getElementById('audio-btn-' + stopIdx);
+  const label = document.getElementById('audio-label-' + stopIdx);
+  const icon  = document.getElementById('audio-icon-' + stopIdx);
+  const infoEl = document.getElementById('info-text-' + stopIdx);
+  if (!infoEl) return;
 
+  const fullText = htmlToPlainText(infoEl.innerHTML);
+  const words = fullText.split(/\s+/).filter(w => w.length > 0);
+  const speakWords = words.slice(state.wordOffset || 0);
+  const speakText = speakWords.join(' ');
+
+  btn.className = 'audio-btn playing';
+  label.textContent = 'PAUSE';
+  icon.textContent = '▶';
+
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(speakText);
+
+  // Voice selection — warm, clear, authoritative male voice (Rick Steves style)
   function pickVoice() {
-    const voices = ss.getVoices();
-    const priority = [
-      'Google US English',
-      'Microsoft Guy Online (Natural) - English (United States)',
-      'Microsoft Davis Online (Natural) - English (United States)',
-      'Microsoft Ryan Online (Natural) - English (United Kingdom)',
-      'Daniel', 'Alex', 'Arthur', 'Fred'
-    ];
-    let voice = null;
-    for (const name of priority) {
-      voice = voices.find(v => v.name === name);
-      if (voice) break;
+    const voices = window.speechSynthesis.getVoices();
+    // Preference order: Daniel (UK), Alex (US), Google UK English Male, then any English male
+    const preferred = ['Daniel','Alex','Google UK English Male','Microsoft David','Microsoft Mark','Fred'];
+    for (const name of preferred) {
+      const v = voices.find(v => v.name === name);
+      if (v) return v;
     }
-    if (!voice) voice = voices.find(v => v.lang === 'en-US') ||
-                        voices.find(v => v.lang && v.lang.startsWith('en')) ||
-                        (voices.length ? voices[0] : null);
-    start(voice);
+    // Fallback: any English voice
+    return voices.find(v => v.lang && v.lang.startsWith('en')) || voices[0];
   }
 
-  ss.getVoices().length > 0 ? pickVoice() : (ss.onvoiceschanged = pickVoice);
+  const setVoiceAndSpeak = () => {
+    const voice = pickVoice();
+    if (voice) utter.voice = voice;
+    utter.rate  = 0.92;   // slightly slower — measured, like Rick Steves
+    utter.pitch = 0.95;   // slightly lower — warm, authoritative
+    utter.volume = 1.0;
+
+    utter.onboundary = (e) => {
+      if (e.name === 'word') {
+        // Track which word we're on
+        const spokenChars = e.charIndex;
+        const spokenWordsCount = speakText.slice(0, spokenChars).split(/\s+/).filter(w=>w.length>0).length;
+        state.wordOffset = (state.wordOffset || 0) + spokenWordsCount;
+      }
+    };
+
+    utter.onend = () => {
+      state.status = 'stopped';
+      state.wordOffset = 0;
+      audioState[stopIdx] = state;
+      btn.className = 'audio-btn';
+      label.textContent = 'LISTEN';
+      icon.textContent = '🔊';
+    };
+
+    utter.onerror = () => {
+      state.status = 'stopped';
+      audioState[stopIdx] = state;
+      btn.className = 'audio-btn';
+      label.textContent = 'LISTEN';
+      icon.textContent = '🔊';
+    };
+
+    window.speechSynthesis.speak(utter);
+  };
+
+  // Voices may not be loaded yet
+  if (window.speechSynthesis.getVoices().length > 0) {
+    setVoiceAndSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+  }
+
+  // Store utterance for potential cancel
+  state.utter = utter;
+  audioState[stopIdx] = state;
 }
 
+// Stop audio when a stop is closed
 function stopAllAudio() {
   window.speechSynthesis.cancel();
-  audioState = 'stopped';
-  resumeFromWord = 0;
-  resetAudioBtn(currentBtn);
-  currentBtn = null;
+  Object.keys(audioState).forEach(k => {
+    if (audioState[k]) { audioState[k].status = 'stopped'; audioState[k].wordOffset = 0; }
+    const btn = document.getElementById('audio-btn-' + k);
+    const label = document.getElementById('audio-label-' + k);
+    const icon  = document.getElementById('audio-icon-' + k);
+    if (btn) { btn.className = 'audio-btn'; }
+    if (label) label.textContent = 'LISTEN';
+    if (icon)  icon.textContent = '🔊';
+  });
 }
-
-window.addEventListener('beforeunload', () => {
-  window.speechSynthesis && window.speechSynthesis.cancel();
-});
-
 
 function toggleImg(wrap){
   const img = wrap.querySelector('.stop-img');
@@ -632,9 +647,13 @@ function buildStops(){
       <div class="stop-body" id="stop-body-${i}">
         <div class="stop-emoji-banner">${s.emoji}</div>
         <div class="info-box" id="info-box-${i}">
-          <div class="mission-audio-row">
-            <span class="mission-audio-label">📍 YOUR MISSION &amp; 💡 DID YOU KNOW</span>
-            <div class="audio-btn" id="audio-btn-${i}" onclick="playStopAudio(${i}, this)" title="Listen to this stop">🔊</div>
+          <div class="audio-row">
+            <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--sdv-border2);letter-spacing:1px;">📍 YOUR MISSION &amp; 💡 DID YOU KNOW</span>
+            <button class="audio-btn" id="audio-btn-${i}" onclick="toggleAudio(${i})" title="Listen to this section">
+              <span class="audio-icon" id="audio-icon-${i}">🔊</span>
+              <span id="audio-label-${i}">LISTEN</span>
+              <span class="audio-pulse" id="audio-pulse-${i}"></span>
+            </button>
           </div>
           <div class="info-text" id="info-text-${i}">${s.info}</div>
         </div>

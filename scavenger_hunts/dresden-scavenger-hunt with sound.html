@@ -399,18 +399,6 @@
     text-transform: uppercase;
     margin-bottom: 9px;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .box-label .audio-btn {
-    width: 28px;
-    min-width: 28px;
-    height: 28px;
-    font-size: 13px;
-    margin: 0;
-    flex-shrink: 0;
   }
 
   /* KEY LEGIBILITY FIX: larger, darker, more readable body text */
@@ -846,31 +834,6 @@
     letter-spacing: 0.5px;
     margin-top: 3px;
   }
-
-  /* ═══ AUDIO BUTTON ═══ */
-  .audio-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1.5px solid var(--gold-light);
-    background: rgba(180,120,30,0.1);
-    color: var(--gold);
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.15s;
-    flex-shrink: 0;
-    margin-right: 4px;
-    margin-left: 4px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .audio-btn:hover { background: rgba(180,120,30,0.22); }
-  .audio-btn.playing { background: var(--gold); color: var(--ink); animation: pulse-audio 1.2s infinite; }
-  @keyframes pulse-audio {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(184,134,42,0.5); }
     50%       { box-shadow: 0 0 0 7px rgba(184,134,42,0); }
   }
 
@@ -1053,7 +1016,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-1" onclick="playStopAudio(1, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>You're standing in Theaterplatz — the grand square where Dresden's most famous landmarks cluster together. Find the equestrian statue in the middle of the square. This is King John, a mid-19th-century ruler who recognized and preserved Saxon culture and paid for the opera house behind the statue. Now face the Semperoper and look at the two figures flanking its entrance — these are the two greatest figures in German literary culture, welcoming all who enter. To your far left is a smaller Neoclassical building called the <strong>Schinkelwache</strong>. It was designed in a Prussian Classicist style by the architect Karl Friedrich Schinkel — which is why it looks out of place among the Baroque buildings around it. Today it serves as a popular café and the opera's box office.</p>
       </div>
       <div class="fact-box">
@@ -1143,7 +1106,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-2" onclick="playStopAudio(2, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Head to the gap between the Semperoper and the Zwinger. Standing in front of the Alte Meister Café you'll find a bronze statue of a composer named <strong>Carl Maria von Weber</strong>. His opera <em>Der Freischütz</em> holds a remarkable distinction: it was the very last opera performed in the Semperoper before the building was destroyed in 1945 — and the very first opera performed when the rebuilt Semperoper reopened in 1985. From here, go up the stairs and turn left up the ramp. As you climb what was once a <strong>rampart</strong>, notice the faint echo of the <strong>moat</strong> to your right. The opera house is named the Semperoper after its architect <strong>Gottfried Semper</strong> — the same man who later added one of the wings of the Zwinger you're about to enter.</p>
       </div>
       <div class="fact-box">
@@ -1214,7 +1177,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-3" onclick="playStopAudio(3, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>From the balcony, descend the small stairs to the <strong>Nymphs' Bath</strong> — a fountain grotto where 18th-century aristocrats relaxed among cascading waterfalls. Cross through the orangery into the middle of the courtyard. You can see all four wings: To your right, the <strong>Rampart Pavilion</strong> (Wallpavillon), topped by a figure of Hercules hoisting the earth — with the features of Augustus the Strong himself, making him the ultimate symbol of royal strength. To its left, the <strong>Crown Gate</strong> (Kronentor), topped by four golden eagles supporting a crown — symbolizing Polish royalty, since Augustus was also King of Poland. Next, the <strong>Glockenspiel Pavilion</strong>, with 40 bells made of Meissen porcelain near the top (they chime every 15 minutes and play a 3-minute melody at 10:15, 14:15, and 18:15). And finally, the stern <strong>Semper Gallery</strong> — added 100 years after the rest by Gottfried Semper.</p>
       </div>
       <div class="fact-box">
@@ -1366,7 +1329,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-4" onclick="playStopAudio(4, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Exit the Zwinger through the Glockenspiel Pavilion. Cross the street and the tram tracks, turn left, then curve right onto the street called <strong>Taschenberg</strong>. The bright yellow building on your right is the <strong>Taschenberg Palace</strong> — built for Augustus the Strong's mistress, and later home to the crown prince. It was ruined until 1990, when it was restored and became a five-star hotel. Look ahead for a yellow-windowed <strong>sky bridge</strong> — it connects the Taschenberg to the Royal Palace, so royalty could walk between them without having to deal with the public below. Walk under it. Ahead and to the right is a blocky modern building with a large exterior mural — the <strong>Palace of Culture</strong> (Kulturpalast), built by the communist government in 1969.</p>
       </div>
       <div class="fact-box">
@@ -1437,7 +1400,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-5" onclick="playStopAudio(5, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Walk along Schlossstrasse with the Royal Palace on your left. The gate on your left is one of the palace entrances, with the <strong>Watchman's Tower</strong> above it. Inside you'll find the <strong>Green Vault</strong> (Grünes Gewölbe) treasuries — Augustus the Strong's legendary collection. The palace also has a <strong>clock tower</strong>.</p>
       </div>
       <div class="fact-box">
@@ -1508,7 +1471,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-6" onclick="playStopAudio(6, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Continue to Palace Square. To your left is the <strong>Katholische Hofkirche</strong> with its distinctive <strong>green-copper, onion-domed steeple</strong>. Look for the elevated passage connecting the Hofkirche directly to the Royal Palace — designed so royalty could attend church without the hassle of dealing with the public. Augustus the Strong pragmatically converted from Saxon Protestantism to Catholicism in order to become King of Poland. The result: a Catholic church, built for a converted Protestant ruler, in a predominantly Protestant city. You'll notice the city center features both the Protestant <strong>Frauenkirche</strong> (ahead) and this large Catholic <strong>Hofkirche</strong> — because Augustus was "finessing it both ways," keeping both his Saxon Protestant subjects and his Polish Catholic subjects content.</p>
       </div>
       <div class="fact-box">
@@ -1596,7 +1559,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-7" onclick="playStopAudio(7, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Turn around to face the palace gate you came through and look left. You'll see the long mural called the <strong>Parade of Princes</strong> (Fürstenzug) — painted on 24,000 tiles of Meissen porcelain and longer than a football field. Walk from the end nearest the Hofkirche. The very last figure in the procession (the first you'll see from this direction) is the artist himself, <strong>Wilhelm Walther</strong>. In front of him come commoners — miners, farmers, carpenters, teachers, students, artists — and then the royals. Find <strong>Augustus the Strong</strong> (look for the year 1694 marked above him): his horse stomps on a rose, the symbol of Martin Luther and the Protestant movement — representing the faith he gave up to gain the Polish crown. At the very front of the parade: an announcer, a band, and 12th-century cheerleaders, heralding the arrival of the wondrous procession.</p>
       </div>
       <div class="fact-box">
@@ -1705,7 +1668,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-8" onclick="playStopAudio(8, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Just past the mural, take a detour sharply right into a long, narrow courtyard. Many of those featured in the mural may have put on their ceremonial armor and jousted right here. Look at the long white colonnade — imagine wooden stands filling it, packed with cheering spectators. Look left for the pool where the horses cooled down before being stabled. Continue through into the big square where a statue of <strong>Martin Luther</strong> stands. He is holding the Bible in German — which he personally translated from Hebrew and ancient Greek so that regular people could wrestle with the Word of God directly. When translating, Luther used colloquial, everyday German, forming the basis for what is now considered "High German." So besides being the Great Reformer, Luther is considered the father of the modern German language. The statue was toppled in 1945 but has been cleaned up and is back on his feet again.</p>
       </div>
       <div class="fact-box">
@@ -1776,7 +1739,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-9" onclick="playStopAudio(9, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>The <strong>Frauenkirche</strong> is the symbol and soul of Dresden. When completed in 1743, it was Germany's tallest Protestant church at 310 feet. Its unique central-stone-cupola design gave it the nickname <strong>"the stone bell."</strong> On the night of February 13, 1945, firebombs fell. The church smoldered for two days before finally collapsing. It was left as a rubble pile and turned into a deliberate <strong>peace monument</strong> — a reminder of the destruction of war — for decades. Only after German reunification was the decision made to rebuild it completely, and it <strong>reopened in 2005</strong>. Circle around to the river side of the church (near door E) to find a preserved piece of the original bombed rubble, mounted with a small metal relief showing exactly where that piece came from. Look closely at the church exterior — you can spot the <strong>darker, fire-scorched original stones</strong> among the paler new sandstone. Builders matched them back to their original positions using old photographs.</p>
       </div>
       <div class="fact-box">
@@ -1896,7 +1859,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-10" onclick="playStopAudio(10, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>Walk back toward the Hofkirche and Royal Palace to reach the <strong>Brühlsche Terrasse</strong> — a promenade that was once a defensive rampart. Look along the side of the terrace facing the Elbe River to see the openings where cannons once pointed. It was given as a reward to a Saxon minister named <strong>Brühl</strong>, who distinguished himself as a <strong>tax collector</strong> for Frederick Augustus II. In the early 1800s it became a public park with a leafy canopy of <strong>linden trees</strong>, earning the nickname <strong>"The Balcony of Europe."</strong> Look out at the Elbe. To the left in the distance, the hills are home to vineyards producing some of Germany's northernmost wine — mostly white, consumed almost entirely by locals because only a small amount of land is suitable for growing.</p>
       </div>
       <div class="fact-box">
@@ -1997,7 +1960,7 @@
   <div class="stop-body">
     <div class="stop-content">
       <div class="clue-box">
-        <div class="box-label">🔍 Your Mission <div class="audio-btn" id="audio-btn-11" onclick="playStopAudio(11, this)" title="Listen to this stop">🔊</div></div>
+        <div class="box-label">🔍 Your Mission</div>
         <p>At the far end of the Brühlsche Terrasse, stop at the grove of linden trees with a fountain at the center and look out at the <strong>Augustus Bridge</strong> (Augustusbrücke). It has connected Dresden's old and new towns since <strong>1319</strong>, when it was the first stone bridge over the Elbe here. Walk across it. At the far end you'll find a gleaming golden equestrian statue — a symbol of the entire city. This is <strong>Augustus the Strong</strong>, nicknamed the <strong>"Golden Rider"</strong> (Goldene Reiter). Beyond him rises the spire of the Three Kings Church. Turn around and look back at the Old Town skyline — you've now visited the history behind everything you can see.</p>
       </div>
       <div class="fact-box">
@@ -2182,138 +2145,6 @@
       document.getElementById('finaleMessage').textContent = msg;
     }
   }
-
-
-  // ═══════════════════════════════════════════════
-  // AUDIO GUIDE — pause/resume via word-position tracking
-  // ═══════════════════════════════════════════════
-
-  let currentBtn = null;
-  let audioState = 'stopped'; // 'stopped' | 'playing' | 'paused'
-  let allWords = [];
-  let resumeFromWord = 0;
-  let activeVoice = null;
-  let activeStopNum = null;
-
-  function resetBtn(btn) {
-    if (btn) { btn.classList.remove('playing'); btn.textContent = '🔊'; }
-  }
-
-  function getStopText(stopNum) {
-    const card = document.getElementById('stop-' + stopNum);
-    if (!card) return '';
-    const mission = card.querySelector('.clue-box p');
-    const fact    = card.querySelector('.fact-box p');
-    return [mission, fact].filter(Boolean).map(el => el.innerText.trim()).join(' ');
-  }
-
-  function speakFrom(wordIndex, btn) {
-    const ss = window.speechSynthesis;
-    ss.cancel();
-
-    // Chunk from wordIndex in ~150-word pieces (iOS fix)
-    const remaining = allWords.slice(wordIndex);
-    const chunks = [];
-    for (let i = 0; i < remaining.length; i += 150)
-      chunks.push(remaining.slice(i, i + 150).join(' '));
-
-    let chunkIdx = 0;
-    let wordsSpokenInSession = wordIndex;
-
-    function next() {
-      if (audioState !== 'playing' || chunkIdx >= chunks.length) {
-        if (chunkIdx >= chunks.length) {
-          audioState = 'stopped';
-          resumeFromWord = 0;
-          resetBtn(btn);
-          currentBtn = null;
-        }
-        return;
-      }
-      const u = new SpeechSynthesisUtterance(chunks[chunkIdx]);
-      u.rate = 0.87; u.pitch = 0.92; u.volume = 1.0;
-      if (activeVoice) u.voice = activeVoice;
-
-      // Track word position via boundary events
-      u.onboundary = (e) => {
-        if (e.name === 'word') {
-          // count words spoken so far across all chunks
-          const wordsInPriorChunks = chunkIdx * 150;
-          const wordsSoFar = Math.round(e.charIndex / 5); // rough word estimate from charIndex
-          resumeFromWord = wordIndex + wordsInPriorChunks + wordsSoFar;
-        }
-      };
-
-      u.onend = () => { chunkIdx++; wordsSpokenInSession += chunks[chunkIdx-1]?.split(' ').length || 0; next(); };
-      u.onerror = (e) => {
-        if (e.error === 'interrupted') return; // expected on pause
-        audioState = 'stopped';
-        resetBtn(btn);
-        currentBtn = null;
-      };
-      ss.speak(u);
-    }
-    next();
-  }
-
-  function playStopAudio(stopNum, btn) {
-    const ss = window.speechSynthesis;
-
-    // Same button: toggle pause / resume
-    if (currentBtn === btn && audioState !== 'stopped') {
-      if (audioState === 'playing') {
-        audioState = 'paused';
-        ss.cancel(); // cancel current utterance but keep resumeFromWord
-        btn.textContent = '▶';
-      } else {
-        // Resume from saved word position
-        audioState = 'playing';
-        btn.textContent = '⏹';
-        speakFrom(Math.max(0, resumeFromWord - 7), btn);
-      }
-      return;
-    }
-
-    // New stop: cancel everything and start fresh
-    ss.cancel();
-    resetBtn(currentBtn);
-    audioState = 'stopped';
-
-    const text = getStopText(stopNum);
-    if (!text) return;
-
-    allWords = text.split(/\s+/);
-    resumeFromWord = 0;
-    activeStopNum = stopNum;
-
-    function start(voice) {
-      activeVoice = voice;
-      audioState = 'playing';
-      currentBtn = btn;
-      btn.classList.add('playing');
-      btn.textContent = '⏹';
-      speakFrom(0, btn);
-    }
-
-    function pickVoice() {
-      const voices = ss.getVoices();
-      const priority = [
-        'Google US English',
-        'Microsoft Guy Online (Natural) - English (United States)',
-        'Microsoft Davis Online (Natural) - English (United States)',
-        'Microsoft Ryan Online (Natural) - English (United Kingdom)',
-        'Alex', 'Daniel', 'Fred'
-      ];
-      let voice = null;
-      for (const name of priority) { voice = voices.find(v => v.name === name); if (voice) break; }
-      if (!voice) voice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
-      start(voice);
-    }
-
-    ss.getVoices().length > 0 ? pickVoice() : (ss.onvoiceschanged = pickVoice);
-  }
-
-  window.addEventListener('beforeunload', () => window.speechSynthesis && window.speechSynthesis.cancel());
 
   function togglePhotoSection() {
     const sec = document.getElementById('photo-section');

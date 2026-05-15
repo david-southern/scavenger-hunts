@@ -106,7 +106,7 @@ nav a:hover{color:#fff;border-bottom-color:var(--gold-light)}
 
 /* WALL SECTION (dark) */
 .wall-section{background:var(--prussian)}
-.wall-inner{max-width:1100px;margin:0 auto;padding:4rem 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.wall-inner{max-width:1100px;margin:0 auto;padding:4rem 1.25rem;display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
 @media(max-width:700px){.wall-inner{grid-template-columns:1fr;gap:2rem}}
 .wall-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:0.5rem}
 .wall-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem}
@@ -261,7 +261,6 @@ footer{background:var(--prussian);padding:2rem 1.5rem;text-align:center;color:rg
       <div class="card-body">
         <h3 class="card-title">The Reichstag</h3>
         <p class="card-text">Germany's parliament building has witnessed the fall of a kaiser, the rise of Hitler, and the reunification of a nation. British architect Norman Foster added its iconic glass dome in 1999 — a symbol of democracy reborn. The dome rises 155 feet and lets visitors spiral to the top for sweeping city views.</p>
-        <div class="teen-tip"><strong>🔍 Challenge:</strong> Climb the spiral ramp inside the glass dome. As you go up, you can look directly down into the parliament chamber below — the government is literally under the people!</div>
         <div class="hmm-boxes">
           <div class="hmm-box" onclick="toggleHmm(this)">
             <div class="hmm-header"><span>🔥</span> What's the Reichstag fire — and why does it matter? <span class="hmm-arrow">▾</span></div>
@@ -407,7 +406,7 @@ footer{background:var(--prussian);padding:2rem 1.5rem;text-align:center;color:rg
     <div class="site-card reveal">
       <div class="card-icon-wrap" onclick="togglePhoto(this)">
         <img src="Unter_den_Linden.jpg" alt="Unter den Linden boulevard Berlin" loading="lazy"/>
-        <span class="card-tag">Boulevard ▲▲</span>
+        <span class="card-tag">Boulevard</span>
         <span class="expand-hint">tap to expand</span>
       </div>
       <div class="card-body">
@@ -556,15 +555,6 @@ footer{background:var(--prussian);padding:2rem 1.5rem;text-align:center;color:rg
         </div>
       </div>
     </div>
-    <div>
-      <p class="wall-eyebrow" style="margin-bottom:1rem">Berlin Wall Memorial — Bernauer Strasse</p>
-      <div class="wall-stat">
-        <div class="wstat"><div class="wstat-num">Aug 13, 1961</div><div class="wstat-lbl">The night the Wall went up — barbed wire appeared in Berlin's streets. East Germans woke to find their city severed.</div></div>
-        <div class="wstat"><div class="wstat-num">136</div><div class="wstat-lbl">People killed at the Wall trying to reach freedom. The last was Chris Gueffroy, shot through the heart on February 6, 1989 — nine months before the Wall fell.</div></div>
-        <div class="wstat"><div class="wstat-num">~1 mile</div><div class="wstat-lbl">Length of the preserved Wall stretch at the Berlin Wall Memorial on Bernauer Strasse — the most complete surviving section, including a guard tower and the original "death strip."</div></div>
-        <div class="wstat"><div class="wstat-num">Nov 9, 1989</div><div class="wstat-lbl">The Wall falls. More than 500,000 East Berliners had gathered at Alexanderplatz days before, chanting "Wir wollen raus!" — We want out!</div></div>
-      </div>
-    </div>
   </div>
 </div>
 </div>
@@ -668,9 +658,9 @@ footer{background:var(--prussian);padding:2rem 1.5rem;text-align:center;color:rg
 
   <div class="reveal" style="margin-top:2.5rem">
     <div class="hmm-boxes">
-      <div class="hmm-box" onclick="toggleHmm(this)">
-        <div class="hmm-header"><span>😂</span> Trabi Jokes — Who Says Germans Don't Have a Sense of Humor? <span class="hmm-arrow">▾</span></div>
-        <div class="hmm-body" style="max-height:600px">
+      <div class="hmm-box open" style="cursor:default">
+        <div class="hmm-header"><span>😂</span> Trabi Jokes — Who Says Germans Don't Have a Sense of Humor?</div>
+        <div class="hmm-body" style="max-height:800px;padding-top:10px">
           <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem">
             <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">🚗 <strong>Why is the Trabi the world's quietest car?</strong> Because your knees cover your ears.</li>
             <li style="padding:0.7rem 0.9rem;background:#f0f5fb;border-radius:8px;font-size:0.95rem;color:var(--text);line-height:1.6">⛽ <strong>How do you double a Trabi's value?</strong> Fill the tank.</li>
